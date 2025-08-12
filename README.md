@@ -2,17 +2,19 @@ Goal: to build a database of public appearances of high-profile people.
 
 SPEC:
 
-- A good task to get historical data (longer period) for a person that is sufficiently reliable. Maybe a single task is enough
+- A good task to get historical data (longer period) for a person that is sufficiently reliable. Maybe, a single task is enough.
 - A daily cronjob that queues 1/7th of people in the batch API for the last 7 days
-- Storage: unique Durable object
-  - Tasks table
-  - Appearances table
-  - Users table with `followers: {name:string,notify:"weekly"|"instant"}[]`
+- Storage: Unique Durable object
+  - Tasks table with raw prompts/results.
+  - Appearances table (see `people.ts`)
+  - Users table with `{ ...x_profile, actions_today:integer, is_premium, follows: {name:string,notify:"weekly"|"instant"}[] }`
 - `index.html`:
   - Sell the UVP
   - Login/logout with X account
-  - List all available people with easy way to view all appearances, and toggle follow
+  - List all available people with link to go to `/{name-slug}.html`, and toggle follow button
+  - At the end, nudge to message me to request adding a person https://x.com/janwilmake
   - Link to go to feed
+  - Pricing
 - `list.html`
   - KV: `/{name-slug}.html` and `/{name-slug}.md`
   - `/feed.html` shows all appearances for the logged in user's followed, reverse chronologically
@@ -24,9 +26,34 @@ SPEC:
 Out of scope:
 
 - Email Digests
+- Instant Emails
+- Transcripts or full statement database
+- NER
+- Requesting adding new people
 
 Pricing:
 
 - free: all public websites, feed to follow up to 10 people
 - $20/month plan to have unlimited access to MCP and limited SQL queries
 - $2000/month for full data access and custom needs
+
+Context:
+
+- Tasks with webhooks: https://docs.parallel.ai/api-reference/task-api-v1/create-task-run https://docs.parallel.ai/task-api/features/webhooks
+- Full-stack Cloudflare app with DO-based Storage: https://flaredream.com/system-ts.md with cronjobs
+- Separate X OAuth with MCP-compliant Authorization Provider https://github.com/janwilmake/x-oauth-client-provider
+- Authed Query API (with readonly validation for non-janwilmake users) https://uithub.com/janwilmake/queryable-object
+- Authed MCP (fully spec-compliant)
+- Stripe Subscription synced to users table
+
+Target Technical Advances:
+
+- No X OAuth Client secrets in this app, use centralized X OAuth provider (rename: Wilmake Systems)
+
+Todo:
+
+- Step 1: Improve tasks with small dataset (±5 people) - (very famous and less famous person): historical and weekly. Vibe-test for errors and cost.
+- Step 2: If I'm happy with the data, put it on cronjob for whole list of people, create list and index html and md results.
+- Personalization/Monetization: Add login and subscription element and ability to follow
+- Analytics: Simple Analytics
+- Talk to people about this idea
