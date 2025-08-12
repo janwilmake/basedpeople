@@ -5,6 +5,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Based People - Never Miss What Tech Leaders Actually Say</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Based People - Never Miss What Tech Leaders Actually Say" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="https://basedpeople.com" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Never miss What Based People Say" />
+    <meta property="og:description" content="Based People - Never Miss What Tech Leaders Actually Say" />
+    <meta property="og:image" content="https://quickog.com/screenshot/basedpeople.com" />
+    <meta property="og:image:alt" content="Based People - Never Miss What Tech Leaders Actually Say" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="twitter:domain" content="basedpeople.com" />
+    <meta property="twitter:url" content="https://basedpeople.com" />
+    <meta name="twitter:title" content="Never miss What Based People Say" />
+    <meta name="twitter:description" content="Based People - Never Miss What Tech Leaders Actually Say" />
+    <meta name="twitter:image" content="https://quickog.com/screenshot/basedpeople.com" />
+
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap"
         rel="stylesheet">
     <style>
@@ -332,34 +356,122 @@
             <h2 class="section-title">Choose Your Level</h2>
             <div class="pricing-grid">
                 <div class="pricing-card">
-                    <h3>Weekly Digest</h3>
+                    <h3>Basic</h3>
                     <div class="price">Free</div>
                     <p class="price-subtitle">Perfect for staying informed</p>
                     <ul class="features">
-                        <li>Follow up to 5 people</li>
-                        <li>Weekly email summaries</li>
+                        <li>Follow up to 10 people</li>
+                        <li>Limited access to MCP</li>
                         <li>Key quotes and appearances</li>
                         <li>Source links included</li>
                     </ul>
                     <button class="cta-button">Get Started Free</button>
                 </div>
                 <div class="pricing-card featured">
-                    <h3>Real-Time</h3>
+                    <h3>Based</h3>
                     <div class="price">$20<span style="font-size: 1rem; color: #a0a0a0;">/month</span></div>
                     <p class="price-subtitle">For serious operators</p>
                     <ul class="features">
                         <li>Follow unlimited people</li>
-                        <li>Instant notifications</li>
-                        <li>Full transcript access</li>
-                        <li>Advanced search & filters</li>
+                        <li>Full MCP Access</li>
                         <li>API access</li>
-                        <li>Priority support</li>
                     </ul>
                     <button class="cta-button">Go Real-Time</button>
                 </div>
             </div>
         </div>
+
+        <section class="enterprise-section" style="padding: 60px 0; ">
+            <div class="container">
+                <div class="enterprise-card">
+                    <div class="enterprise-content">
+                        <h3>Want full data access? Other enterprise needs?</h3>
+                        <a href="https://x.com/janwilmake" class="enterprise-cta" target="_blank">Talk to us →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
     </section>
+
+
+
+    <style>
+        .enterprise-card {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0f2a1f 100%);
+            border: 1px solid #22c55e40;
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .enterprise-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(34, 197, 94, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .enterprise-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .enterprise-card h3 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+
+        .enterprise-card p {
+            font-size: 1.1rem;
+            color: #c0c0c0;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .enterprise-cta {
+            display: inline-block;
+            padding: 14px 28px;
+            background: transparent;
+            color: #22c55e;
+            text-decoration: none;
+            border: 2px solid #22c55e;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .enterprise-cta:hover {
+            background: #22c55e;
+            color: #0a0a0a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(34, 197, 94, 0.25);
+        }
+
+        @media (max-width: 768px) {
+            .enterprise-card {
+                padding: 30px 20px;
+            }
+
+            .enterprise-card h3 {
+                font-size: 1.4rem;
+            }
+
+            .enterprise-card p {
+                font-size: 1rem;
+            }
+        }
+    </style>
 
     <footer>
         <div class="container">
@@ -367,9 +479,8 @@
                 <a href="#privacy">Privacy</a>
                 <a href="#terms">Terms</a>
                 <a href="#api">API</a>
-                <a href="mailto:hello@basedpeople.com">Contact</a>
             </div>
-            <p>&copy; 2024 Based People. Built for people who build the future.</p>
+            <p>&copy; 2025 Based People. Built for people who build the future.</p>
         </div>
     </footer>
 

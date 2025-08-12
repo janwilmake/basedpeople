@@ -1,0 +1,1 @@
+Please make a nice landingpage for this. it's called "Based People" . use HTML . keep it short. ensure to reason first about how you can best sell it. it's for tech people. start with why, not what/how. really sell it on what value it brings to someone. color theme: dark green and black. bold futuristic font
