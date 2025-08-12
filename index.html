@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Based People - Never Miss What Tech Leaders Actually Say</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: #ffffff;
+            font-family: 'Space Grotesk', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a4d3a 100%);
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 70% 30%, rgba(34, 197, 94, 0.1) 0%, transparent 50%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff 0%, #22c55e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            margin-bottom: 1.5rem;
+            color: #a0a0a0;
+            font-weight: 400;
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: #d0d0d0;
+            max-width: 600px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 16px 32px;
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(34, 197, 94, 0.3);
+        }
+
+        .value-props {
+            padding: 100px 0;
+            background: #0a0a0a;
+        }
+
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .value-item {
+            padding: 30px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0f2a1f 100%);
+            border-radius: 12px;
+            border: 1px solid #22c55e20;
+        }
+
+        .value-item h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #22c55e;
+        }
+
+        .value-item p {
+            color: #c0c0c0;
+            line-height: 1.8;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 2rem;
+        }
+
+        .people-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 60px 0;
+        }
+
+        .person-card {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .person-card:hover {
+            border-color: #22c55e;
+            background: #1f1f1f;
+        }
+
+        .person-name {
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .person-category {
+            color: #22c55e;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .pricing {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #0f2a1f 0%, #0a0a0a 100%);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .pricing-card {
+            background: #1a1a1a;
+            padding: 40px 30px;
+            border-radius: 12px;
+            border: 2px solid #333;
+            text-align: center;
+            position: relative;
+        }
+
+        .pricing-card.featured {
+            border-color: #22c55e;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0f2a1f 100%);
+        }
+
+        .pricing-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #22c55e;
+            margin-bottom: 2rem;
+        }
+
+        .price-subtitle {
+            color: #a0a0a0;
+            margin-bottom: 2rem;
+        }
+
+        .features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .features li {
+            padding: 8px 0;
+            color: #d0d0d0;
+        }
+
+        .features li::before {
+            content: '✓';
+            color: #22c55e;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        footer {
+            padding: 60px 0;
+            text-align: center;
+            color: #666;
+            background: #0a0a0a;
+        }
+
+        .footer-links {
+            margin-bottom: 2rem;
+        }
+
+        .footer-links a {
+            color: #666;
+            text-decoration: none;
+            margin: 0 20px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #22c55e;
+        }
+
+        .highlight {
+            color: #22c55e;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .hero-description {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Based People</h1>
+                <p class="hero-subtitle">Never miss what tech leaders actually say</p>
+                <p class="hero-description">
+                    Stop chasing noise. Get the <span class="highlight">actual quotes</span> from the people who shape
+                    technology.
+                    When Elon tweets, Sam speaks, or Zuck testifies—you'll know immediately.
+                </p>
+                <button class="cta-button" onclick="document.querySelector('.pricing').scrollIntoView()">
+                    Start Following →
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section class="value-props">
+        <div class="container">
+            <h2 class="section-title">Why You Need This</h2>
+            <div class="value-grid">
+                <div class="value-item">
+                    <h3>Signal over Noise</h3>
+                    <p>Skip the Twitter drama and Reddit speculation. Get verified quotes from actual public
+                        appearances—podcasts, conferences, congressional hearings.</p>
+                </div>
+                <div class="value-item">
+                    <h3>Stay Ahead of Shifts</h3>
+                    <p>When tech leaders change their tune on AI safety, crypto regulation, or market direction—you hear
+                        it first, with full context.</p>
+                </div>
+                <div class="value-item">
+                    <h3>Your Time is Valuable</h3>
+                    <p>Instead of following 50 people across 10 platforms, get curated updates from the voices that
+                        actually matter to your work.</p>
+                </div>
+                <div class="value-item">
+                    <h3>Real Quotes, Real Context</h3>
+                    <p>Not clickbait headlines or out-of-context clips. Full statements with source links to verify
+                        everything yourself.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="people-section" style="padding: 80px 0; background: #0a0a0a;">
+        <div class="container">
+            <h2 class="section-title">Follow the People Who Matter</h2>
+            <div class="people-grid" id="people-grid">
+                <!-- People will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing">
+        <div class="container">
+            <h2 class="section-title">Choose Your Level</h2>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Weekly Digest</h3>
+                    <div class="price">Free</div>
+                    <p class="price-subtitle">Perfect for staying informed</p>
+                    <ul class="features">
+                        <li>Follow up to 5 people</li>
+                        <li>Weekly email summaries</li>
+                        <li>Key quotes and appearances</li>
+                        <li>Source links included</li>
+                    </ul>
+                    <button class="cta-button">Get Started Free</button>
+                </div>
+                <div class="pricing-card featured">
+                    <h3>Real-Time</h3>
+                    <div class="price">$20<span style="font-size: 1rem; color: #a0a0a0;">/month</span></div>
+                    <p class="price-subtitle">For serious operators</p>
+                    <ul class="features">
+                        <li>Follow unlimited people</li>
+                        <li>Instant notifications</li>
+                        <li>Full transcript access</li>
+                        <li>Advanced search & filters</li>
+                        <li>API access</li>
+                        <li>Priority support</li>
+                    </ul>
+                    <button class="cta-button">Go Real-Time</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="#privacy">Privacy</a>
+                <a href="#terms">Terms</a>
+                <a href="#api">API</a>
+                <a href="mailto:hello@basedpeople.com">Contact</a>
+            </div>
+            <p>&copy; 2024 Based People. Built for people who build the future.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Sample data for demonstration
+        const samplePeople = [
+            { name: "Elon Musk", category: "CEO/Founder" },
+            { name: "Sam Altman", category: "CEO/Founder" },
+            { name: "Marc Andreessen", category: "Investor/VC" },
+            { name: "Naval Ravikant", category: "Investor/VC" },
+            { name: "John Carmack", category: "Programmer/Engineer" },
+            { name: "Kara Swisher", category: "Writer/Journalist" },
+            { name: "Yuval Harari", category: "Philosopher/Academic" },
+            { name: "Lex Fridman", category: "Podcaster/Media" },
+            { name: "Geoffrey Hinton", category: "AI Researcher" },
+            { name: "Peter Thiel", category: "Investor/VC" },
+            { name: "Jensen Huang", category: "CEO/Founder" },
+            { name: "Vitalik Buterin", category: "Programmer/Engineer" }
+        ];
+
+        function loadPeople() {
+            const grid = document.getElementById('people-grid');
+            samplePeople.forEach(person => {
+                const card = document.createElement('div');
+                card.className = 'person-card';
+                card.innerHTML = `
+                    <div class="person-name">${person.name}</div>
+                    <div class="person-category">${person.category}</div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Load people when page loads
+        document.addEventListener('DOMContentLoaded', loadPeople);
+
+        // Add smooth scrolling for CTA buttons
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add click handlers for CTA buttons
+        document.querySelectorAll('.cta-button').forEach(button => {
+            button.addEventListener('click', () => {
+                // In a real app, this would handle signup/payment flow
+                alert('Sign up functionality would be implemented here!');
+            });
+        });
+    </script>
+</body>
+
+</html>

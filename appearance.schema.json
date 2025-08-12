@@ -1,0 +1,106 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "description": "Name of the person"
+      },
+      "type": {
+        "type": "string",
+        "enum": [
+          "Podcast Interview",
+          "Television Interview",
+          "Conference Keynote",
+          "Conference Panel",
+          "Congressional Hearing",
+          "University Talk",
+          "YouTube Video",
+          "Radio Interview",
+          "Documentary Feature",
+          "Earnings Call",
+          "Product Launch Event",
+          "Industry Summit",
+          "Book Tour Event",
+          "Award Ceremony",
+          "Webinar",
+          "Fireside Chat",
+          "Press Conference",
+          "Livestream",
+          "News Interview",
+          "Trade Show Presentation",
+          "Investor Meeting",
+          "Debate/Discussion",
+          "Think Tank Event",
+          "Startup Demo Day",
+          "Corporate Event",
+          "International Forum",
+          "Workshop/Masterclass",
+          "Regulatory Hearing",
+          "Charity Event",
+          "Media Roundtable"
+        ]
+      },
+      "date": {
+        "type": "string",
+        "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+        "description": "Date in YYYY-MM-DD format"
+      },
+      "title": {
+        "type": "string",
+        "maxLength": 100,
+        "description": "Max 12 words describing the appearance"
+      },
+      "summary": {
+        "type": "string",
+        "maxLength": 1000,
+        "description": "Explain in up to 1 paragraph what the appearance was about"
+      },
+      "otherParticipatedPeopleMentioned": {
+        "type": "string",
+        "description": "Comma separated list of other people that were present in this appearance that were mentioned"
+      },
+      "organizerName": {
+        "type": "string",
+        "description": "Who organized/hosted this event"
+      },
+      "url": {
+        "type": "string",
+        "format": "uri",
+        "description": "Most authoritative URL of the website where more information about the appearance can be found"
+      },
+      "statements": {
+        "type": "array",
+        "maxItems": 10,
+        "description": "If available, make a list of the top 10 statements made by the person",
+        "items": {
+          "type": "object",
+          "properties": {
+            "statement": {
+              "type": "string"
+            },
+            "is_exact": {
+              "type": "boolean"
+            }
+          },
+          "required": ["statement", "is_exact"],
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": [
+      "name",
+      "type",
+      "date",
+      "title",
+      "summary",
+      "otherParticipatedPeopleMentioned",
+      "organizerName",
+      "url",
+      "statements"
+    ],
+    "additionalProperties": false
+  }
+}

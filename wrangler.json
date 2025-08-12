@@ -1,0 +1,12 @@
+{
+  "$schema": "https://unpkg.com/wrangler@latest/config-schema.json",
+  "name": "basedpeople",
+  "compatibility_date": "2025-08-12",
+  "dev": { "port": 3000 },
+  "observability": { "logs": { "enabled": true } },
+  "assets": { "directory": "./" },
+  "routes": [
+    { "custom_domain": true, "pattern": "basedpeople.com" },
+    { "custom_domain": true, "pattern": "www.basedpeople.com" }
+  ]
+}
