@@ -15,6 +15,7 @@ SPEC:
   - At the end, nudge to message me to request adding a person https://x.com/janwilmake
   - Link to go to feed
   - Pricing
+  - Link to Github Repo
 - `list.html`
   - KV: `/{name-slug}.html` and `/{name-slug}.md`
   - `/feed.html` shows all appearances for the logged in user's followed, reverse chronologically
@@ -53,7 +54,8 @@ Target Technical Advances:
 Todo:
 
 - Step 1: Improve tasks with small dataset (±5 people) - (very famous and less famous person): historical and weekly. Vibe-test for errors and cost.
+- **Validate Assumption: the data is high-quality enough, the cost per month is under $500 for the POC**
+- _Talk to people about the problem of noise and how they get to high-signal information. Pay to subscribe to set of people?_
 - Step 2: If I'm happy with the data, put it on cronjob for whole list of people, create list and index html and md results.
 - Personalization/Monetization: Add login and subscription element and ability to follow
 - Analytics: Simple Analytics
-- Talk to people about this idea
