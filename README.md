@@ -34,7 +34,7 @@ Out of scope:
 
 Pricing:
 
-- free: all public websites, feed to follow up to 10 people
+- Free: all public websites, feed to follow up to 10 people
 - $20/month plan to have unlimited access to MCP and limited SQL queries
 - $2000/month for full data access and custom needs
 
@@ -52,7 +52,7 @@ Target Technical Advances:
 
 Todo:
 
-- Step 1: Improve tasks with small dataset (±5 people) - (very famous and less famous person): historical and weekly. Vibe-test for errors and cost.
+- 🟠 Step 1: Improve tasks with small dataset (±5 people) - (very famous and less famous person): historical and weekly. Vibe-test for errors and cost.
 - Build dataset of hitoric appearances of 100 individuals
 - **Validate Assumption: the data is high-quality enough, the cost per month is under $500 for the POC**
 - Preliminary: Stripeflare now uses card-fingerprint as user-id; allow passing userID if we use another type of login. This will make stripeflare usable for this usecase.
@@ -60,13 +60,3 @@ Todo:
 - Step 2: If I'm happy with the data, put it on cronjob for whole list of people, create list and index html and md results.
 - Personalization/Monetization: Add login and subscription element and ability to follow
 - Analytics: Simple Analytics
-
-SPEC v1: Just the data!
-
-Create a cloudflare worker with KV and assets in Env.
-
-- `/seed?secret={env.CRON_SECRET}` goes over each person in `people.json` and starts a task with input being the content of `search-task.md` (replace {{name}} with the person name) and output schema `search-task.schema.json` and metadata `{slug}` (fetch these from `env.ASSETS` fetcher)
-- `/webhook` retrieves the result of the task and stores the full JSON in `env.KV` under key `person:{slug}`
-- Context: Tasks with webhooks: https://docs.parallel.ai/api-reference/task-api-v1/create-task-run https://docs.parallel.ai/task-api/features/webhooks
-- Hosted at https://basedpeople.com (for webhook)
-- `/{slug}.json` retrieves the result stored in KV

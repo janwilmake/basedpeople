@@ -50,3 +50,7 @@ For each year in his lifetime, give me a summary of all appearances
 After playing around with it a bit more, I found that it's very good with deep research. It seems crucial though to first get a high level grasp of the periods the person was active and what to search for, just like a normal human would do it. It's not always evident from the title that the person was in it, so we need to first do a high level overview of periods and potential searches that may yield results. With that, we get a better shot of getting an as complete historical list of appearances as possible.
 
 What about [this](search-task.md) with [this output schema](search-task.schema.json)?
+
+I tried this but unfortunately, I ran into an error after it timed out after 1 hour. I also got this warning: `"This task may be too complex for ultra8x processor. Consider using https://platform.parallel.ai to optimize your task schema."`. I also tried it on the platform and with deep research (with an 'auto' schema) it does return a JSON and report, but unfortunately, that's not the structure I can build an interface on.
+
+Since deep research with large processors take quite some time and have a chance to fail, I found it quite difficult to find a good task that works with structured output that includes all historical public appearances. It's a lot of manual iterative work, so I hope I can find ways to make this more systematic for future new projects. How can we minimize research time of finding the right parameters for a given objective?

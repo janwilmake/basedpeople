@@ -2,15 +2,6 @@
   "type": "object",
   "properties": {
     "name": { "type": "string" },
-    "lifePeriods": {
-      "description": "Periods of the life of this person with slug, title, estimated appearance count, and why/how that amount was determined",
-      "type": "string"
-    },
-
-    "searchStrategy": {
-      "type": "string",
-      "description": "Human readable list of search strategies to apply to find appearances including objectives to search for and why this is a good strategy"
-    },
 
     "appearances": {
       "type": "array",

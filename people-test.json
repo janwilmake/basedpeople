@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Elon Musk",
+    "slug": "elon-musk",
+    "summary": "CEO of Tesla and SpaceX, owner of X (formerly Twitter), frequently appears on podcasts like Joe Rogan and interviews",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Ryan Dahl",
+    "slug": "ryan-dahl",
+    "summary": "Creator of Node.js and Deno, frequent JavaScript and runtime conference speaker",
+    "category": "Programmer/Engineer"
+  },
+  {
+    "name": "Naval Ravikant",
+    "slug": "naval-ravikant",
+    "summary": "AngelList founder, philosopher-investor, popular podcast guest",
+    "category": "Investor/VC"
+  },
+  {
+    "name": "Dan Luu",
+    "slug": "dan-luu",
+    "summary": "Systems engineer, technical blogger, occasional conference speaker on performance",
+    "category": "Writer/Journalist"
+  },
+  {
+    "name": "Cathy O'Neil",
+    "slug": "cathy-oneil",
+    "summary": "Author of 'Weapons of Math Destruction', algorithmic accountability expert",
+    "category": "Philosopher/Academic"
+  },
+  {
+    "name": "Cal Newport",
+    "slug": "cal-newport",
+    "summary": "Computer science professor, author of 'Deep Work', productivity conference speaker",
+    "category": "Podcaster/Media"
+  },
+  {
+    "name": "Ian Goodfellow",
+    "slug": "ian-goodfellow",
+    "summary": "GAN inventor, former Google Brain researcher, frequent machine learning speaker",
+    "category": "AI Researcher"
+  },
+  {
+    "name": "Armon Dadgar",
+    "slug": "armon-dadgar",
+    "summary": "HashiCorp co-founder and CTO, infrastructure automation conference speaker",
+    "category": "Developer Tools"
+  }
+]

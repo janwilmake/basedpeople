@@ -1,5 +1,8 @@
 /// <reference types="@cloudflare/workers-types" />
+/// <reference lib="esnext" />
 
+import { personHtmlHandler } from "./personHandler";
+const PEOPLE_FILE = "people-test.json";
 export interface Env {
   KV: KVNamespace;
   ASSETS: Fetcher;
@@ -65,6 +68,11 @@ export default {
         return handleSlugRequest(slugMatch[1], env);
       }
 
+      const slugMatchHtml = url.pathname.match(/^\/([^\/]+)\.html$/);
+      if (slugMatchHtml && request.method === "GET") {
+        return personHtmlHandler(request, env);
+      }
+
       return new Response("Not found", { status: 404 });
     } catch (error) {
       console.error("Worker error:", error);
@@ -84,12 +92,12 @@ async function handleSeed(request: Request, env: Env): Promise<Response> {
   try {
     // Fetch people.json from assets
     const peopleResponse = await env.ASSETS.fetch(
-      new Request("https://placeholder/people.json")
+      new Request("https://placeholder/" + PEOPLE_FILE)
     );
     if (!peopleResponse.ok) {
-      throw new Error("Failed to fetch people.json");
+      throw new Error("Failed to fetch people JSON");
     }
-    const people: Person[] = await peopleResponse.json();
+    const people = await peopleResponse.json<Person[]>();
 
     // Fetch search-task.md template
     const taskTemplateResponse = await env.ASSETS.fetch(
@@ -125,10 +133,8 @@ async function handleSeed(request: Request, env: Env): Promise<Response> {
             },
           },
           input: taskInput,
-          processor: "base",
-          metadata: {
-            slug: person.slug,
-          },
+          processor: "ultra8x",
+          metadata: { slug: person.slug },
           webhook: {
             url: "https://basedpeople.com/webhook",
             event_types: ["task_run.status"],
