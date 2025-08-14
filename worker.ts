@@ -2,6 +2,7 @@
 /// <reference lib="esnext" />
 
 import { personHtmlHandler } from "./personHandler";
+// replace with prod version (people.json) after task seems good
 const PEOPLE_FILE = "people-test.json";
 export interface Env {
   KV: KVNamespace;

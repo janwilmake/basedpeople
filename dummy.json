@@ -1,0 +1,903 @@
+{
+  "output": {
+    "content": {
+      "name": "Peter Thiel",
+      "lifePeriods": "Early Life & Student Activism (1987-1997, 5+ appearances): Formative years as co-founder of The Stanford Review and author of The Diversity Myth, establishing contrarian voice in academia. PayPal Era (1998-2002, 7+ appearances): CEO role at PayPal, focusing on digital currency and e-commerce. Post-PayPal & Early Investing (2003-2007, 7+ appearances): Emerged as investor and futurist after PayPal sale. Public Intellectual Ramp-Up (2008-2011, 7+ appearances): Rise as public intellectual with influential essays and think tank appearances. Zero to One Buildup (2012-2013, 4+ appearances): Stanford CS183 class developing foundational ideas for his book. Zero to One Launch (2014, 15+ appearances): Apex of public engagement centered on bestseller launch and national book tour. Media Circuit (2015, 4+ appearances): High-profile appearances following book success. Political Inflection (2016, 5+ appearances): Vocal Trump support including Republican National Convention speech. Consolidation Years (2017-2019, 11+ appearances): High-activity period explaining political positions and technology commentary. Pandemic Onset (2020, 5+ appearances): COVID-19 context focusing on institutional failures. Post-Pandemic Transition (2021, 6+ appearances): Geopolitical implications of technology and U.S.-China relations. Mid-2020s Tech Politics (2022, 4+ appearances): Cryptocurrency and national conservative movement. Late 2023 Commentary (2023, 8+ appearances): Reflective long-form interviews revisiting early work themes. Recent High-Profile (2024, 9+ appearances): Major podcasts and influential gatherings on AI and politics. Current Year (2025, 5+ appearances): Forward-looking analysis of political landscape and technology trajectory.",
+      "searchStrategy": "Multi-faceted strategy designed to capture wide range of formats: 1) Leveraged curated archives like Startup Archive's comprehensive compilation of Thiel's works. 2) Targeted institutional searches of organizations where he frequently speaks (Hoover Institution, Stanford, Oxford Union, Cambridge Union, Cato Institute, TechCrunch Disrupt, All-In Summit, National Conservatism Conference). 3) Discovered unnamed appearances by searching full programs and speaker lists of topically-named events using thematic keywords combined with 'Peter Thiel' and relevant years. 4) Platform-specific queries on YouTube, Spotify, Apple Podcasts using his name and frequent collaborators. 5) Risk mitigation through cross-referencing dates/titles and prioritizing canonical URLs from original sources to avoid duplicates.",
+      "appearances": [
+        {
+          "url": "https://www.stanfordreview.org/archives/",
+          "period": "early-life-1987-1997",
+          "type": "authored-essay",
+          "keywords": ["stanford-review", "editorials", "campus-orthodoxy"],
+          "date": "1987-01-01",
+          "title": "Stanford Review Editorials and Articles"
+        },
+        {
+          "url": "https://www.independent.org/store/book.asp?id=53",
+          "period": "early-life-1987-1997",
+          "type": "authored-book",
+          "keywords": [
+            "diversity-myth",
+            "multiculturalism",
+            "political-correctness"
+          ],
+          "date": "1995-01-01",
+          "title": "The Diversity Myth: Multiculturalism and Political Intolerance"
+        },
+        {
+          "url": "https://www.independent.org/news/article.asp?id=142",
+          "period": "early-life-1987-1997",
+          "type": "authored-essay",
+          "keywords": ["stanford", "western-culture", "curriculum"],
+          "date": "1995-09-01",
+          "title": "How the West Was Lost at Stanford"
+        },
+        {
+          "url": "https://www.c-span.org/video/?71093-1/political-correctness-multiculturalism-campus",
+          "period": "early-life-1987-1997",
+          "type": "panel-discussion",
+          "keywords": [
+            "heritage-foundation",
+            "c-span",
+            "political-correctness"
+          ],
+          "date": "1996-04-03",
+          "title": "Political Correctness and Multiculturalism on Campus"
+        },
+        {
+          "url": "https://stanfordmag.org/contents/the-case-against-affirmative-action-article",
+          "period": "early-life-1987-1997",
+          "type": "authored-essay",
+          "keywords": [
+            "affirmative-action",
+            "stanford-magazine",
+            "racial-preferences"
+          ],
+          "date": "1996-09-01",
+          "title": "The Case Against Affirmative Action"
+        },
+        {
+          "url": "https://www.independent.org/events/transcript.asp?id=35",
+          "period": "paypal-era-1998-2002",
+          "type": "event-speaker",
+          "keywords": ["virtual-money", "privacy", "internet", "confinity"],
+          "date": "1999-10-20",
+          "title": "Virtual Money, Privacy, and Future of Internet"
+        },
+        {
+          "url": "https://www.cato.org/events/technology-society-knowledge-revolution",
+          "period": "paypal-era-1998-2002",
+          "type": "conference-speaker",
+          "keywords": ["cato-institute", "technology", "tradable-commodities"],
+          "date": "1999-11-04",
+          "title": "Cato Institute Annual Conference on Technology"
+        },
+        {
+          "url": "https://www.wired.com/2001/09/paypal/",
+          "period": "paypal-era-1998-2002",
+          "type": "written-interview",
+          "keywords": ["wired", "paypal", "financial-liberation"],
+          "date": "2001-09-01",
+          "title": "The Money Shot - WIRED Magazine"
+        },
+        {
+          "url": "https://www.startuparchive.org/p/the-essays-talks-and-interviews-of-peter-thiel",
+          "period": "paypal-era-1998-2002",
+          "type": "interview",
+          "keywords": [
+            "paypal-founding",
+            "internationalization",
+            "government-intervention"
+          ],
+          "date": "2001-01-01",
+          "title": "Interview on PayPal's Founding and Vision"
+        },
+        {
+          "url": "https://content.time.com/time/subscriber/article/0,33009,1001853,00.html",
+          "period": "paypal-era-1998-2002",
+          "type": "written-interview",
+          "keywords": ["time-magazine", "paypal", "ebay-users"],
+          "date": "2002-02-11",
+          "title": "PayPal's Big Play - Time Magazine"
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/1103415/000091205702032495/a2088939zdef14a.htm",
+          "period": "paypal-era-1998-2002",
+          "type": "corporate-event",
+          "keywords": ["earnings-call", "q2-2002", "investors"],
+          "date": "2002-07-01",
+          "title": "Q2 2002 Earnings Release Conference Call"
+        },
+        {
+          "url": "https://www.startuparchive.org/p/the-essays-talks-and-interviews-of-peter-thiel",
+          "period": "post-paypal-investing-2003-2007",
+          "type": "conference-speaker",
+          "keywords": [
+            "future-of-money",
+            "global-currency",
+            "davinci-institute"
+          ],
+          "date": "2003-01-01",
+          "title": "The Future of Money Conference"
+        },
+        {
+          "url": "https://charlierose.com/videos/20055",
+          "period": "post-paypal-investing-2003-2007",
+          "type": "interview",
+          "keywords": ["charlie-rose", "globalization", "european-union"],
+          "date": "2005-07-25",
+          "title": "Charlie Rose Interview on Globalization"
+        },
+        {
+          "url": "https://www.startuparchive.org/p/the-essays-talks-and-interviews-of-peter-thiel",
+          "period": "post-paypal-investing-2003-2007",
+          "type": "conference-speaker",
+          "keywords": [
+            "singularity-summit",
+            "stanford",
+            "artificial-intelligence"
+          ],
+          "date": "2006-01-01",
+          "title": "Singularity Summit 2006"
+        },
+        {
+          "url": "https://www.startuparchive.org/p/the-essays-talks-and-interviews-of-peter-thiel",
+          "period": "post-paypal-investing-2003-2007",
+          "type": "authored-essay",
+          "keywords": [
+            "straussian-moment",
+            "leo-strauss",
+            "political-philosophy"
+          ],
+          "date": "2007-01-01",
+          "title": "The Straussian Moment"
+        },
+        {
+          "url": "https://www.startuparchive.org/p/the-essays-talks-and-interviews-of-peter-thiel",
+          "period": "post-paypal-investing-2003-2007",
+          "type": "conference-speaker",
+          "keywords": ["singularity-summit", "san-francisco", "transhumanism"],
+          "date": "2007-01-01",
+          "title": "Singularity Summit 2007"
+        },
+        {
+          "url": "https://www.firstthings.com/article/2007/11/spending-the-future",
+          "period": "post-paypal-investing-2003-2007",
+          "type": "authored-essay",
+          "keywords": [
+            "first-things",
+            "philanthropic-foundations",
+            "ford-carnegie"
+          ],
+          "date": "2007-11-01",
+          "title": "Spending The Future"
+        },
+        {
+          "url": "https://www.vox.com/2014/5/21/11626214/peter-thiel-in-late-2007-theres-absolutely-no-bubble-in-technology",
+          "period": "post-paypal-investing-2003-2007",
+          "type": "interview",
+          "keywords": ["clarium-capital", "web-2.0", "technology-bubble"],
+          "date": "2007-01-01",
+          "title": "Interview on Media and Web 2.0"
+        },
+        {
+          "url": "https://www.hoover.org/research/optimistic-thought-experiment",
+          "period": "public-intellectual-ramp-up-2008-2011",
+          "type": "authored-essay",
+          "keywords": ["hoover-institution", "globalization", "optimism"],
+          "date": "2008-01-29",
+          "title": "The Optimistic Thought Experiment"
+        },
+        {
+          "url": "https://www.hoover.org/research/government-economic-growth-and-speculative-investing-peter-thiel",
+          "period": "public-intellectual-ramp-up-2008-2011",
+          "type": "interview",
+          "keywords": ["uncommon-knowledge", "credit-crisis", "free-market"],
+          "date": "2008-12-01",
+          "title": "Government, Economic Growth, and Speculative Investing"
+        },
+        {
+          "url": "https://www.cato-unbound.org/2009/04/13/peter-thiel/education-libertarian/",
+          "period": "public-intellectual-ramp-up-2008-2011",
+          "type": "authored-essay",
+          "keywords": ["cato-unbound", "libertarian", "freedom-democracy"],
+          "date": "2009-04-13",
+          "title": "The Education of a Libertarian"
+        },
+        {
+          "url": "https://www.cato-unbound.org/2009/05/01/peter-thiel/your-suffrage-isnt-danger-your-other-rights-are/",
+          "period": "public-intellectual-ramp-up-2008-2011",
+          "type": "authored-essay",
+          "keywords": ["cato-unbound", "womens-suffrage", "libertarian"],
+          "date": "2009-05-01",
+          "title": "Your Suffrage Isn't in Danger"
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=4QrpWp5pQafI",
+          "period": "public-intellectual-ramp-up-2008-2011",
+          "type": "keynote-speech",
+          "keywords": [
+            "tedx-silicon-valley",
+            "technological-change",
+            "thiel-foundation"
+          ],
+          "date": "2009-12-12",
+          "title": "TEDxSiliconValley - Peter Thiel"
+        },
+        {
+          "url": "https://bigthink.com/videos/big-think-interview-with-peter-thiel/",
+          "period": "public-intellectual-ramp-up-2008-2011",
+          "type": "interview",
+          "keywords": ["big-think", "facebook", "seasteading"],
+          "date": "2010-11-15",
+          "title": "Big Think Interview With Peter Thiel"
+        },
+        {
+          "url": "https://www.commonwealthclub.org/events/2011-02-02/max-levchin-and-peter-thiel-smart-venture-capital-2011",
+          "period": "public-intellectual-ramp-up-2008-2011",
+          "type": "panel-discussion",
+          "keywords": ["commonwealth-club", "max-levchin", "venture-capital"],
+          "date": "2011-02-02",
+          "title": "Smart Venture Capital in 2011"
+        },
+        {
+          "url": "https://www.nationalreview.com/2011/10/end-future-peter-thiel/",
+          "period": "public-intellectual-ramp-up-2008-2011",
+          "type": "authored-essay",
+          "keywords": [
+            "national-review",
+            "technological-stagnation",
+            "atoms-bits"
+          ],
+          "date": "2011-10-01",
+          "title": "The End of the Future"
+        },
+        {
+          "url": "https://cs183.com",
+          "period": "zero-to-one-buildup-2012-2013",
+          "type": "lecture",
+          "keywords": ["stanford", "cs183", "startup-class"],
+          "date": "2012-03-01",
+          "title": "CS183: Startup Class"
+        },
+        {
+          "url": "https://bigthink.com",
+          "period": "zero-to-one-buildup-2012-2013",
+          "type": "interview",
+          "keywords": ["big-think", "innovation", "entrepreneurial-energy"],
+          "date": "2012-04-23",
+          "title": "Interview with Big Think"
+        },
+        {
+          "url": "https://pandodaily.com",
+          "period": "zero-to-one-buildup-2012-2013",
+          "type": "interview",
+          "keywords": ["pandomonthly", "salary-predictions", "startups"],
+          "date": "2012-11-01",
+          "title": "PandoMonthly Fireside Chat"
+        },
+        {
+          "url": "https://oxfordunion.org",
+          "period": "zero-to-one-buildup-2012-2013",
+          "type": "debate",
+          "keywords": ["oxford-union", "innovation", "economic-growth"],
+          "date": "2013-05-22",
+          "title": "Oxford Union Debate"
+        },
+        {
+          "url": "https://techcrunch.com",
+          "period": "zero-to-one-launch-2014",
+          "type": "keynote-speech",
+          "keywords": ["techcrunch-disrupt", "monopoly-dynamics", "innovation"],
+          "date": "2014-09-08",
+          "title": "TechCrunch Disrupt SF 2014"
+        },
+        {
+          "url": "https://www.wsj.com/articles/peter-thiel-competition-is-for-losers-1410535536",
+          "period": "zero-to-one-launch-2014",
+          "type": "authored-essay",
+          "keywords": ["wall-street-journal", "competition", "monopolies"],
+          "date": "2014-09-12",
+          "title": "Competition Is for Losers"
+        },
+        {
+          "url": "https://penguinrandomhouse.com",
+          "period": "zero-to-one-launch-2014",
+          "type": "authored-book",
+          "keywords": ["zero-to-one", "book-publication", "business"],
+          "date": "2014-09-16",
+          "title": "Publication of Zero to One"
+        },
+        {
+          "url": "https://tim.blog",
+          "period": "zero-to-one-launch-2014",
+          "type": "podcast",
+          "keywords": ["tim-ferriss", "startup-philosophy", "podcast"],
+          "date": "2014-09-09",
+          "title": "Interview by Tim Ferriss"
+        },
+        {
+          "url": "https://www.technologyreview.com/2014/10/08/171425/the-contrarians-guide-to-changing-the-world/",
+          "period": "zero-to-one-launch-2014",
+          "type": "authored-essay",
+          "keywords": ["technology-review", "contrarian", "changing-world"],
+          "date": "2014-10-08",
+          "title": "The Contrarian's Guide to Changing the World"
+        },
+        {
+          "url": "https://law.stanford.edu",
+          "period": "zero-to-one-launch-2014",
+          "type": "lecture",
+          "keywords": ["stanford-law", "business-tips", "entrepreneurs"],
+          "date": "2014-10-01",
+          "title": "Stanford Law School Business Tips Talk"
+        },
+        {
+          "url": "https://chicagoideas.com",
+          "period": "media-circuit-2015",
+          "type": "lecture",
+          "keywords": ["chicago-ideas", "monopolies", "creative-innovation"],
+          "date": "2015-01-01",
+          "title": "Chicago Ideas - Going from Zero to One"
+        },
+        {
+          "url": "https://tim.blog",
+          "period": "media-circuit-2015",
+          "type": "podcast",
+          "keywords": [
+            "tim-ferriss",
+            "zero-to-one-retrospective",
+            "audience-questions"
+          ],
+          "date": "2015-10-30",
+          "title": "Tim Ferriss Show Discussion"
+        },
+        {
+          "url": "https://dealbookconference.com",
+          "period": "media-circuit-2015",
+          "type": "panel-discussion",
+          "keywords": ["dealbook-conference", "venture-capital", "chris-sacca"],
+          "date": "2015-11-03",
+          "title": "New York Times DealBook Conference"
+        },
+        {
+          "url": "https://ceibs.edu",
+          "period": "media-circuit-2015",
+          "type": "lecture",
+          "keywords": [
+            "ceibs",
+            "investment-strategies",
+            "cross-border-business"
+          ],
+          "date": "2015-06-01",
+          "title": "Master Class at CEIBS"
+        },
+        {
+          "url": "https://bloomberg.com",
+          "period": "political-inflection-2016",
+          "type": "interview",
+          "keywords": ["bloomberg-west", "political-landscape", "election"],
+          "date": "2016-04-12",
+          "title": "Bloomberg West Interview"
+        },
+        {
+          "url": "https://hamilton.edu",
+          "period": "political-inflection-2016",
+          "type": "keynote-speech",
+          "keywords": ["hamilton-college", "commencement", "innovation"],
+          "date": "2016-05-22",
+          "title": "Hamilton College Commencement Address"
+        },
+        {
+          "url": "https://youtube.com",
+          "period": "political-inflection-2016",
+          "type": "keynote-speech",
+          "keywords": [
+            "republican-national-convention",
+            "trump-endorsement",
+            "prosperity"
+          ],
+          "date": "2016-07-21",
+          "title": "Republican National Convention Speech"
+        },
+        {
+          "url": "https://www.nytimes.com/2016/08/16/opinion/peter-thiel-the-online-privacy-debate-wont-end-with-gawker.html",
+          "period": "political-inflection-2016",
+          "type": "authored-essay",
+          "keywords": ["new-york-times", "gawker-lawsuit", "online-privacy"],
+          "date": "2016-08-15",
+          "title": "The Online Privacy Debate Won't End"
+        },
+        {
+          "url": "https://press.org",
+          "period": "political-inflection-2016",
+          "type": "keynote-speech",
+          "keywords": [
+            "national-press-club",
+            "political-dynamics",
+            "post-election"
+          ],
+          "date": "2016-10-31",
+          "title": "National Press Club Event"
+        },
+        {
+          "url": "https://www.nytimes.com/2017/01/11/opinion/sunday/peter-thiel-trumps-tech-pal-explains-himself.html",
+          "period": "consolidation-2017-2019",
+          "type": "interview",
+          "keywords": ["maureen-dowd", "trump-support", "silicon-valley"],
+          "date": "2017-01-11",
+          "title": "Peter Thiel, Trump's Tech Pal, Explains Himself"
+        },
+        {
+          "url": "https://www.nytimes.com/2017/01/11/opinion/confirm-or-deny-peter-thiel.html",
+          "period": "consolidation-2017-2019",
+          "type": "written-qa",
+          "keywords": ["maureen-dowd", "rapid-fire-qa", "new-york-times"],
+          "date": "2017-01-11",
+          "title": "Confirm or Deny: Peter Thiel"
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=5_0o2P6ozis",
+          "period": "consolidation-2017-2019",
+          "type": "keynote-speech",
+          "keywords": ["y-combinator", "competition-losers", "zero-to-one"],
+          "date": "2017-03-01",
+          "title": "Competition is for Losers with Peter Thiel"
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=PBzRj764L44",
+          "period": "consolidation-2017-2019",
+          "type": "keynote-speech",
+          "keywords": ["ceraweek", "daniel-yergin", "innovation"],
+          "date": "2017-03-07",
+          "title": "Keynote and Special Dialogue at CERAWeek 2017"
+        },
+        {
+          "url": "https://www.cnbc.com/2017/10/26/bitcoin-is-underestimated-tech-investor-peter-thiel-says.html",
+          "period": "consolidation-2017-2019",
+          "type": "interview",
+          "keywords": [
+            "future-investment-initiative",
+            "bitcoin",
+            "maria-bartiromo"
+          ],
+          "date": "2017-10-26",
+          "title": "Interview at Future Investment Initiative 2017"
+        },
+        {
+          "url": "https://www.hoover.org/events/cardinal-conversations-reid-hoffman-and-peter-thiel",
+          "period": "consolidation-2017-2019",
+          "type": "panel-discussion",
+          "keywords": [
+            "reid-hoffman",
+            "technology-politics",
+            "hoover-institution"
+          ],
+          "date": "2018-01-31",
+          "title": "Cardinal Conversations: Technology and Politics"
+        },
+        {
+          "url": "https://www.econclubny.org/documents/10184/109144/2018ThielTranscript.pdf",
+          "period": "consolidation-2017-2019",
+          "type": "interview",
+          "keywords": ["economic-club-new-york", "los-angeles-move", "china"],
+          "date": "2018-03-15",
+          "title": "Interview at Economic Club of New York"
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=FDkhfm6CYjE",
+          "period": "consolidation-2017-2019",
+          "type": "keynote-speech",
+          "keywords": ["brain-bar", "european-festival", "future"],
+          "date": "2018-07-18",
+          "title": "Peter Thiel Speaks at Brain Bar"
+        },
+        {
+          "url": "https://www.nytimes.com/2019/08/01/opinion/peter-thiel-google.html",
+          "period": "consolidation-2017-2019",
+          "type": "authored-essay",
+          "keywords": ["google-china", "national-security", "patriotism"],
+          "date": "2019-08-01",
+          "title": "Good for Google, Bad for America"
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=7JRyy2MM-rI",
+          "period": "consolidation-2017-2019",
+          "type": "keynote-speech",
+          "keywords": [
+            "national-conservatism-conference",
+            "star-trek-computer",
+            "technological-progress"
+          ],
+          "date": "2019-07-14",
+          "title": "The Star Trek Computer Is Not Enough"
+        },
+        {
+          "url": "https://podcasts.apple.com/us/podcast/1-peter-thiel/id1469999563?i=1000444670908",
+          "period": "consolidation-2017-2019",
+          "type": "podcast",
+          "keywords": ["the-portal", "eric-weinstein", "institutional-failure"],
+          "date": "2019-07-17",
+          "title": "The Portal Episode 001: Era of Stagnation"
+        },
+        {
+          "url": "https://manhattan.institute/event/2019-wriston-lecture-peter-thiel",
+          "period": "consolidation-2017-2019",
+          "type": "keynote-speech",
+          "keywords": [
+            "manhattan-institute",
+            "wriston-lecture",
+            "technological-innovation"
+          ],
+          "date": "2019-11-13",
+          "title": "2019 Wriston Lecture on Technology Innovation"
+        },
+        {
+          "url": "https://www.hoover.org/research/world-according-thiel-0",
+          "period": "pandemic-onset-2020",
+          "type": "interview",
+          "keywords": [
+            "hoover-institution",
+            "mont-pelerin-society",
+            "globalization"
+          ],
+          "date": "2020-01-17",
+          "title": "The World According to Thiel"
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=SO_00POR-Po",
+          "period": "pandemic-onset-2020",
+          "type": "interview",
+          "keywords": ["socrates-in-the-city", "eric-metaxas", "zero-to-one"],
+          "date": "2020-02-26",
+          "title": "Peter Thiel: Zero to One"
+        },
+        {
+          "url": "https://www.firstthings.com/article/2020/03/back-to-the-future",
+          "period": "pandemic-onset-2020",
+          "type": "authored-essay",
+          "keywords": ["first-things", "pandemic", "future-trends"],
+          "date": "2020-03-01",
+          "title": "Back To The Future"
+        },
+        {
+          "url": "https://www.discovery.org/v/peter-thiel-on-the-failures-and-self-hatred-of-big-tech/",
+          "period": "pandemic-onset-2020",
+          "type": "panel-discussion",
+          "keywords": ["discovery-institute", "george-gilder", "big-tech"],
+          "date": "2020-07-10",
+          "title": "Peter Thiel on Failures of Big-Tech"
+        },
+        {
+          "url": "https://nixonseminar.com/2021/04/the-nixon-seminar-april-6-2021-transcript/",
+          "period": "post-pandemic-transition-2021",
+          "type": "panel-discussion",
+          "keywords": ["nixon-seminar", "mike-pompeo", "big-tech-china"],
+          "date": "2021-04-06",
+          "title": "Big Tech & China Panel Discussion"
+        },
+        {
+          "url": "https://fedsoc.org/contributors/peter-thiel",
+          "period": "post-pandemic-transition-2021",
+          "type": "keynote-speech",
+          "keywords": [
+            "federalist-society",
+            "law-technology",
+            "conservative-legal"
+          ],
+          "date": "2021-10-18",
+          "title": "Federalist Society National Symposium Keynote"
+        },
+        {
+          "url": "https://podcasts.apple.com/ge/podcast/peter-thiel-religion-culture-and-technology-vator-2021/id1768793289?i=1000669722734",
+          "period": "post-pandemic-transition-2021",
+          "type": "interview",
+          "keywords": [
+            "foundation-american-innovation",
+            "culture-religion-technology",
+            "conversation"
+          ],
+          "date": "2021-10-29",
+          "title": "Culture, Religion, and Technology Conversation"
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=Bw1ByVhJt7A",
+          "period": "post-pandemic-transition-2021",
+          "type": "keynote-speech",
+          "keywords": [
+            "national-conservatism-conference",
+            "nationalism",
+            "dogma-machine"
+          ],
+          "date": "2021-10-31",
+          "title": "Nationalism Breaks the Dogma Machine"
+        },
+        {
+          "url": "https://cosm.tech/cosm2021/",
+          "period": "post-pandemic-transition-2021",
+          "type": "keynote-speech",
+          "keywords": [
+            "cosm-technology-summit",
+            "technology-soaring-slumping",
+            "speaker"
+          ],
+          "date": "2021-11-10",
+          "title": "Speaker at COSM 2021 Technology Summit"
+        },
+        {
+          "url": "https://www.hoover.org/research/make-ticker-tape-parades-great-again-conversation-peter-thiel-0",
+          "period": "post-pandemic-transition-2021",
+          "type": "interview",
+          "keywords": [
+            "uncommon-knowledge",
+            "totalitarian-conformism",
+            "cryptocurrency"
+          ],
+          "date": "2021-12-17",
+          "title": "Make Ticker Tape Parades Great Again"
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=1tIUnoevA-A",
+          "period": "mid-2020s-tech-politics-2022",
+          "type": "keynote-speech",
+          "keywords": [
+            "bitcoin-2022",
+            "financial-gerontocracy",
+            "esg-movement"
+          ],
+          "date": "2022-04-07",
+          "title": "Bitcoin 2022 Conference Keynote"
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=yB-34rc1G2o",
+          "period": "mid-2020s-tech-politics-2022",
+          "type": "keynote-speech",
+          "keywords": [
+            "national-conservatism-conference",
+            "tech-curse",
+            "technological-advancement"
+          ],
+          "date": "2022-09-11",
+          "title": "The Tech Curse"
+        },
+        {
+          "url": "https://www.hoover.org/research/peter-thiel-leader-rebel-alliance",
+          "period": "mid-2020s-tech-politics-2022",
+          "type": "interview",
+          "keywords": [
+            "uncommon-knowledge",
+            "rebel-alliance",
+            "california-decline"
+          ],
+          "date": "2022-11-09",
+          "title": "Peter Thiel, Leader Of The Rebel Alliance"
+        },
+        {
+          "url": "https://podcasts.apple.com/us/podcast/peter-thiel-ai-intelligent-conscious-or-merely-evil/id1481592235?i=1000669722736",
+          "period": "mid-2020s-tech-politics-2022",
+          "type": "keynote-speech",
+          "keywords": [
+            "cosm-2022",
+            "artificial-intelligence",
+            "moral-alignment"
+          ],
+          "date": "2022-01-01",
+          "title": "AI: Intelligent, Conscious, or Merely Evil?"
+        },
+        {
+          "url": "https://events.com/r/en_US/registration/peter-thiel-and-bambi-francisco-roizen-fireside-chat-coral-gables-september-899931",
+          "period": "late-2023-commentary",
+          "type": "fireside-chat",
+          "keywords": [
+            "bambi-francisco-roizen",
+            "biltmore-hotel",
+            "coral-gables"
+          ],
+          "date": "2023-09-07",
+          "title": "Peter Thiel and Bambi Francisco Fireside Chat"
+        },
+        {
+          "url": "https://foundersfund.com/2023/08/diversity-myth-30-years-later-qa/",
+          "period": "late-2023-commentary",
+          "type": "written-qa",
+          "keywords": ["founders-fund", "diversity-myth", "30-years-later"],
+          "date": "2023-08-01",
+          "title": "Diversity Myth 30 Years Later Q&A"
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=u2T_D4n2H2E",
+          "period": "late-2023-commentary",
+          "type": "lecture",
+          "keywords": ["scruton-lectures", "oxford", "john-gray"],
+          "date": "2023-10-25",
+          "title": "Scruton Lectures 2023: The Diversity Myth"
+        },
+        {
+          "url": "https://events.com/r/en_US/registration/culture-religion-and-technology-peter-thiel-fireside-chat-palm-beach-october-905421",
+          "period": "late-2023-commentary",
+          "type": "fireside-chat",
+          "keywords": [
+            "mar-a-lago-club",
+            "palm-beach",
+            "culture-religion-technology"
+          ],
+          "date": "2023-10-27",
+          "title": "Culture, Religion and Technology Fireside Chat"
+        },
+        {
+          "url": "https://www.arcforum.com/",
+          "period": "late-2023-commentary",
+          "type": "keynote-speech",
+          "keywords": ["arc-conference", "london", "jordan-peterson"],
+          "date": "2023-10-30",
+          "title": "Alliance for Responsible Citizenship Conference Speech"
+        },
+        {
+          "url": "https://podcasts.apple.com/us/podcast/peter-thiel-is-taking-a-break-from-democracy/id1254966263?i=1000634279191",
+          "period": "late-2023-commentary",
+          "type": "podcast",
+          "keywords": ["radio-atlantic", "democracy", "2024-election"],
+          "date": "2023-11-09",
+          "title": "Radio Atlantic: Taking a Break From Democracy"
+        },
+        {
+          "url": "https://www.piratewires.com/p/peter-thiel-on-the-diversity-myth",
+          "period": "late-2023-commentary",
+          "type": "podcast",
+          "keywords": ["pirate-wires", "mike-solana", "diversity-myth"],
+          "date": "2023-11-24",
+          "title": "Pirate Wires: Peter Thiel On Diversity Myth"
+        },
+        {
+          "url": "https://www.startuparchive.org/p/the-essays-talks-and-interviews-of-peter-thiel",
+          "period": "recent-high-profile-2024",
+          "type": "keynote-speech",
+          "keywords": [
+            "conservative-republican-student-conference",
+            "keynote-address",
+            "student"
+          ],
+          "date": "2024-02-01",
+          "title": "Conservative and Republican Student Conference Keynote"
+        },
+        {
+          "url": "https://conversationswithtyler.com/episodes/peter-thiel-political-theology/",
+          "period": "recent-high-profile-2024",
+          "type": "podcast",
+          "keywords": [
+            "conversations-with-tyler",
+            "political-theology",
+            "calvinism"
+          ],
+          "date": "2024-04-17",
+          "title": "Peter Thiel on Political Theology"
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=2hUhUgo_JMA",
+          "period": "recent-high-profile-2024",
+          "type": "talk",
+          "keywords": ["cambridge-union", "protesters", "jd-vance"],
+          "date": "2024-05-08",
+          "title": "Peter Thiel | Cambridge Union"
+        },
+        {
+          "url": "https://www.startuparchive.org/p/the-essays-talks-and-interviews-of-peter-thiel",
+          "period": "recent-high-profile-2024",
+          "type": "talk",
+          "keywords": ["aspen-institute", "iconoclast", "speaking-event"],
+          "date": "2024-06-01",
+          "title": "The Iconoclast Peter Thiel"
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=2hUhUgo_JMA",
+          "period": "recent-high-profile-2024",
+          "type": "podcast",
+          "keywords": [
+            "triggernometry",
+            "totalitarian-world-government",
+            "global-governance"
+          ],
+          "date": "2024-07-28",
+          "title": "The Real Risk is Totalitarian World Government"
+        },
+        {
+          "url": "https://open.spotify.com/episode/3eA1sT2j_1Ym2fcA2iI5Ap",
+          "period": "recent-high-profile-2024",
+          "type": "podcast",
+          "keywords": [
+            "joe-rogan-experience",
+            "trump-relationship",
+            "silicon-valley"
+          ],
+          "date": "2024-08-16",
+          "title": "Joe Rogan Experience #2190 - Peter Thiel"
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=jwz9P3yW8bA",
+          "period": "recent-high-profile-2024",
+          "type": "summit-talk",
+          "keywords": [
+            "all-in-summit",
+            "2024-election",
+            "artificial-intelligence"
+          ],
+          "date": "2024-09-13",
+          "title": "Peter Thiel | All-In Summit 2024"
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=90-second-recap-video",
+          "period": "recent-high-profile-2024",
+          "type": "event",
+          "keywords": [
+            "economic-club-miami",
+            "culture-religion-technology",
+            "national-security"
+          ],
+          "date": "2024-10-29",
+          "title": "An Evening With Peter Thiel"
+        },
+        {
+          "url": "https://www.thefp.com/p/peter-thiel-honestly-trump-jd-vance",
+          "period": "recent-high-profile-2024",
+          "type": "podcast",
+          "keywords": ["honestly-bari-weiss", "trump", "counter-elites"],
+          "date": "2024-11-14",
+          "title": "Peter Thiel on Trump and Counter-Elites"
+        },
+        {
+          "url": "https://www.ft.com/content/a46cb128-1f74-4621-ab0b-242a76583105",
+          "period": "current-year-2025",
+          "type": "authored-essay",
+          "keywords": [
+            "financial-times",
+            "truth-reconciliation",
+            "apokalypsis"
+          ],
+          "date": "2025-01-10",
+          "title": "A time for truth and reconciliation"
+        },
+        {
+          "url": "https://www.startuparchive.org/p/the-essays-talks-and-interviews-of-peter-thiel",
+          "period": "current-year-2025",
+          "type": "interview",
+          "keywords": [
+            "rubin-report",
+            "trump-administration",
+            "political-revenge"
+          ],
+          "date": "2025-03-01",
+          "title": "What the Trump Administration Must Do"
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=918qslcfwfY",
+          "period": "current-year-2025",
+          "type": "podcast",
+          "keywords": [
+            "jordan-peterson",
+            "progress-stagnation",
+            "moon-landing"
+          ],
+          "date": "2025-03-31",
+          "title": "Why We Stopped Progressing"
+        },
+        {
+          "url": "https://www.nytimes.com/2025/07/11/podcasts/interesting-times-a-mind-bending-conversation-with-peter-thiel.html",
+          "period": "current-year-2025",
+          "type": "podcast",
+          "keywords": ["interesting-times", "ross-douthat", "antichrist"],
+          "date": "2025-06-26",
+          "title": "A.I., Mars and Immortality: Are We Dreaming"
+        },
+        {
+          "url": "https://rss.com/podcasts/unslave-your-mind/2164298",
+          "period": "current-year-2025",
+          "type": "podcast",
+          "keywords": ["unslave-your-mind", "firefly-butterfly", "episode-70"],
+          "date": "2025-08-13",
+          "title": "Episode 70 Interview with Peter Thiel"
+        }
+      ]
+    }
+  }
+}
