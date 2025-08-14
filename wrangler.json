@@ -1,6 +1,7 @@
 {
   "$schema": "https://unpkg.com/wrangler@latest/config-schema.json",
   "name": "basedpeople",
+  "main": "worker.ts",
   "compatibility_date": "2025-08-12",
   "dev": { "port": 3000 },
   "observability": { "logs": { "enabled": true } },
@@ -8,5 +9,11 @@
   "routes": [
     { "custom_domain": true, "pattern": "basedpeople.com" },
     { "custom_domain": true, "pattern": "www.basedpeople.com" }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "KV",
+      "id": "71b5da74fe0b45eaab4da4d636b9d36a"
+    }
   ]
 }

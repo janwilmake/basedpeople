@@ -1,0 +1,3 @@
+PARALLEL_API_KEY=#Your Parallel AI API key
+CRON_SECRET=# A secret string for the `/seed` endpoint
+WEBHOOK_SECRET=#Your webhook secret from Parallel AI settings
