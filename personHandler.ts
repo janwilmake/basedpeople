@@ -11,112 +11,65 @@ interface Appearance {
   url: string;
   period?: string;
   type: string;
-  keywords?: string[];
+  keywords: string[];
   date: string;
   title: string;
 }
 
-interface TaskResult {
-  run: {
-    run_id: string;
-    status: string;
-    is_active: boolean;
-    processor: string;
-    metadata?: Record<string, any>;
-    created_at: string;
-    modified_at: string;
-  };
-  output: {
-    basis: Array<{
-      field: string;
-      citations: Array<{
-        title?: string | null;
-        url: string;
-        excerpts?: string[] | null;
-      }>;
-      reasoning: string;
-      confidence?: string | null;
-    }>;
-    type: "json";
-    content: {
-      name: string;
-      lifePeriods: string;
-      searchStrategy: string;
-      appearances: Appearance[];
-    };
-  };
-}
-
-export interface Env {
-  ASSETS: Fetcher;
-  KV: KVNamespace;
+interface PersonData {
+  name: string;
+  lifePeriods: string;
+  searchStrategy: string;
+  appearances: Appearance[];
 }
 
 export async function personHtmlHandler(
   request: Request,
-  env: Env
+  env: any
 ): Promise<Response> {
+  const url = new URL(request.url);
+  const slug = url.pathname.replace(".html", "").replace("/", "");
+
   try {
-    const url = new URL(request.url);
-    const pathMatch = url.pathname.match(/^\/([^\/]+)\.html$/);
-
-    if (!pathMatch) {
-      return new Response("Not Found", { status: 404 });
-    }
-
-    const slug = pathMatch[1];
-
-    // Fetch people data
+    // Fetch people list
     const peopleResponse = await env.ASSETS.fetch(
-      new Request(`${url.origin}/people.json`)
+      new Request("http://localhost/people.json")
     );
-    if (!peopleResponse.ok) {
-      throw new Error("Failed to fetch people data");
-    }
     const people: Person[] = await peopleResponse.json();
 
-    // Find the person
     const person = people.find((p) => p.slug === slug);
     if (!person) {
-      return new Response("Person Not Found", { status: 404 });
+      return new Response("Person not found", { status: 404 });
     }
 
-    // Get appearance data from KV or fallback to dummy
-    let taskResult: TaskResult;
-    const kvData = await env.KV.get(`person:${slug}`, { type: "json" });
-
-    if (kvData) {
-      taskResult = kvData as TaskResult;
-    } else {
+    // Try to get person data from KV
+    let personData: PersonData;
+    try {
+      const kvData = await env.KV.get(`person:${slug}`, { type: "json" });
+      if (kvData && kvData.output && kvData.output.content) {
+        personData = kvData.output.content;
+      } else {
+        throw new Error("No KV data");
+      }
+    } catch {
       // Fallback to dummy data
       const dummyResponse = await env.ASSETS.fetch(
-        new Request(`${url.origin}/dummy.json`)
+        new Request("http://localhost/dummy.json")
       );
-      if (!dummyResponse.ok) {
-        throw new Error("Failed to fetch dummy data");
-      }
-      taskResult = await dummyResponse.json();
+      const dummyData = await dummyResponse.json();
+      personData = dummyData.output?.content || dummyData;
     }
 
-    const appearances = taskResult.output.content.appearances || [];
-    const lifePeriods = taskResult.output.content.lifePeriods || "";
-    const searchStrategy = taskResult.output.content.searchStrategy || "";
+    // Sort appearances by date (reverse chronological)
+    const sortedAppearances = personData.appearances.sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
 
-    // Group appearances by type
-    const groupedAppearances = appearances.reduce((acc, appearance) => {
-      if (!acc[appearance.type]) {
-        acc[appearance.type] = [];
-      }
-      acc[appearance.type].push(appearance);
-      return acc;
-    }, {} as Record<string, Appearance[]>);
-
-    // Sort appearances by date (newest first)
-    Object.keys(groupedAppearances).forEach((type) => {
-      groupedAppearances[type].sort(
-        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-      );
-    });
+    // Get unique types and keywords for filters
+    const uniqueTypes = [...new Set(sortedAppearances.map((a) => a.type))];
+    const uniqueKeywords = [
+      ...new Set(sortedAppearances.flatMap((a) => a.keywords)),
+    ];
 
     const html = `<!DOCTYPE html>
 <html lang="en">
@@ -124,30 +77,7 @@ export async function personHtmlHandler(
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${person.name} - Appearances | Based People</title>
-    
-    <meta name="description" content="All appearances and quotes from ${
-      person.name
-    }. Never miss what ${person.name} actually says." />
-    <meta name="robots" content="index, follow" />
-    
-    <!-- Open Graph -->
-    <meta property="og:title" content="${
-      person.name
-    } - Appearances | Based People" />
-    <meta property="og:description" content="All appearances and quotes from ${
-      person.name
-    }. Never miss what ${person.name} actually says." />
-    <meta property="og:type" content="profile" />
-    <meta property="og:url" content="${url.origin}/${slug}.html" />
-    
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="${
-      person.name
-    } - Appearances | Based People" />
-    <meta name="twitter:description" content="All appearances and quotes from ${
-      person.name
-    }. Never miss what ${person.name} actually says." />
+    <meta name="description" content="${person.summary}" />
     
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -162,19 +92,22 @@ export async function personHtmlHandler(
             color: #ffffff;
             font-family: 'Space Grotesk', sans-serif;
             line-height: 1.6;
-            overflow-x: hidden;
+            min-height: 100vh;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 40px 20px;
         }
 
         .header {
+            margin-bottom: 40px;
             padding: 40px 0;
             background: linear-gradient(135deg, #0a0a0a 0%, #1a4d3a 100%);
             position: relative;
+            border-radius: 12px;
+            border: 1px solid #22c55e20;
         }
 
         .header::before {
@@ -185,30 +118,19 @@ export async function personHtmlHandler(
             right: 0;
             bottom: 0;
             background: radial-gradient(circle at 70% 30%, rgba(34, 197, 94, 0.1) 0%, transparent 50%);
+            border-radius: 12px;
         }
 
         .header-content {
             position: relative;
             z-index: 2;
+            padding: 0 40px;
         }
 
-        .back-link {
-            color: #22c55e;
-            text-decoration: none;
-            font-size: 0.9rem;
-            margin-bottom: 20px;
-            display: inline-block;
-            transition: color 0.3s ease;
-        }
-
-        .back-link:hover {
-            color: #16a34a;
-        }
-
-        .person-title {
-            font-size: clamp(2.5rem, 6vw, 4rem);
+        .person-name {
+            font-size: clamp(2rem, 5vw, 3.5rem);
             font-weight: 700;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
             background: linear-gradient(135deg, #ffffff 0%, #22c55e 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -219,370 +141,460 @@ export async function personHtmlHandler(
             color: #22c55e;
             font-size: 1.2rem;
             font-weight: 600;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         .person-summary {
             color: #d0d0d0;
             font-size: 1.1rem;
+            margin-bottom: 1.5rem;
             max-width: 800px;
-            margin-bottom: 2rem;
         }
 
         .stats {
             display: flex;
-            gap: 40px;
+            gap: 20px;
             flex-wrap: wrap;
         }
 
         .stat {
-            text-align: center;
+            padding: 8px 16px;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid #22c55e40;
+            border-radius: 6px;
+            color: #22c55e;
+            font-weight: 600;
         }
 
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 700;
+        .filters {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: #1a1a1a;
+            border-radius: 12px;
+            border: 1px solid #333;
+        }
+
+        .filter-section {
+            margin-bottom: 20px;
+        }
+
+        .filter-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .filter-label {
             color: #22c55e;
+            font-weight: 600;
+            margin-bottom: 10px;
             display: block;
         }
 
-        .stat-label {
-            color: #a0a0a0;
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .filter-btn {
+            padding: 6px 12px;
+            background: #333;
+            border: 1px solid #555;
+            border-radius: 6px;
+            color: #d0d0d0;
+            cursor: pointer;
+            transition: all 0.3s ease;
             font-size: 0.9rem;
+            white-space: nowrap;
         }
 
-        .main-content {
-            padding: 80px 0;
-            background: #0a0a0a;
+        .filter-btn:hover {
+            border-color: #22c55e;
+            background: #2a2a2a;
         }
 
-        .section {
-            margin-bottom: 60px;
-        }
-
-        .section-title {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 2rem;
-            position: relative;
-            padding-left: 20px;
-        }
-
-        .section-title::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 4px;
-            height: 30px;
+        .filter-btn.active {
             background: #22c55e;
-            border-radius: 2px;
+            color: #0a0a0a;
+            border-color: #22c55e;
         }
 
-        .appearances-grid {
-            display: grid;
-            gap: 30px;
+        .clear-filters {
+            padding: 8px 16px;
+            background: transparent;
+            border: 1px solid #666;
+            border-radius: 6px;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: 10px;
         }
 
-        .appearance-type {
-            background: linear-gradient(135deg, #1a1a1a 0%, #0f2a1f 100%);
-            border: 1px solid #22c55e20;
+        .clear-filters:hover {
+            border-color: #22c55e;
+            color: #22c55e;
+        }
+
+        .appearances-table {
+            background: #1a1a1a;
             border-radius: 12px;
-            padding: 30px;
+            border: 1px solid #333;
+            overflow: hidden;
         }
 
-        .appearance-type-title {
+        .table-header {
+            background: linear-gradient(135deg, #1f1f1f 0%, #0f2a1f 100%);
+            padding: 20px;
+            border-bottom: 1px solid #333;
+        }
+
+        .table-title {
             font-size: 1.4rem;
             font-weight: 600;
-            color: #22c55e;
-            margin-bottom: 20px;
-            text-transform: capitalize;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
         }
 
-        .appearance-list {
-            display: grid;
-            gap: 20px;
+        .table-subtitle {
+            color: #a0a0a0;
         }
 
         .appearance-item {
-            background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 8px;
             padding: 20px;
+            border-bottom: 1px solid #2a2a2a;
             transition: all 0.3s ease;
+            display: block;
+        }
+
+        .appearance-item:last-child {
+            border-bottom: none;
         }
 
         .appearance-item:hover {
-            border-color: #22c55e;
-            background: #1f1f1f;
-            transform: translateY(-2px);
+            background: #202020;
+        }
+
+        .appearance-item.hidden {
+            display: none;
         }
 
         .appearance-header {
             display: flex;
             justify-content: between;
             align-items: flex-start;
-            gap: 15px;
             margin-bottom: 10px;
+            gap: 15px;
         }
 
         .appearance-title {
-            font-size: 1.1rem;
             font-weight: 600;
             color: #ffffff;
-            flex-grow: 1;
+            font-size: 1.1rem;
+            flex: 1;
+            text-decoration: none;
+        }
+
+        .appearance-title:hover {
+            color: #22c55e;
         }
 
         .appearance-date {
             color: #22c55e;
-            font-size: 0.9rem;
-            font-weight: 500;
+            font-weight: 600;
             white-space: nowrap;
+            font-size: 0.95rem;
         }
 
         .appearance-meta {
             display: flex;
-            gap: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
             align-items: center;
-            margin-bottom: 15px;
         }
 
-        .appearance-period {
-            color: #a0a0a0;
-            font-size: 0.9rem;
+        .appearance-type {
+            padding: 4px 8px;
+            background: #333;
+            border: 1px solid #555;
+            border-radius: 4px;
+            color: #d0d0d0;
+            font-size: 0.85rem;
+            font-weight: 500;
         }
 
         .appearance-keywords {
             display: flex;
-            gap: 8px;
             flex-wrap: wrap;
+            gap: 6px;
         }
 
         .keyword {
-            background: #22c55e20;
+            padding: 2px 6px;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid #22c55e40;
+            border-radius: 3px;
             color: #22c55e;
-            padding: 4px 8px;
-            border-radius: 12px;
             font-size: 0.8rem;
-            font-weight: 500;
         }
 
-        .appearance-link {
-            display: inline-block;
-            color: #22c55e;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: color 0.3s ease;
-        }
-
-        .appearance-link:hover {
-            color: #16a34a;
-        }
-
-        .info-section {
-            background: linear-gradient(135deg, #1a1a1a 0%, #0f2a1f 100%);
-            border: 1px solid #22c55e20;
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 40px;
-        }
-
-        .info-title {
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: #22c55e;
-            margin-bottom: 15px;
-        }
-
-        .info-text {
-            color: #d0d0d0;
-            line-height: 1.7;
-        }
-
-        .empty-state {
-            text-align: center;
+        .no-results {
             padding: 60px 20px;
+            text-align: center;
             color: #666;
         }
 
-        .empty-state h3 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-            color: #888;
+        .no-results-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #22c55e;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #16a34a;
         }
 
         @media (max-width: 768px) {
-            .stats {
-                justify-content: center;
-            }
-
             .appearance-header {
                 flex-direction: column;
-                align-items: flex-start;
+                gap: 5px;
             }
 
-            .appearance-meta {
+            .appearance-date {
+                align-self: flex-start;
+            }
+
+            .filter-buttons {
+                justify-content: flex-start;
+            }
+
+            .header-content {
+                padding: 0 20px;
+            }
+
+            .stats {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 10px;
             }
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="container">
+    <div class="container">
+        <a href="/" class="back-link">← Back to Based People</a>
+        
+        <div class="header">
             <div class="header-content">
-                <a href="/" class="back-link">← Back to Based People</a>
-                <h1 class="person-title">${person.name}</h1>
+                <h1 class="person-name">${person.name}</h1>
                 <div class="person-category">${person.category}</div>
                 <p class="person-summary">${person.summary}</p>
                 <div class="stats">
-                    <div class="stat">
-                        <span class="stat-number">${appearances.length}</span>
-                        <span class="stat-label">Total Appearances</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number">${
-                          Object.keys(groupedAppearances).length
-                        }</span>
-                        <span class="stat-label">Media Types</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-number">${
-                          appearances.length > 0
-                            ? new Date(
-                                Math.max(
-                                  ...appearances.map((a) =>
-                                    new Date(a.date).getTime()
-                                  )
-                                )
-                              ).getFullYear()
-                            : "N/A"
-                        }</span>
-                        <span class="stat-label">Latest Year</span>
-                    </div>
+                    <div class="stat">${
+                      sortedAppearances.length
+                    } Appearances</div>
+                    <div class="stat">${uniqueTypes.length} Types</div>
+                    <div class="stat">${uniqueKeywords.length} Topics</div>
                 </div>
             </div>
         </div>
-    </header>
 
-    <main class="main-content">
-        <div class="container">
-            ${
-              lifePeriods
-                ? `
-            <div class="section">
-                <div class="info-section">
-                    <h2 class="info-title">Life Periods</h2>
-                    <p class="info-text">${lifePeriods}</p>
-                </div>
-            </div>
-            `
-                : ""
-            }
-
-            ${
-              searchStrategy
-                ? `
-            <div class="section">
-                <div class="info-section">
-                    <h2 class="info-title">Search Strategy</h2>
-                    <p class="info-text">${searchStrategy}</p>
-                </div>
-            </div>
-            `
-                : ""
-            }
-
-            <div class="section">
-                <h2 class="section-title">Appearances</h2>
-                ${
-                  Object.keys(groupedAppearances).length > 0
-                    ? `
-                <div class="appearances-grid">
-                    ${Object.entries(groupedAppearances)
+        <div class="filters">
+            <div class="filter-section">
+                <span class="filter-label">Filter by Type:</span>
+                <div class="filter-buttons">
+                    ${uniqueTypes
                       .map(
-                        ([type, typeAppearances]) => `
-                    <div class="appearance-type">
-                        <h3 class="appearance-type-title">${type} (${
-                          typeAppearances.length
-                        })</h3>
-                        <div class="appearance-list">
-                            ${typeAppearances
-                              .map(
-                                (appearance) => `
-                            <div class="appearance-item">
-                                <div class="appearance-header">
-                                    <div class="appearance-title">${
-                                      appearance.title
-                                    }</div>
-                                    <div class="appearance-date">${new Date(
-                                      appearance.date
-                                    ).toLocaleDateString("en-US", {
-                                      year: "numeric",
-                                      month: "short",
-                                      day: "numeric",
-                                    })}</div>
-                                </div>
-                                <div class="appearance-meta">
-                                    ${
-                                      appearance.period
-                                        ? `<div class="appearance-period">Period: ${appearance.period}</div>`
-                                        : ""
-                                    }
-                                    ${
-                                      appearance.keywords &&
-                                      appearance.keywords.length > 0
-                                        ? `
-                                    <div class="appearance-keywords">
-                                        ${appearance.keywords
-                                          .map(
-                                            (keyword) =>
-                                              `<span class="keyword">${keyword}</span>`
-                                          )
-                                          .join("")}
-                                    </div>
-                                    `
-                                        : ""
-                                    }
-                                </div>
-                                <a href="${
-                                  appearance.url
-                                }" target="_blank" rel="noopener noreferrer" class="appearance-link">
-                                    View Source →
-                                </a>
-                            </div>
-                            `
-                              )
-                              .join("")}
-                        </div>
-                    </div>
-                    `
+                        (type) =>
+                          `<button class="filter-btn type-filter" data-type="${type}">${type}</button>`
+                      )
+                      .join("")}
+                    <button class="clear-filters" onclick="clearAllFilters()">Clear All</button>
+                </div>
+            </div>
+            
+            <div class="filter-section">
+                <span class="filter-label">Filter by Keywords:</span>
+                <div class="filter-buttons">
+                    ${uniqueKeywords
+                      .slice(0, 20)
+                      .map(
+                        (keyword) =>
+                          `<button class="filter-btn keyword-filter" data-keyword="${keyword}">${keyword}</button>`
                       )
                       .join("")}
                 </div>
-                `
-                    : `
-                <div class="empty-state">
-                    <h3>No appearances found</h3>
-                    <p>We're still gathering appearance data for ${person.name}.</p>
-                </div>
-                `
-                }
             </div>
         </div>
-    </main>
+
+        <div class="appearances-table">
+            <div class="table-header">
+                <h2 class="table-title">All Appearances</h2>
+                <p class="table-subtitle">Chronologically ordered, most recent first</p>
+            </div>
+            
+            <div id="appearances-list">
+                ${sortedAppearances
+                  .map(
+                    (appearance) => `
+                    <div class="appearance-item" 
+                         data-type="${appearance.type}"
+                         data-keywords="${appearance.keywords.join(",")}"
+                         data-date="${appearance.date}">
+                        <div class="appearance-header">
+                            <a href="${
+                              appearance.url
+                            }" target="_blank" class="appearance-title">
+                                ${appearance.title}
+                            </a>
+                            <div class="appearance-date">
+                                ${new Date(appearance.date).toLocaleDateString(
+                                  "en-US",
+                                  {
+                                    year: "numeric",
+                                    month: "short",
+                                    day: "numeric",
+                                  }
+                                )}
+                            </div>
+                        </div>
+                        <div class="appearance-meta">
+                            <div class="appearance-type">${
+                              appearance.type
+                            }</div>
+                            <div class="appearance-keywords">
+                                ${appearance.keywords
+                                  .map(
+                                    (keyword) =>
+                                      `<span class="keyword">${keyword}</span>`
+                                  )
+                                  .join("")}
+                            </div>
+                        </div>
+                    </div>
+                `
+                  )
+                  .join("")}
+            </div>
+        </div>
+
+        <div id="no-results" class="no-results" style="display: none;">
+            <div class="no-results-icon">🔍</div>
+            <h3>No appearances found</h3>
+            <p>Try adjusting your filters or clearing all filters to see more results.</p>
+        </div>
+    </div>
+
+    <script>
+        let activeTypeFilters = new Set();
+        let activeKeywordFilters = new Set();
+
+        function updateDisplay() {
+            const appearanceItems = document.querySelectorAll('.appearance-item');
+            let visibleCount = 0;
+
+            appearanceItems.forEach(item => {
+                const itemType = item.dataset.type;
+                const itemKeywords = item.dataset.keywords.split(',').filter(k => k.trim());
+                
+                let showItem = true;
+
+                // Check type filters
+                if (activeTypeFilters.size > 0 && !activeTypeFilters.has(itemType)) {
+                    showItem = false;
+                }
+
+                // Check keyword filters (AND logic - item must have ALL selected keywords)
+                if (activeKeywordFilters.size > 0) {
+                    const hasAllKeywords = [...activeKeywordFilters].every(keyword => 
+                        itemKeywords.includes(keyword)
+                    );
+                    if (!hasAllKeywords) {
+                        showItem = false;
+                    }
+                }
+
+                if (showItem) {
+                    item.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+
+            // Show/hide no results message
+            const noResults = document.getElementById('no-results');
+            const appearancesList = document.getElementById('appearances-list');
+            
+            if (visibleCount === 0) {
+                noResults.style.display = 'block';
+                appearancesList.style.display = 'none';
+            } else {
+                noResults.style.display = 'none';
+                appearancesList.style.display = 'block';
+            }
+        }
+
+        function clearAllFilters() {
+            activeTypeFilters.clear();
+            activeKeywordFilters.clear();
+            
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            updateDisplay();
+        }
+
+        // Type filter handlers
+        document.querySelectorAll('.type-filter').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const type = btn.dataset.type;
+                
+                if (activeTypeFilters.has(type)) {
+                    activeTypeFilters.delete(type);
+                    btn.classList.remove('active');
+                } else {
+                    activeTypeFilters.add(type);
+                    btn.classList.add('active');
+                }
+                
+                updateDisplay();
+            });
+        });
+
+        // Keyword filter handlers
+        document.querySelectorAll('.keyword-filter').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const keyword = btn.dataset.keyword;
+                
+                if (activeKeywordFilters.has(keyword)) {
+                    activeKeywordFilters.delete(keyword);
+                    btn.classList.remove('active');
+                } else {
+                    activeKeywordFilters.add(keyword);
+                    btn.classList.add('active');
+                }
+                
+                updateDisplay();
+            });
+        });
+
+        // Initialize display
+        updateDisplay();
+    </script>
 </body>
 </html>`;
 
     return new Response(html, {
       headers: {
         "Content-Type": "text/html; charset=utf-8",
-        "Cache-Control": "public, max-age=3600",
+        "Cache-Control": "public, max-age=300",
       },
     });
   } catch (error) {
