@@ -118,6 +118,11 @@ export default {
         return personHtmlHandler(request, env);
       }
 
+      // Handle root route
+      if (url.pathname === "/" && request.method === "GET") {
+        return handleIndexPage(request, env);
+      }
+
       return new Response("Not found", { status: 404 });
     } catch (error) {
       console.error("Worker error:", error);
@@ -419,10 +424,31 @@ async function handleToggleFollow(
   // Get user from access token
   const accessToken = getAccessToken(request);
   if (!accessToken) {
-    return new Response(JSON.stringify({ error: "Authentication required" }), {
-      status: 401,
-      headers: { "Content-Type": "application/json" },
-    });
+    // Check if this is a browser request vs API request
+    const acceptHeader = request.headers.get("accept") || "";
+    const isBrowser = !acceptHeader.includes("application/json");
+
+    if (isBrowser || acceptHeader.includes("text/html")) {
+      // Redirect to login for browser requests
+      return new Response(null, {
+        status: 302,
+        headers: {
+          Location: `/authorize?redirect_to=${encodeURIComponent(request.url)}`,
+        },
+      });
+    } else {
+      // Return JSON error with redirect info for API requests
+      return new Response(
+        JSON.stringify({
+          error: "Authentication required",
+          redirect: `/authorize?redirect_to=${encodeURIComponent(request.url)}`,
+        }),
+        {
+          status: 401,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+    }
   }
 
   try {
@@ -456,6 +482,75 @@ async function handleToggleFollow(
       status: 500,
       headers: { "Content-Type": "application/json" },
     });
+  }
+}
+
+async function handleIndexPage(request: Request, env: Env): Promise<Response> {
+  try {
+    // Serve the index.html file
+    const indexResponse = await env.ASSETS.fetch(
+      new Request("http://localhost/index.html")
+    );
+
+    if (!indexResponse.ok) {
+      return new Response("Index page not found", { status: 404 });
+    }
+
+    // Get user info if logged in
+    let user: XUser | null = null;
+    let followedSlugs: string[] = [];
+
+    const accessToken = getAccessToken(request);
+    if (accessToken) {
+      try {
+        const userDOId = env.UserDO.idFromName(`user:${accessToken}`);
+        const userDO = env.UserDO.get(userDOId);
+        const userData = await userDO.getUser();
+
+        if (userData) {
+          user = userData.user;
+
+          // Get followed slugs
+          const dbId = env.APPEARANCES.idFromName("main");
+          const db = env.APPEARANCES.get(dbId);
+          followedSlugs = await db.getFollowedSlugs(user.id);
+        }
+      } catch (error) {
+        console.error("Error getting user data:", error);
+      }
+    }
+
+    let html = await indexResponse.text();
+
+    // If user is logged in, update the follow buttons to show correct state
+    if (user) {
+      // Add JavaScript to initialize follow states
+      const initScript = `
+        <script>
+          document.addEventListener('DOMContentLoaded', () => {
+            const followedSlugs = ${JSON.stringify(followedSlugs)};
+            document.querySelectorAll('.btn-follow').forEach(btn => {
+              const slug = btn.dataset.slug;
+              if (followedSlugs.includes(slug)) {
+                btn.classList.add('following');
+                btn.textContent = 'Following';
+              }
+            });
+          });
+        </script>
+      `;
+      html = html.replace("</body>", `${initScript}</body>`);
+    }
+
+    return new Response(html, {
+      headers: {
+        "Content-Type": "text/html; charset=utf-8",
+        "Cache-Control": user ? "private, max-age=300" : "public, max-age=3600",
+      },
+    });
+  } catch (error) {
+    console.error("Error serving index page:", error);
+    return new Response("Internal Server Error", { status: 500 });
   }
 }
 
@@ -767,8 +862,8 @@ async function handleFeed(request: Request, env: Env): Promise<Response> {
 <body>
     <div class="container">
         <div class="nav-links">
-            <a href="/">← Back to Home</a>
-            <a href="/logout">Logout</a>
+            <a href="/" class="nav-link">← Back to Home</a>
+            <a href="/logout" class="nav-link">Logout</a>
         </div>
         
         <div class="header">

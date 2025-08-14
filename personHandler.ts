@@ -497,7 +497,13 @@ export async function personHtmlHandler(
                         </button>
                     </div>
                 `
-                    : ""
+                    : `
+                    <div class="person-actions">
+                        <button class="follow-btn" onclick="redirectToLogin()">
+                            Follow
+                        </button>
+                    </div>
+                `
                 }
                 
                 <div class="stats">
@@ -600,6 +606,10 @@ export async function personHtmlHandler(
         let activeTypeFilters = new Set();
         let activeKeywordFilters = new Set();
 
+        function redirectToLogin() {
+            window.location.href = '/authorize?redirect_to=' + encodeURIComponent(window.location.href);
+        }
+
         async function toggleFollow(slug, button) {
             button.disabled = true;
             const wasFollowing = button.classList.contains('following');
@@ -607,8 +617,25 @@ export async function personHtmlHandler(
             try {
                 const response = await fetch(\`/toggle/\${slug}\`, {
                     method: 'POST',
-                    credentials: 'same-origin'
+                    credentials: 'same-origin',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
                 });
+                
+                // Handle redirect to login
+                if (response.status === 302 || response.redirected) {
+                    window.location.href = response.headers.get('Location') || response.url;
+                    return;
+                }
+                
+                if (response.status === 401) {
+                    const result = await response.json();
+                    if (result.redirect) {
+                        window.location.href = result.redirect;
+                        return;
+                    }
+                }
                 
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
