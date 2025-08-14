@@ -1,5 +1,7 @@
 /// <reference types="@cloudflare/workers-types" />
 
+import { getAccessToken, XUser } from "x-oauth-client-provider";
+
 interface Person {
   name: string;
   slug: string;
@@ -23,6 +25,7 @@ interface PersonData {
 
 interface Env {
   APPEARANCES: DurableObjectNamespace;
+  UserDO: DurableObjectNamespace;
   ASSETS: Fetcher;
 }
 
@@ -43,6 +46,31 @@ export async function personHtmlHandler(
     const person = people.find((p) => p.slug === slug);
     if (!person) {
       return new Response("Person not found", { status: 404 });
+    }
+
+    // Check if user is logged in and get follow status
+    let user: XUser | null = null;
+    let isFollowing = false;
+
+    const accessToken = getAccessToken(request);
+    if (accessToken) {
+      try {
+        const userDOId = env.UserDO.idFromName(`user:${accessToken}`);
+        const userDO = env.UserDO.get(userDOId);
+        const userData = await userDO.getUser();
+
+        if (userData) {
+          user = userData.user;
+
+          // Check if following this person
+          const dbId = env.APPEARANCES.idFromName("main");
+          const db = env.APPEARANCES.get(dbId);
+          const followedSlugs = await db.getFollowedSlugs(user.id);
+          isFollowing = followedSlugs.includes(slug);
+        }
+      } catch (error) {
+        console.error("Error getting user data:", error);
+      }
     }
 
     // Try to get person data from Durable Object
@@ -107,6 +135,24 @@ export async function personHtmlHandler(
             padding: 40px 20px;
         }
 
+        .nav-links {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: #22c55e;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #16a34a;
+        }
+
         .header {
             margin-bottom: 40px;
             padding: 40px 0;
@@ -155,6 +201,46 @@ export async function personHtmlHandler(
             font-size: 1.1rem;
             margin-bottom: 1.5rem;
             max-width: 800px;
+        }
+
+        .person-actions {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .follow-btn {
+            padding: 12px 24px;
+            background: transparent;
+            border: 2px solid #22c55e;
+            color: #22c55e;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .follow-btn:hover {
+            background: #22c55e;
+            color: #0a0a0a;
+        }
+
+        .follow-btn.following {
+            background: #22c55e;
+            color: #0a0a0a;
+        }
+
+        .follow-btn.following:hover {
+            background: #dc2626;
+            border-color: #dc2626;
+            color: #ffffff;
+        }
+
+        .follow-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         .stats {
@@ -353,19 +439,6 @@ export async function personHtmlHandler(
             margin-bottom: 1rem;
         }
 
-        .back-link {
-            display: inline-block;
-            margin-bottom: 20px;
-            color: #22c55e;
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.3s ease;
-        }
-
-        .back-link:hover {
-            color: #16a34a;
-        }
-
         @media (max-width: 768px) {
             .appearance-header {
                 flex-direction: column;
@@ -393,13 +466,40 @@ export async function personHtmlHandler(
 </head>
 <body>
     <div class="container">
-        <a href="/" class="back-link">← Back to Based People</a>
+        <div class="nav-links">
+            <a href="/" class="nav-link">← Back to Home</a>
+            ${user ? `<a href="/feed" class="nav-link">Your Feed</a>` : ""}
+            ${
+              user
+                ? `<a href="/logout" class="nav-link">Logout</a>`
+                : `<a href="/authorize?redirect_to=${encodeURIComponent(
+                    request.url
+                  )}" class="nav-link">Login</a>`
+            }
+        </div>
         
         <div class="header">
             <div class="header-content">
                 <h1 class="person-name">${person.name}</h1>
                 <div class="person-category">${person.category}</div>
                 <p class="person-summary">${person.summary}</p>
+                
+                ${
+                  user
+                    ? `
+                    <div class="person-actions">
+                        <button class="follow-btn ${
+                          isFollowing ? "following" : ""
+                        }" 
+                                onclick="toggleFollow('${slug}', this)" 
+                                data-slug="${slug}">
+                            ${isFollowing ? "Following" : "Follow"}
+                        </button>
+                    </div>
+                `
+                    : ""
+                }
+                
                 <div class="stats">
                     <div class="stat">${
                       sortedAppearances.length
@@ -499,6 +599,44 @@ export async function personHtmlHandler(
     <script>
         let activeTypeFilters = new Set();
         let activeKeywordFilters = new Set();
+
+        async function toggleFollow(slug, button) {
+            button.disabled = true;
+            const wasFollowing = button.classList.contains('following');
+            
+            try {
+                const response = await fetch(\`/toggle/\${slug}\`, {
+                    method: 'POST',
+                    credentials: 'same-origin'
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                const result = await response.json();
+                
+                if (result.following) {
+                    button.classList.add('following');
+                    button.textContent = 'Following';
+                } else {
+                    button.classList.remove('following');
+                    button.textContent = 'Follow';
+                }
+            } catch (error) {
+                console.error('Error toggling follow:', error);
+                // Revert button state on error
+                if (wasFollowing) {
+                    button.classList.add('following');
+                    button.textContent = 'Following';
+                } else {
+                    button.classList.remove('following');
+                    button.textContent = 'Follow';
+                }
+            } finally {
+                button.disabled = false;
+            }
+        }
 
         function updateDisplay() {
             const appearanceItems = document.querySelectorAll('.appearance-item');

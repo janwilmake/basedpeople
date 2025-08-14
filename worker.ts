@@ -3,16 +3,28 @@
 
 import { DurableObject } from "cloudflare:workers";
 import { personHtmlHandler } from "./personHandler";
+import {
+  UserDO,
+  handleOAuth,
+  getAccessToken,
+  XUser,
+} from "x-oauth-client-provider";
+
+// Export the UserDO for OAuth
+export { UserDO };
 
 // replace with prod version (people.json) after task seems good
 const PEOPLE_FILE = "people.json";
 
 export interface Env {
   APPEARANCES: DurableObjectNamespace<AppearancesDB>;
+  UserDO: DurableObjectNamespace<UserDO>;
   ASSETS: Fetcher;
   PARALLEL_API_KEY: string;
   CRON_SECRET: string;
   WEBHOOK_SECRET: string;
+  X_CLIENT_ID: string;
+  X_CLIENT_SECRET: string;
 }
 
 interface Person {
@@ -60,6 +72,10 @@ export default {
   ): Promise<Response> {
     const url = new URL(request.url);
 
+    // Handle OAuth routes first
+    const oauthResponse = await handleOAuth(request, env);
+    if (oauthResponse) return oauthResponse;
+
     // Ensure required environment variables are present
     if (!env.PARALLEL_API_KEY) {
       return new Response("Missing PARALLEL_API_KEY", { status: 500 });
@@ -78,6 +94,17 @@ export default {
 
       if (url.pathname === "/webhook" && request.method === "POST") {
         return handleWebhook(request, env);
+      }
+
+      // Handle POST /toggle/{slug}
+      const toggleMatch = url.pathname.match(/^\/toggle\/([^\/]+)$/);
+      if (toggleMatch && request.method === "POST") {
+        return handleToggleFollow(toggleMatch[1], request, env);
+      }
+
+      // Handle /feed
+      if (url.pathname === "/feed" && request.method === "GET") {
+        return handleFeed(request, env);
       }
 
       // Handle /{slug}.json requests
@@ -131,6 +158,19 @@ export class AppearancesDB extends DurableObject<Env> {
         INDEX idx_type (type),
         INDEX idx_date (date),
         INDEX idx_status (status)
+      )
+    `);
+
+    // Create follows table
+    this.sql.exec(`
+      CREATE TABLE IF NOT EXISTS follows (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id TEXT NOT NULL,
+        slug TEXT NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE(user_id, slug),
+        INDEX idx_user_id (user_id),
+        INDEX idx_slug (slug)
       )
     `);
   }
@@ -294,6 +334,546 @@ export class AppearancesDB extends DurableObject<Env> {
     params.push(limit);
 
     return this.sql.exec(sql, ...params).toArray();
+  }
+
+  async toggleFollow(
+    userId: string,
+    slug: string
+  ): Promise<{ following: boolean }> {
+    // Check if already following
+    const existing = this.sql
+      .exec(
+        "SELECT id FROM follows WHERE user_id = ? AND slug = ?",
+        userId,
+        slug
+      )
+      .toArray();
+
+    if (existing.length > 0) {
+      // Unfollow
+      this.sql.exec(
+        "DELETE FROM follows WHERE user_id = ? AND slug = ?",
+        userId,
+        slug
+      );
+      return { following: false };
+    } else {
+      // Follow
+      this.sql.exec(
+        "INSERT INTO follows (user_id, slug) VALUES (?, ?)",
+        userId,
+        slug
+      );
+      return { following: true };
+    }
+  }
+
+  async getFollowedSlugs(userId: string): Promise<string[]> {
+    const results = this.sql
+      .exec("SELECT slug FROM follows WHERE user_id = ?", userId)
+      .toArray();
+    return results.map((row) => row.slug as string);
+  }
+
+  async getFeedAppearances(userId: string, limit = 50): Promise<any[]> {
+    // Get all followed slugs
+    const followedSlugs = await this.getFollowedSlugs(userId);
+
+    if (followedSlugs.length === 0) {
+      return [];
+    }
+
+    // Create placeholders for IN clause
+    const placeholders = followedSlugs.map(() => "?").join(",");
+
+    // Get appearances for followed people, ordered by date desc
+    const results = this.sql
+      .exec(
+        `SELECT * FROM appearances 
+       WHERE slug IN (${placeholders}) AND status = 'completed' 
+       ORDER BY date DESC 
+       LIMIT ?`,
+        ...followedSlugs,
+        limit
+      )
+      .toArray();
+
+    return results.map((row) => ({
+      slug: row.slug as string,
+      name: row.name as string,
+      url: row.url as string,
+      title: row.title as string,
+      type: row.type as string,
+      date: row.date as string,
+      period: row.period as string | undefined,
+      keywords: JSON.parse(row.keywords as string) as string[],
+    }));
+  }
+}
+
+async function handleToggleFollow(
+  slug: string,
+  request: Request,
+  env: Env
+): Promise<Response> {
+  // Get user from access token
+  const accessToken = getAccessToken(request);
+  if (!accessToken) {
+    return new Response(JSON.stringify({ error: "Authentication required" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
+  try {
+    // Get user data from UserDO
+    const userDOId = env.UserDO.idFromName(`user:${accessToken}`);
+    const userDO = env.UserDO.get(userDOId);
+    const userData = await userDO.getUser();
+
+    if (!userData) {
+      return new Response(JSON.stringify({ error: "Invalid token" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    // Use the user's X ID as user_id
+    const userId = userData.user.id;
+
+    // Get the Durable Object instance
+    const dbId = env.APPEARANCES.idFromName("main");
+    const db = env.APPEARANCES.get(dbId);
+
+    const result = await db.toggleFollow(userId, slug);
+
+    return new Response(JSON.stringify(result), {
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (error) {
+    console.error("Error in toggleFollow:", error);
+    return new Response(JSON.stringify({ error: "Internal server error" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+}
+
+async function handleFeed(request: Request, env: Env): Promise<Response> {
+  // Get user from access token
+  const accessToken = getAccessToken(request);
+  if (!accessToken) {
+    // Redirect to login if browser, otherwise return 401
+    const isBrowser = request.headers.get("accept")?.includes("text/html");
+    if (isBrowser) {
+      return new Response(null, {
+        status: 302,
+        headers: {
+          Location: `/authorize?redirect_to=${encodeURIComponent(request.url)}`,
+        },
+      });
+    }
+    return new Response("Authentication required", { status: 401 });
+  }
+
+  try {
+    // Get user data from UserDO
+    const userDOId = env.UserDO.idFromName(`user:${accessToken}`);
+    const userDO = env.UserDO.get(userDOId);
+    const userData = await userDO.getUser();
+
+    if (!userData) {
+      return new Response("Invalid token", { status: 401 });
+    }
+
+    const user = userData.user;
+    const userId = user.id;
+
+    // Get the Durable Object instance
+    const dbId = env.APPEARANCES.idFromName("main");
+    const db = env.APPEARANCES.get(dbId);
+
+    // Get feed appearances
+    const appearances = await db.getFeedAppearances(userId, 50);
+    const followedSlugs = await db.getFollowedSlugs(userId);
+
+    const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Feed - Based People</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: #ffffff;
+            font-family: 'Space Grotesk', sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            margin-bottom: 40px;
+            padding: 40px 0;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a4d3a 100%);
+            position: relative;
+            border-radius: 12px;
+            border: 1px solid #22c55e20;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 70% 30%, rgba(34, 197, 94, 0.1) 0%, transparent 50%);
+            border-radius: 12px;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+            padding: 0 40px;
+        }
+
+        .header-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #22c55e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-subtitle {
+            color: #d0d0d0;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 1rem;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid #22c55e;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #22c55e;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            padding: 8px 16px;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid #22c55e40;
+            border-radius: 6px;
+            color: #22c55e;
+            font-weight: 600;
+        }
+
+        .nav-links {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: #22c55e;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #16a34a;
+        }
+
+        .feed-container {
+            background: #1a1a1a;
+            border-radius: 12px;
+            border: 1px solid #333;
+            overflow: hidden;
+        }
+
+        .feed-header {
+            background: linear-gradient(135deg, #1f1f1f 0%, #0f2a1f 100%);
+            padding: 20px;
+            border-bottom: 1px solid #333;
+        }
+
+        .feed-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .feed-subtitle {
+            color: #a0a0a0;
+        }
+
+        .appearance-item {
+            padding: 20px;
+            border-bottom: 1px solid #2a2a2a;
+            transition: all 0.3s ease;
+        }
+
+        .appearance-item:last-child {
+            border-bottom: none;
+        }
+
+        .appearance-item:hover {
+            background: #202020;
+        }
+
+        .appearance-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            gap: 15px;
+        }
+
+        .appearance-title {
+            font-weight: 600;
+            color: #ffffff;
+            font-size: 1.1rem;
+            flex: 1;
+            text-decoration: none;
+        }
+
+        .appearance-title:hover {
+            color: #22c55e;
+        }
+
+        .appearance-date {
+            color: #22c55e;
+            font-weight: 600;
+            white-space: nowrap;
+            font-size: 0.95rem;
+        }
+
+        .appearance-person {
+            color: #22c55e;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .appearance-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .appearance-type {
+            padding: 4px 8px;
+            background: #333;
+            border: 1px solid #555;
+            border-radius: 4px;
+            color: #d0d0d0;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .appearance-keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .keyword {
+            padding: 2px 6px;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid #22c55e40;
+            border-radius: 3px;
+            color: #22c55e;
+            font-size: 0.8rem;
+        }
+
+        .empty-feed {
+            padding: 60px 20px;
+            text-align: center;
+            color: #666;
+        }
+
+        .empty-feed h3 {
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+
+        .empty-feed a {
+            color: #22c55e;
+            text-decoration: none;
+        }
+
+        .empty-feed a:hover {
+            color: #16a34a;
+        }
+
+        @media (max-width: 768px) {
+            .appearance-header {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .appearance-date {
+                align-self: flex-start;
+            }
+
+            .header-content {
+                padding: 0 20px;
+            }
+
+            .stats {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav-links">
+            <a href="/">← Back to Home</a>
+            <a href="/logout">Logout</a>
+        </div>
+        
+        <div class="header">
+            <div class="header-content">
+                <h1 class="header-title">Your Feed</h1>
+                <p class="header-subtitle">Latest appearances from people you follow</p>
+                
+                <div class="user-info">
+                    <img src="${
+                      user.profile_image_url || "/default-avatar.png"
+                    }" alt="Avatar" class="user-avatar">
+                    <div>
+                        <div class="user-name">${
+                          user.name || user.username
+                        }</div>
+                        <div style="color: #a0a0a0;">@${user.username}</div>
+                    </div>
+                </div>
+                
+                <div class="stats">
+                    <div class="stat">${followedSlugs.length} Following</div>
+                    <div class="stat">${
+                      appearances.length
+                    } Recent Appearances</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="feed-container">
+            <div class="feed-header">
+                <h2 class="feed-title">Latest Appearances</h2>
+                <p class="feed-subtitle">Reverse chronological order from your followed people</p>
+            </div>
+            
+            ${
+              appearances.length === 0
+                ? `
+                <div class="empty-feed">
+                    <h3>No appearances yet</h3>
+                    <p>You're not following anyone yet, or the people you follow haven't had any appearances.</p>
+                    <p><a href="/">Browse people to follow</a></p>
+                </div>
+            `
+                : `
+                ${appearances
+                  .map(
+                    (appearance) => `
+                    <div class="appearance-item">
+                        <div class="appearance-person">
+                            <a href="/${
+                              appearance.slug
+                            }.html" style="color: #22c55e; text-decoration: none;">
+                                ${appearance.name}
+                            </a>
+                        </div>
+                        <div class="appearance-header">
+                            <a href="${
+                              appearance.url
+                            }" target="_blank" class="appearance-title">
+                                ${appearance.title}
+                            </a>
+                            <div class="appearance-date">
+                                ${new Date(appearance.date).toLocaleDateString(
+                                  "en-US",
+                                  {
+                                    year: "numeric",
+                                    month: "short",
+                                    day: "numeric",
+                                  }
+                                )}
+                            </div>
+                        </div>
+                        <div class="appearance-meta">
+                            <div class="appearance-type">${
+                              appearance.type
+                            }</div>
+                            <div class="appearance-keywords">
+                                ${appearance.keywords
+                                  .map(
+                                    (keyword) =>
+                                      `<span class="keyword">${keyword}</span>`
+                                  )
+                                  .join("")}
+                            </div>
+                        </div>
+                    </div>
+                `
+                  )
+                  .join("")}
+            `
+            }
+        </div>
+    </div>
+</body>
+</html>`;
+
+    return new Response(html, {
+      headers: {
+        "Content-Type": "text/html; charset=utf-8",
+        "Cache-Control": "private, max-age=300", // Cache privately for 5 minutes
+      },
+    });
+  } catch (error) {
+    console.error("Error in handleFeed:", error);
+    return new Response("Internal Server Error", { status: 500 });
   }
 }
 

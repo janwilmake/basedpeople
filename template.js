@@ -33,6 +33,9 @@ function createIndex() {
             <div id="your-people-grid" class="people-grid">
                 <!-- Dynamically populated by JavaScript -->
             </div>
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="/feed" class="cta-button">View Your Feed →</a>
+            </div>
         </div>
     </section>`;
 
