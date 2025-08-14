@@ -18,8 +18,6 @@ interface Appearance {
 
 interface PersonData {
   name: string;
-  lifePeriods: string;
-  searchStrategy: string;
   appearances: Appearance[];
 }
 

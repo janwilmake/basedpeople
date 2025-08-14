@@ -3,7 +3,7 @@
 
 import { personHtmlHandler } from "./personHandler";
 // replace with prod version (people.json) after task seems good
-const PEOPLE_FILE = "people-test.json";
+const PEOPLE_FILE = "people.json";
 export interface Env {
   KV: KVNamespace;
   ASSETS: Fetcher;
@@ -210,7 +210,6 @@ async function handleSeed(request: Request, env: Env): Promise<Response> {
     );
   }
 }
-
 async function handleWebhook(request: Request, env: Env): Promise<Response> {
   try {
     // Get webhook headers for signature verification
@@ -244,26 +243,86 @@ async function handleWebhook(request: Request, env: Env): Promise<Response> {
       return new Response("Event type not supported", { status: 200 });
     }
 
-    // Check if task is completed (success or failure)
-    if (
-      payload.data.status === "completed" ||
-      payload.data.status === "failed"
-    ) {
-      const slug = payload.data.metadata?.slug;
+    const { data } = payload;
+    const slug = data.metadata?.slug;
 
-      if (!slug) {
-        console.error("No slug found in task metadata");
-        return new Response("No slug in metadata", { status: 400 });
-      }
-
-      // Store the full task run data in KV
-      await env.KV.put(`person:${slug}`, JSON.stringify(payload.data));
-
-      return new Response("Webhook processed", { status: 200 });
+    if (!slug) {
+      console.error("No slug found in task metadata");
+      return new Response("No slug in metadata", { status: 400 });
     }
 
-    // Task not yet completed, acknowledge but don't process
-    return new Response("Task not completed", { status: 200 });
+    if (data.status === "completed") {
+      // Get the full result from the API
+      try {
+        const resultResponse = await fetch(
+          `https://api.parallel.ai/v1/tasks/runs/${data.run_id}/result`,
+          {
+            headers: {
+              "x-api-key": env.PARALLEL_API_KEY,
+            },
+          }
+        );
+
+        if (resultResponse.ok) {
+          const resultData = await resultResponse.json();
+
+          // Store the result data in KV
+          const personResult = {
+            status: "completed",
+            result: resultData.output?.content || resultData,
+            lastUpdated: new Date().toISOString(),
+            run_id: data.run_id,
+            metadata: data.metadata,
+          };
+
+          await env.KV.put(`person:${slug}`, JSON.stringify(personResult));
+          console.log(`Successfully stored result for person: ${slug}`);
+        } else {
+          console.error(
+            `Failed to fetch result for run ${data.run_id}:`,
+            await resultResponse.text()
+          );
+
+          // Store failed fetch info
+          const personResult = {
+            status: "fetch_failed",
+            error: `Failed to fetch result: HTTP ${resultResponse.status}`,
+            lastUpdated: new Date().toISOString(),
+            run_id: data.run_id,
+            metadata: data.metadata,
+          };
+
+          await env.KV.put(`person:${slug}`, JSON.stringify(personResult));
+        }
+      } catch (error) {
+        console.error(`Error fetching result for run ${data.run_id}:`, error);
+
+        // Store error info
+        const personResult = {
+          status: "fetch_error",
+          error: error instanceof Error ? error.message : "Unknown error",
+          lastUpdated: new Date().toISOString(),
+          run_id: data.run_id,
+          metadata: data.metadata,
+        };
+
+        await env.KV.put(`person:${slug}`, JSON.stringify(personResult));
+      }
+    } else if (data.status === "failed") {
+      // Store failed task result
+      const personResult = {
+        status: "failed",
+        error: data.error?.message || "Task execution failed",
+        lastUpdated: new Date().toISOString(),
+        run_id: data.run_id,
+        metadata: data.metadata,
+      };
+
+      await env.KV.put(`person:${slug}`, JSON.stringify(personResult));
+      console.log(`Stored failed result for person: ${slug}`);
+    }
+
+    return new Response("Webhook processed", { status: 200 });
   } catch (error) {
     console.error("Webhook error:", error);
     return new Response("Webhook processing failed", { status: 500 });
