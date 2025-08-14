@@ -9,8 +9,8 @@ Learnings:
 - The task interface from paralel itself gave me just a single appearance even though I specified i wanted an array.
 - [the docs on processors](https://docs.parallel.ai/task-api/core-concepts/choose-a-processor) state you can just get up to 25 datapoints, so we need to be creative if we want complete results
 - I built this [little tool](https://tasks.gptideas.com) to test with more freedom in the output schema than the interface has. This allows me to get arrays back!
-- I decided to specify a task output schema myself and came up with [output1.json](output1.json). The problem is that this is already 7 datapoints. I will never be able to get all appearances in one task! Output Examples: [Geoffrey Hinton](https://tasks.gptideas.com/task/04ccdc68-8ba9-4934-897d-dc2569c18fd0), [Elon Musk](https://tasks.gptideas.com/task/4a309d5d-019c-4933-ac87-e0aba4364b29). This looks promising though.
-- [output2.json](output2.json) has just 2 datapoints per appearance! So we can easily do up 10 appearances with the pro processor. Let's try it with [Elon in 2021](). Is this better?
+- I decided to specify a task output schema myself and came up with [output1.json](experiments/output1.json). The problem is that this is already 7 datapoints. I will never be able to get all appearances in one task! Output Examples: [Geoffrey Hinton](https://tasks.gptideas.com/task/04ccdc68-8ba9-4934-897d-dc2569c18fd0), [Elon Musk](https://tasks.gptideas.com/task/4a309d5d-019c-4933-ac87-e0aba4364b29). This looks promising though.
+- [output2.json](experiments/output2.json) has just 2 datapoints per appearance! So we can easily do up 10 appearances with the pro processor. Let's try it with [Elon in 2021](). Is this better?
 - Some people have many more appearances than others, and this is hard to determine upfront for a given person. For example, Claude estimates Elon has up to [300 public appearances over his career](https://letmeprompt.com/rules-httpsuithu-s2wmeg0), while someone less famous (but still famous) like Pavel Durov likely has way less due to his preference of privacy.
 
 Ultimately, I want this dataset to be fully complete:
@@ -56,3 +56,5 @@ I tried this but unfortunately, I ran into an error after it timed out after 1 h
 Since deep research with large processors take quite some time and have a chance to fail, I found it quite difficult to find a good task that works with structured output that includes all historical public appearances. It's a lot of manual iterative work, so I hope I can find ways to make this more systematic for future new projects. How can we minimize research time of finding the right parameters for a given objective?
 
 As a last resort, I am considering to perform an extra step to convert to my desired structured JSON based off the parallel markdown report (or based off the auto JSON); this seems to work really well! https://letmeprompt.com/httpspastebincon-ydkngl0. I saw there's a lot of URLs that weren't correct in this result, so decided to add one line to link to google if the URL is not there or low confidence: https://letmeprompt.com/rules-httpsuithu-qf1xsx0
+
+After seeing that even a simplified search-task schema didn't work, I am now trying to simplify the task.

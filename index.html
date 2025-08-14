@@ -160,18 +160,18 @@
 
         .people-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 20px;
             margin: 60px 0;
         }
 
         .person-card {
             background: #1a1a1a;
-            padding: 20px;
-            border-radius: 8px;
+            padding: 25px;
+            border-radius: 12px;
             border: 1px solid #333;
-            text-align: center;
             transition: all 0.3s ease;
+            position: relative;
         }
 
         .person-card:hover {
@@ -183,74 +183,118 @@
             font-weight: 600;
             color: #ffffff;
             margin-bottom: 0.5rem;
+            font-size: 1.2rem;
         }
 
         .person-category {
             color: #22c55e;
             font-size: 0.9rem;
             font-weight: 500;
-        }
-
-        .pricing {
-            padding: 100px 0;
-            background: linear-gradient(135deg, #0f2a1f 0%, #0a0a0a 100%);
-        }
-
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-            margin-top: 60px;
-        }
-
-        .pricing-card {
-            background: #1a1a1a;
-            padding: 40px 30px;
-            border-radius: 12px;
-            border: 2px solid #333;
-            text-align: center;
-            position: relative;
-        }
-
-        .pricing-card.featured {
-            border-color: #22c55e;
-            background: linear-gradient(135deg, #1a1a1a 0%, #0f2a1f 100%);
-        }
-
-        .pricing-card h3 {
-            font-size: 1.5rem;
-            font-weight: 600;
             margin-bottom: 1rem;
+        }
+
+        .person-summary {
+            color: #c0c0c0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+
+        .person-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn-follow {
+            padding: 8px 16px;
+            border: 2px solid #22c55e;
+            background: transparent;
+            color: #22c55e;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-follow:hover {
+            background: #22c55e;
+            color: #0a0a0a;
+        }
+
+        .btn-follow.following {
+            background: #22c55e;
+            color: #0a0a0a;
+        }
+
+        .btn-follow.following:hover {
+            background: #dc2626;
+            border-color: #dc2626;
             color: #ffffff;
         }
 
-        .price {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #22c55e;
-            margin-bottom: 2rem;
+        .btn-view {
+            padding: 8px 16px;
+            background: #333;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
         }
 
-        .price-subtitle {
-            color: #a0a0a0;
-            margin-bottom: 2rem;
+        .btn-view:hover {
+            background: #444;
         }
 
-        .features {
-            list-style: none;
-            margin-bottom: 2rem;
+        .your-people-section {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #0f2a1f 0%, #0a0a0a 100%);
+            display: none;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
         }
 
-        .features li {
-            padding: 8px 0;
-            color: #d0d0d0;
+        .your-people-section.visible {
+            display: block;
         }
 
-        .features li::before {
-            content: '✓';
-            color: #22c55e;
-            margin-right: 10px;
-            font-weight: bold;
+        .your-people-section.animate-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .your-people-section.no-animation {
+            opacity: 1;
+            transform: translateY(0);
+            transition: none;
+        }
+
+        .your-people-wrapper {
+            min-height: 1px;
+            /* Ensures intersection observer can detect this element even when empty */
+        }
+
+        .your-people-card {
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            transition: all 0.4s ease;
+        }
+
+        .your-people-card.animate-in {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .your-people-card.no-animation {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            transition: none;
         }
 
         footer {
@@ -292,6 +336,10 @@
             .hero-description {
                 font-size: 1rem;
             }
+
+            .people-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -300,14 +348,14 @@
     <section class="hero">
         <div class="container">
             <div class="hero-content">
-                <h1>Based People</h1>
-                <p class="hero-subtitle">Never miss what tech leaders actually say</p>
+                <h1>Never miss what tech leaders actually say</h1>
+                <p class="hero-subtitle">Based People</p>
                 <p class="hero-description">
                     Stop chasing noise. Get the <span class="highlight">actual quotes</span> from the people who shape
                     technology.
                     When Elon tweets, Sam speaks, or Zuck testifies—you'll know immediately.
                 </p>
-                <button class="cta-button" onclick="document.querySelector('.pricing').scrollIntoView()">
+                <button class="cta-button" onclick="document.querySelector('.people-section').scrollIntoView()">
                     Start Following →
                 </button>
             </div>
@@ -342,136 +390,2131 @@
         </div>
     </section>
 
+    <div class="your-people-wrapper">
+        
+    <section id="your-people-section" class="your-people-section">
+        <div class="container">
+            <h2 class="section-title">Your Based People</h2>
+            <div id="your-people-grid" class="people-grid">
+                <!-- Dynamically populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+    </div>
+
     <section class="people-section" style="padding: 80px 0; background: #0a0a0a;">
         <div class="container">
             <h2 class="section-title">Follow the People Who Matter</h2>
-            <div class="people-grid" id="people-grid">
-                <!-- People will be loaded here -->
-            </div>
-        </div>
-    </section>
-
-    <section class="pricing">
-        <div class="container">
-            <h2 class="section-title">Choose Your Level</h2>
-            <div class="pricing-grid">
-                <div class="pricing-card">
-                    <h3>Basic</h3>
-                    <div class="price">Free</div>
-                    <p class="price-subtitle">Perfect for staying informed</p>
-                    <ul class="features">
-                        <li>Follow up to 10 people</li>
-                        <li>Limited access to MCP</li>
-                        <li>Key quotes and appearances</li>
-                        <li>Source links included</li>
-                    </ul>
-                    <button class="cta-button">Get Started Free</button>
+            <div class="people-grid">
+                
+                <div class="person-card">
+                    <div class="person-name">Elon Musk</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">CEO of Tesla and SpaceX, owner of X (formerly Twitter), frequently appears on podcasts like Joe Rogan and interviews</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="elon-musk" 
+                                onclick="toggleFollow('elon-musk', 'Elon Musk')">
+                            Follow
+                        </button>
+                        <a href="/elon-musk.html" class="btn-view">View</a>
+                    </div>
                 </div>
-                <div class="pricing-card featured">
-                    <h3>Based</h3>
-                    <div class="price">$20<span style="font-size: 1rem; color: #a0a0a0;">/month</span></div>
-                    <p class="price-subtitle">For serious operators</p>
-                    <ul class="features">
-                        <li>Follow unlimited people</li>
-                        <li>Full MCP Access</li>
-                        <li>API access</li>
-                    </ul>
-                    <button class="cta-button">Go Real-Time</button>
-                </div>
-            </div>
-        </div>
 
-        <section class="enterprise-section" style="padding: 60px 0; ">
-            <div class="container">
-                <div class="enterprise-card">
-                    <div class="enterprise-content">
-                        <h3>Want full data access? Other enterprise needs?</h3>
-                        <a href="https://x.com/janwilmake" class="enterprise-cta" target="_blank">Talk to us →</a>
+                <div class="person-card">
+                    <div class="person-name">Sam Altman</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">CEO of OpenAI, frequent podcast guest and conference speaker on AI topics</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="sam-altman" 
+                                onclick="toggleFollow('sam-altman', 'Sam Altman')">
+                            Follow
+                        </button>
+                        <a href="/sam-altman.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Jensen Huang</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">CEO of NVIDIA, frequently speaks at AI conferences and tech events about GPUs and AI</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="jensen-huang" 
+                                onclick="toggleFollow('jensen-huang', 'Jensen Huang')">
+                            Follow
+                        </button>
+                        <a href="/jensen-huang.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Satya Nadella</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">CEO of Microsoft, regular conference speaker and media interview participant</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="satya-nadella" 
+                                onclick="toggleFollow('satya-nadella', 'Satya Nadella')">
+                            Follow
+                        </button>
+                        <a href="/satya-nadella.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Sundar Pichai</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">CEO of Alphabet (Google), regular at tech conferences and congressional testimonies</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="sundar-pichai" 
+                                onclick="toggleFollow('sundar-pichai', 'Sundar Pichai')">
+                            Follow
+                        </button>
+                        <a href="/sundar-pichai.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Tim Cook</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">CEO of Apple, frequent keynote speaker and interview guest on major media outlets</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="tim-cook" 
+                                onclick="toggleFollow('tim-cook', 'Tim Cook')">
+                            Follow
+                        </button>
+                        <a href="/tim-cook.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Mark Zuckerberg</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">CEO of Meta (Facebook), often appears in congressional hearings, tech conferences, and interviews</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="mark-zuckerberg" 
+                                onclick="toggleFollow('mark-zuckerberg', 'Mark Zuckerberg')">
+                            Follow
+                        </button>
+                        <a href="/mark-zuckerberg.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Andy Jassy</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">Amazon CEO, frequent cloud computing and enterprise conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="andy-jassy" 
+                                onclick="toggleFollow('andy-jassy', 'Andy Jassy')">
+                            Follow
+                        </button>
+                        <a href="/andy-jassy.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Patrick Collison</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">CEO of Stripe, often appears on tech podcasts and startup conferences</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="patrick-collison" 
+                                onclick="toggleFollow('patrick-collison', 'Patrick Collison')">
+                            Follow
+                        </button>
+                        <a href="/patrick-collison.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">John Collison</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">Stripe co-founder and president, frequent fintech conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="john-collison" 
+                                onclick="toggleFollow('john-collison', 'John Collison')">
+                            Follow
+                        </button>
+                        <a href="/john-collison.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Brian Chesky</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">CEO of Airbnb, regular conference speaker and interview participant</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="brian-chesky" 
+                                onclick="toggleFollow('brian-chesky', 'Brian Chesky')">
+                            Follow
+                        </button>
+                        <a href="/brian-chesky.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Dara Khosrowshahi</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">Uber CEO, frequent transportation and gig economy conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="dara-khosrowshahi" 
+                                onclick="toggleFollow('dara-khosrowshahi', 'Dara Khosrowshahi')">
+                            Follow
+                        </button>
+                        <a href="/dara-khosrowshahi.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Daniel Ek</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">CEO of Spotify, regularly appears in European tech media and conferences</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="daniel-ek" 
+                                onclick="toggleFollow('daniel-ek', 'Daniel Ek')">
+                            Follow
+                        </button>
+                        <a href="/daniel-ek.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Eric Yuan</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">Zoom CEO, frequent video communications and remote work conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="eric-yuan" 
+                                onclick="toggleFollow('eric-yuan', 'Eric Yuan')">
+                            Follow
+                        </button>
+                        <a href="/eric-yuan.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Tobias Lütke</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">CEO of Shopify, appears on e-commerce and tech podcasts</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="tobias-lutke" 
+                                onclick="toggleFollow('tobias-lutke', 'Tobias Lütke')">
+                            Follow
+                        </button>
+                        <a href="/tobias-lutke.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Aaron Levie</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">Box CEO, frequent enterprise cloud storage conference speaker and Twitter commentator</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="aaron-levie" 
+                                onclick="toggleFollow('aaron-levie', 'Aaron Levie')">
+                            Follow
+                        </button>
+                        <a href="/aaron-levie.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Marc Benioff</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">Salesforce CEO, frequent business software and philanthropy conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="marc-benioff" 
+                                onclick="toggleFollow('marc-benioff', 'Marc Benioff')">
+                            Follow
+                        </button>
+                        <a href="/marc-benioff.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Frank Slootman</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">Snowflake CEO, frequent enterprise software and data conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="frank-slootman" 
+                                onclick="toggleFollow('frank-slootman', 'Frank Slootman')">
+                            Follow
+                        </button>
+                        <a href="/frank-slootman.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Jack Dorsey</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">Twitter co-founder, Block (Square) founder, frequent fintech and social media speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="jack-dorsey" 
+                                onclick="toggleFollow('jack-dorsey', 'Jack Dorsey')">
+                            Follow
+                        </button>
+                        <a href="/jack-dorsey.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Brian Armstrong</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">Coinbase CEO, frequent cryptocurrency and blockchain conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="brian-armstrong" 
+                                onclick="toggleFollow('brian-armstrong', 'Brian Armstrong')">
+                            Follow
+                        </button>
+                        <a href="/brian-armstrong.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Reid Hoffman</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">Co-founder of LinkedIn, frequent podcast host and guest, venture capitalist</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="reid-hoffman" 
+                                onclick="toggleFollow('reid-hoffman', 'Reid Hoffman')">
+                            Follow
+                        </button>
+                        <a href="/reid-hoffman.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Kevin Systrom</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">Instagram co-founder, frequent speaker on social media and photography</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="kevin-systrom" 
+                                onclick="toggleFollow('kevin-systrom', 'Kevin Systrom')">
+                            Follow
+                        </button>
+                        <a href="/kevin-systrom.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Jan Koum</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">WhatsApp co-founder, occasional conference speaker on messaging and privacy</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="jan-koum" 
+                                onclick="toggleFollow('jan-koum', 'Jan Koum')">
+                            Follow
+                        </button>
+                        <a href="/jan-koum.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Drew Houston</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">CEO of Dropbox, appears on startup and tech podcasts</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="drew-houston" 
+                                onclick="toggleFollow('drew-houston', 'Drew Houston')">
+                            Follow
+                        </button>
+                        <a href="/drew-houston.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Stewart Butterfield</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">Slack co-founder, frequent workplace collaboration conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="stewart-butterfield" 
+                                onclick="toggleFollow('stewart-butterfield', 'Stewart Butterfield')">
+                            Follow
+                        </button>
+                        <a href="/stewart-butterfield.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Melanie Perkins</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">Canva CEO and co-founder, frequent startup and design conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="melanie-perkins" 
+                                onclick="toggleFollow('melanie-perkins', 'Melanie Perkins')">
+                            Follow
+                        </button>
+                        <a href="/melanie-perkins.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Logan Green</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">Lyft co-founder and former CEO, transportation and mobility conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="logan-green" 
+                                onclick="toggleFollow('logan-green', 'Logan Green')">
+                            Follow
+                        </button>
+                        <a href="/logan-green.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Anthony Levandowski</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">Former Google/Uber autonomous vehicle engineer, controversial figure in self-driving space</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="anthony-levandowski" 
+                                onclick="toggleFollow('anthony-levandowski', 'Anthony Levandowski')">
+                            Follow
+                        </button>
+                        <a href="/anthony-levandowski.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Palmer Luckey</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">Oculus founder, Anduril founder, frequent VR and defense tech conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="palmer-luckey" 
+                                onclick="toggleFollow('palmer-luckey', 'Palmer Luckey')">
+                            Follow
+                        </button>
+                        <a href="/palmer-luckey.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Josh Wolfe</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">Lux Capital co-founder, frequent deep tech and hard tech conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="josh-wolfe" 
+                                onclick="toggleFollow('josh-wolfe', 'Josh Wolfe')">
+                            Follow
+                        </button>
+                        <a href="/josh-wolfe.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Nat Friedman</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">Former GitHub CEO, AI researcher, frequent developer tools conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="nat-friedman" 
+                                onclick="toggleFollow('nat-friedman', 'Nat Friedman')">
+                            Follow
+                        </button>
+                        <a href="/nat-friedman.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Thomas Dohmke</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">Current GitHub CEO, frequent developer conference and AI coding tools speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="thomas-dohmke" 
+                                onclick="toggleFollow('thomas-dohmke', 'Thomas Dohmke')">
+                            Follow
+                        </button>
+                        <a href="/thomas-dohmke.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Scott Farquhar</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">Atlassian co-founder, frequent enterprise software and remote work conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="scott-farquhar" 
+                                onclick="toggleFollow('scott-farquhar', 'Scott Farquhar')">
+                            Follow
+                        </button>
+                        <a href="/scott-farquhar.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Mike Cannon-Brookes</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">Atlassian co-founder, climate tech investor, Australian tech conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="mike-cannon-brookes" 
+                                onclick="toggleFollow('mike-cannon-brookes', 'Mike Cannon-Brookes')">
+                            Follow
+                        </button>
+                        <a href="/mike-cannon-brookes.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Vlad Tenev</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">Robinhood CEO, frequent fintech and democratizing finance conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="vlad-tenev" 
+                                onclick="toggleFollow('vlad-tenev', 'Vlad Tenev')">
+                            Follow
+                        </button>
+                        <a href="/vlad-tenev.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Aparna Chennapragada</div>
+                    <div class="person-category">CEO/Founder</div>
+                    <div class="person-summary">Former Google executive, Robinhood CPO, frequent product management conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="aparna-chennapragada" 
+                                onclick="toggleFollow('aparna-chennapragada', 'Aparna Chennapragada')">
+                            Follow
+                        </button>
+                        <a href="/aparna-chennapragada.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">John Carmack</div>
+                    <div class="person-category">Programmer/Engineer</div>
+                    <div class="person-summary">Legendary game programmer (id Software, Oculus), frequent conference keynote speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="john-carmack" 
+                                onclick="toggleFollow('john-carmack', 'John Carmack')">
+                            Follow
+                        </button>
+                        <a href="/john-carmack.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Linus Torvalds</div>
+                    <div class="person-category">Programmer/Engineer</div>
+                    <div class="person-summary">Creator of Linux and Git, occasional conference speaker and interview participant</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="linus-torvalds" 
+                                onclick="toggleFollow('linus-torvalds', 'Linus Torvalds')">
+                            Follow
+                        </button>
+                        <a href="/linus-torvalds.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Guido van Rossum</div>
+                    <div class="person-category">Programmer/Engineer</div>
+                    <div class="person-summary">Creator of Python programming language, appears at Python conferences and tech talks</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="guido-van-rossum" 
+                                onclick="toggleFollow('guido-van-rossum', 'Guido van Rossum')">
+                            Follow
+                        </button>
+                        <a href="/guido-van-rossum.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Brendan Eich</div>
+                    <div class="person-category">Programmer/Engineer</div>
+                    <div class="person-summary">Creator of JavaScript, founder of Brave Browser, tech conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="brendan-eich" 
+                                onclick="toggleFollow('brendan-eich', 'Brendan Eich')">
+                            Follow
+                        </button>
+                        <a href="/brendan-eich.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Anders Hejlsberg</div>
+                    <div class="person-category">Programmer/Engineer</div>
+                    <div class="person-summary">Creator of TypeScript and C#, Microsoft technical fellow, conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="anders-hejlsberg" 
+                                onclick="toggleFollow('anders-hejlsberg', 'Anders Hejlsberg')">
+                            Follow
+                        </button>
+                        <a href="/anders-hejlsberg.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">DHH (David Heinemeier Hansson)</div>
+                    <div class="person-category">Programmer/Engineer</div>
+                    <div class="person-summary">Creator of Ruby on Rails, CTO of Basecamp, frequent podcast guest and blogger</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="dhh" 
+                                onclick="toggleFollow('dhh', 'DHH (David Heinemeier Hansson)')">
+                            Follow
+                        </button>
+                        <a href="/dhh.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Rich Hickey</div>
+                    <div class="person-category">Programmer/Engineer</div>
+                    <div class="person-summary">Creator of Clojure programming language, conference speaker on functional programming</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="rich-hickey" 
+                                onclick="toggleFollow('rich-hickey', 'Rich Hickey')">
+                            Follow
+                        </button>
+                        <a href="/rich-hickey.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Werner Vogels</div>
+                    <div class="person-category">Programmer/Engineer</div>
+                    <div class="person-summary">Amazon CTO, frequent AWS and distributed systems conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="werner-vogels" 
+                                onclick="toggleFollow('werner-vogels', 'Werner Vogels')">
+                            Follow
+                        </button>
+                        <a href="/werner-vogels.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Vitalik Buterin</div>
+                    <div class="person-category">Programmer/Engineer</div>
+                    <div class="person-summary">Ethereum co-founder, frequent blockchain and cryptocurrency conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="vitalik-buterin" 
+                                onclick="toggleFollow('vitalik-buterin', 'Vitalik Buterin')">
+                            Follow
+                        </button>
+                        <a href="/vitalik-buterin.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Ryan Dahl</div>
+                    <div class="person-category">Programmer/Engineer</div>
+                    <div class="person-summary">Creator of Node.js and Deno, frequent JavaScript and runtime conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="ryan-dahl" 
+                                onclick="toggleFollow('ryan-dahl', 'Ryan Dahl')">
+                            Follow
+                        </button>
+                        <a href="/ryan-dahl.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Graydon Hoare</div>
+                    <div class="person-category">Programmer/Engineer</div>
+                    <div class="person-summary">Creator of Rust programming language, systems programming conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="graydon-hoare" 
+                                onclick="toggleFollow('graydon-hoare', 'Graydon Hoare')">
+                            Follow
+                        </button>
+                        <a href="/graydon-hoare.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Rob Pike</div>
+                    <div class="person-category">Programmer/Engineer</div>
+                    <div class="person-summary">Go programming language co-creator, former Google engineer, systems programming speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="rob-pike" 
+                                onclick="toggleFollow('rob-pike', 'Rob Pike')">
+                            Follow
+                        </button>
+                        <a href="/rob-pike.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Ken Thompson</div>
+                    <div class="person-category">Programmer/Engineer</div>
+                    <div class="person-summary">Unix co-creator, Go co-creator, legendary systems programmer, occasional speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="ken-thompson" 
+                                onclick="toggleFollow('ken-thompson', 'Ken Thompson')">
+                            Follow
+                        </button>
+                        <a href="/ken-thompson.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Dennis Ritchie</div>
+                    <div class="person-category">Programmer/Engineer</div>
+                    <div class="person-summary">Creator of C programming language, Unix co-creator (historical figure)</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="dennis-ritchie" 
+                                onclick="toggleFollow('dennis-ritchie', 'Dennis Ritchie')">
+                            Follow
+                        </button>
+                        <a href="/dennis-ritchie.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Bjarne Stroustrup</div>
+                    <div class="person-category">Programmer/Engineer</div>
+                    <div class="person-summary">Creator of C++ programming language, frequent programming language conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="bjarne-stroustrup" 
+                                onclick="toggleFollow('bjarne-stroustrup', 'Bjarne Stroustrup')">
+                            Follow
+                        </button>
+                        <a href="/bjarne-stroustrup.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">James Gosling</div>
+                    <div class="person-category">Programmer/Engineer</div>
+                    <div class="person-summary">Creator of Java programming language, frequent programming conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="james-gosling" 
+                                onclick="toggleFollow('james-gosling', 'James Gosling')">
+                            Follow
+                        </button>
+                        <a href="/james-gosling.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Larry Wall</div>
+                    <div class="person-category">Programmer/Engineer</div>
+                    <div class="person-summary">Creator of Perl programming language, occasional programming conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="larry-wall" 
+                                onclick="toggleFollow('larry-wall', 'Larry Wall')">
+                            Follow
+                        </button>
+                        <a href="/larry-wall.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Yukihiro Matsumoto (Matz)</div>
+                    <div class="person-category">Programmer/Engineer</div>
+                    <div class="person-summary">Creator of Ruby programming language, frequent Ruby conference keynote speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="yukihiro-matsumoto" 
+                                onclick="toggleFollow('yukihiro-matsumoto', 'Yukihiro Matsumoto (Matz)')">
+                            Follow
+                        </button>
+                        <a href="/yukihiro-matsumoto.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Brad Fitzpatrick</div>
+                    <div class="person-category">Programmer/Engineer</div>
+                    <div class="person-summary">Creator of LiveJournal, memcached, Go contributor, systems programming speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="brad-fitzpatrick" 
+                                onclick="toggleFollow('brad-fitzpatrick', 'Brad Fitzpatrick')">
+                            Follow
+                        </button>
+                        <a href="/brad-fitzpatrick.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Evan You</div>
+                    <div class="person-category">Programmer/Engineer</div>
+                    <div class="person-summary">Creator of Vue.js, frequent frontend development conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="evan-you" 
+                                onclick="toggleFollow('evan-you', 'Evan You')">
+                            Follow
+                        </button>
+                        <a href="/evan-you.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Dan Abramov</div>
+                    <div class="person-category">Programmer/Engineer</div>
+                    <div class="person-summary">React core team member, Redux creator, frequent React conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="dan-abramov" 
+                                onclick="toggleFollow('dan-abramov', 'Dan Abramov')">
+                            Follow
+                        </button>
+                        <a href="/dan-abramov.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Sebastian McKenzie</div>
+                    <div class="person-category">Programmer/Engineer</div>
+                    <div class="person-summary">Creator of Babel and Yarn, Rome tools founder, JavaScript tooling conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="sebastian-mckenzie" 
+                                onclick="toggleFollow('sebastian-mckenzie', 'Sebastian McKenzie')">
+                            Follow
+                        </button>
+                        <a href="/sebastian-mckenzie.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">TJ Holowaychuk</div>
+                    <div class="person-category">Programmer/Engineer</div>
+                    <div class="person-summary">Creator of Express.js and many Node.js libraries, occasional conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="tj-holowaychuk" 
+                                onclick="toggleFollow('tj-holowaychuk', 'TJ Holowaychuk')">
+                            Follow
+                        </button>
+                        <a href="/tj-holowaychuk.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Fabrice Bellard</div>
+                    <div class="person-category">Programmer/Engineer</div>
+                    <div class="person-summary">Creator of QEMU, FFmpeg, and QuickJS, legendary systems programmer, rare speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="fabrice-bellard" 
+                                onclick="toggleFollow('fabrice-bellard', 'Fabrice Bellard')">
+                            Follow
+                        </button>
+                        <a href="/fabrice-bellard.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Daniel Stenberg</div>
+                    <div class="person-category">Programmer/Engineer</div>
+                    <div class="person-summary">Creator of curl, frequent open source and HTTP conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="daniel-stenberg" 
+                                onclick="toggleFollow('daniel-stenberg', 'Daniel Stenberg')">
+                            Follow
+                        </button>
+                        <a href="/daniel-stenberg.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Havoc Pennington</div>
+                    <div class="person-category">Programmer/Engineer</div>
+                    <div class="person-summary">GNOME contributor, former Red Hat engineer, Linux desktop conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="havoc-pennington" 
+                                onclick="toggleFollow('havoc-pennington', 'Havoc Pennington')">
+                            Follow
+                        </button>
+                        <a href="/havoc-pennington.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Miguel de Icaza</div>
+                    <div class="person-category">Programmer/Engineer</div>
+                    <div class="person-summary">GNOME co-founder, Mono creator, Xamarin founder, .NET and open source speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="miguel-de-icaza" 
+                                onclick="toggleFollow('miguel-de-icaza', 'Miguel de Icaza')">
+                            Follow
+                        </button>
+                        <a href="/miguel-de-icaza.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Matthias Ettrich</div>
+                    <div class="person-category">Programmer/Engineer</div>
+                    <div class="person-summary">KDE founder, Qt contributor, Linux desktop conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="matthias-ettrich" 
+                                onclick="toggleFollow('matthias-ettrich', 'Matthias Ettrich')">
+                            Follow
+                        </button>
+                        <a href="/matthias-ettrich.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Jordan Walke</div>
+                    <div class="person-category">Programmer/Engineer</div>
+                    <div class="person-summary">Creator of React at Facebook, frontend development conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="jordan-walke" 
+                                onclick="toggleFollow('jordan-walke', 'Jordan Walke')">
+                            Follow
+                        </button>
+                        <a href="/jordan-walke.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Sophie Alpert</div>
+                    <div class="person-category">Programmer/Engineer</div>
+                    <div class="person-summary">Former React team lead, frequent React and frontend conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="sophie-alpert" 
+                                onclick="toggleFollow('sophie-alpert', 'Sophie Alpert')">
+                            Follow
+                        </button>
+                        <a href="/sophie-alpert.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Marc Andreessen</div>
+                    <div class="person-category">Investor/VC</div>
+                    <div class="person-summary">Co-founder of Andreessen Horowitz, frequent Twitter commentator and podcast guest</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="marc-andreessen" 
+                                onclick="toggleFollow('marc-andreessen', 'Marc Andreessen')">
+                            Follow
+                        </button>
+                        <a href="/marc-andreessen.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Ben Horowitz</div>
+                    <div class="person-category">Investor/VC</div>
+                    <div class="person-summary">Co-founder of Andreessen Horowitz, author, podcast guest on business topics</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="ben-horowitz" 
+                                onclick="toggleFollow('ben-horowitz', 'Ben Horowitz')">
+                            Follow
+                        </button>
+                        <a href="/ben-horowitz.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Peter Thiel</div>
+                    <div class="person-category">Investor/VC</div>
+                    <div class="person-summary">Co-founder of PayPal and Palantir, investor, author, frequent interview participant</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="peter-thiel" 
+                                onclick="toggleFollow('peter-thiel', 'Peter Thiel')">
+                            Follow
+                        </button>
+                        <a href="/peter-thiel.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Naval Ravikant</div>
+                    <div class="person-category">Investor/VC</div>
+                    <div class="person-summary">AngelList founder, philosopher-investor, popular podcast guest</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="naval-ravikant" 
+                                onclick="toggleFollow('naval-ravikant', 'Naval Ravikant')">
+                            Follow
+                        </button>
+                        <a href="/naval-ravikant.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Chamath Palihapitiya</div>
+                    <div class="person-category">Investor/VC</div>
+                    <div class="person-summary">Former Facebook executive, SPAC investor, frequent podcast guest</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="chamath-palihapitiya" 
+                                onclick="toggleFollow('chamath-palihapitiya', 'Chamath Palihapitiya')">
+                            Follow
+                        </button>
+                        <a href="/chamath-palihapitiya.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Keith Rabois</div>
+                    <div class="person-category">Investor/VC</div>
+                    <div class="person-summary">PayPal Mafia member, Founders Fund partner, active on Twitter and podcasts</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="keith-rabois" 
+                                onclick="toggleFollow('keith-rabois', 'Keith Rabois')">
+                            Follow
+                        </button>
+                        <a href="/keith-rabois.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Chris Dixon</div>
+                    <div class="person-category">Investor/VC</div>
+                    <div class="person-summary">a16z crypto partner, frequent Web3 and blockchain conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="chris-dixon" 
+                                onclick="toggleFollow('chris-dixon', 'Chris Dixon')">
+                            Follow
+                        </button>
+                        <a href="/chris-dixon.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Mary Meeker</div>
+                    <div class="person-category">Investor/VC</div>
+                    <div class="person-summary">Venture capitalist, famous for annual Internet Trends report, conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="mary-meeker" 
+                                onclick="toggleFollow('mary-meeker', 'Mary Meeker')">
+                            Follow
+                        </button>
+                        <a href="/mary-meeker.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Max Levchin</div>
+                    <div class="person-category">Investor/VC</div>
+                    <div class="person-summary">PayPal co-founder, Affirm CEO, frequent fintech conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="max-levchin" 
+                                onclick="toggleFollow('max-levchin', 'Max Levchin')">
+                            Follow
+                        </button>
+                        <a href="/max-levchin.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Paul Graham</div>
+                    <div class="person-category">Investor/VC</div>
+                    <div class="person-summary">Y Combinator co-founder, essayist, occasional conference speaker and interview participant</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="paul-graham" 
+                                onclick="toggleFollow('paul-graham', 'Paul Graham')">
+                            Follow
+                        </button>
+                        <a href="/paul-graham.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Jessica Livingston</div>
+                    <div class="person-category">Investor/VC</div>
+                    <div class="person-summary">Y Combinator co-founder, author of 'Founders at Work', startup conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="jessica-livingston" 
+                                onclick="toggleFollow('jessica-livingston', 'Jessica Livingston')">
+                            Follow
+                        </button>
+                        <a href="/jessica-livingston.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Garry Tan</div>
+                    <div class="person-category">Investor/VC</div>
+                    <div class="person-summary">Y Combinator president, former Posterous founder, frequent startup conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="garry-tan" 
+                                onclick="toggleFollow('garry-tan', 'Garry Tan')">
+                            Follow
+                        </button>
+                        <a href="/garry-tan.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Elad Gil</div>
+                    <div class="person-category">Investor/VC</div>
+                    <div class="person-summary">Serial entrepreneur and investor, author of 'High Growth Handbook', podcast guest</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="elad-gil" 
+                                onclick="toggleFollow('elad-gil', 'Elad Gil')">
+                            Follow
+                        </button>
+                        <a href="/elad-gil.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Balaji Srinivasan</div>
+                    <div class="person-category">Investor/VC</div>
+                    <div class="person-summary">Former a16z partner, crypto advocate, frequent podcast guest and conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="balaji-srinivasan" 
+                                onclick="toggleFollow('balaji-srinivasan', 'Balaji Srinivasan')">
+                            Follow
+                        </button>
+                        <a href="/balaji-srinivasan.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Cathie Wood</div>
+                    <div class="person-category">Investor/VC</div>
+                    <div class="person-summary">ARK Invest CEO, disruptive innovation investor, frequent financial media guest</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="cathie-wood" 
+                                onclick="toggleFollow('cathie-wood', 'Cathie Wood')">
+                            Follow
+                        </button>
+                        <a href="/cathie-wood.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Bill Gurley</div>
+                    <div class="person-category">Investor/VC</div>
+                    <div class="person-summary">Benchmark partner, former Uber board member, frequent conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="bill-gurley" 
+                                onclick="toggleFollow('bill-gurley', 'Bill Gurley')">
+                            Follow
+                        </button>
+                        <a href="/bill-gurley.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Fred Wilson</div>
+                    <div class="person-category">Investor/VC</div>
+                    <div class="person-summary">Union Square Ventures partner, prolific blogger (AVC), frequent conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="fred-wilson" 
+                                onclick="toggleFollow('fred-wilson', 'Fred Wilson')">
+                            Follow
+                        </button>
+                        <a href="/fred-wilson.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Brad Feld</div>
+                    <div class="person-category">Investor/VC</div>
+                    <div class="person-summary">Foundry Group partner, author, frequent entrepreneurship conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="brad-feld" 
+                                onclick="toggleFollow('brad-feld', 'Brad Feld')">
+                            Follow
+                        </button>
+                        <a href="/brad-feld.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">David Sacks</div>
+                    <div class="person-category">Investor/VC</div>
+                    <div class="person-summary">Craft Ventures founder, former PayPal COO, frequent podcast guest</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="david-sacks" 
+                                onclick="toggleFollow('david-sacks', 'David Sacks')">
+                            Follow
+                        </button>
+                        <a href="/david-sacks.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Jason Lemkin</div>
+                    <div class="person-category">Investor/VC</div>
+                    <div class="person-summary">SaaStr founder, SaaS investor, frequent SaaS conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="jason-lemkin" 
+                                onclick="toggleFollow('jason-lemkin', 'Jason Lemkin')">
+                            Follow
+                        </button>
+                        <a href="/jason-lemkin.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Kara Swisher</div>
+                    <div class="person-category">Writer/Journalist</div>
+                    <div class="person-summary">Tech journalist, podcast host (Pivot, Sway), frequent interview show guest</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="kara-swisher" 
+                                onclick="toggleFollow('kara-swisher', 'Kara Swisher')">
+                            Follow
+                        </button>
+                        <a href="/kara-swisher.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Ben Thompson</div>
+                    <div class="person-category">Writer/Journalist</div>
+                    <div class="person-summary">Stratechery newsletter author, Sharp Tech podcast, business strategy analyst</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="ben-thompson" 
+                                onclick="toggleFollow('ben-thompson', 'Ben Thompson')">
+                            Follow
+                        </button>
+                        <a href="/ben-thompson.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Casey Newton</div>
+                    <div class="person-category">Writer/Journalist</div>
+                    <div class="person-summary">Tech journalist, Platformer newsletter, frequent podcast guest</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="casey-newton" 
+                                onclick="toggleFollow('casey-newton', 'Casey Newton')">
+                            Follow
+                        </button>
+                        <a href="/casey-newton.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Steven Levy</div>
+                    <div class="person-category">Writer/Journalist</div>
+                    <div class="person-summary">Senior writer at Wired, author of multiple tech books, frequent interview participant</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="steven-levy" 
+                                onclick="toggleFollow('steven-levy', 'Steven Levy')">
+                            Follow
+                        </button>
+                        <a href="/steven-levy.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Walt Mossberg</div>
+                    <div class="person-category">Writer/Journalist</div>
+                    <div class="person-summary">Veteran tech journalist, co-founder of Recode, frequent media appearances</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="walt-mossberg" 
+                                onclick="toggleFollow('walt-mossberg', 'Walt Mossberg')">
+                            Follow
+                        </button>
+                        <a href="/walt-mossberg.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Benedict Evans</div>
+                    <div class="person-category">Writer/Journalist</div>
+                    <div class="person-summary">Independent tech analyst, newsletter author, frequent conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="benedict-evans" 
+                                onclick="toggleFollow('benedict-evans', 'Benedict Evans')">
+                            Follow
+                        </button>
+                        <a href="/benedict-evans.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">John Gruber</div>
+                    <div class="person-category">Writer/Journalist</div>
+                    <div class="person-summary">Daring Fireball author, The Talk Show podcast host, Apple industry commentator</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="john-gruber" 
+                                onclick="toggleFollow('john-gruber', 'John Gruber')">
+                            Follow
+                        </button>
+                        <a href="/john-gruber.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Om Malik</div>
+                    <div class="person-category">Writer/Journalist</div>
+                    <div class="person-summary">Tech journalist, former GigaOm founder, frequent conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="om-malik" 
+                                onclick="toggleFollow('om-malik', 'Om Malik')">
+                            Follow
+                        </button>
+                        <a href="/om-malik.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Dan Luu</div>
+                    <div class="person-category">Writer/Journalist</div>
+                    <div class="person-summary">Systems engineer, technical blogger, occasional conference speaker on performance</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="dan-luu" 
+                                onclick="toggleFollow('dan-luu', 'Dan Luu')">
+                            Follow
+                        </button>
+                        <a href="/dan-luu.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Julia Evans</div>
+                    <div class="person-category">Writer/Journalist</div>
+                    <div class="person-summary">Technical blogger (Julia Evans), frequent systems programming conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="julia-evans" 
+                                onclick="toggleFollow('julia-evans', 'Julia Evans')">
+                            Follow
+                        </button>
+                        <a href="/julia-evans.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Jessie Frazelle</div>
+                    <div class="person-category">Writer/Journalist</div>
+                    <div class="person-summary">Former Docker/Google engineer, technical blogger, containers conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="jessie-frazelle" 
+                                onclick="toggleFollow('jessie-frazelle', 'Jessie Frazelle')">
+                            Follow
+                        </button>
+                        <a href="/jessie-frazelle.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Yuval Noah Harari</div>
+                    <div class="person-category">Philosopher/Academic</div>
+                    <div class="person-summary">Historian and philosopher, author of 'Sapiens', frequent speaker on AI and humanity</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="yuval-harari" 
+                                onclick="toggleFollow('yuval-harari', 'Yuval Noah Harari')">
+                            Follow
+                        </button>
+                        <a href="/yuval-harari.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Nick Bostrom</div>
+                    <div class="person-category">Philosopher/Academic</div>
+                    <div class="person-summary">Oxford philosopher, expert on existential risks and AI safety, author of 'Superintelligence'</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="nick-bostrom" 
+                                onclick="toggleFollow('nick-bostrom', 'Nick Bostrom')">
+                            Follow
+                        </button>
+                        <a href="/nick-bostrom.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Stuart Russell</div>
+                    <div class="person-category">Philosopher/Academic</div>
+                    <div class="person-summary">UC Berkeley AI professor, author of 'Human Compatible', expert on AI safety</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="stuart-russell" 
+                                onclick="toggleFollow('stuart-russell', 'Stuart Russell')">
+                            Follow
+                        </button>
+                        <a href="/stuart-russell.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Jaron Lanier</div>
+                    <div class="person-category">Philosopher/Academic</div>
+                    <div class="person-summary">Computer scientist, author of 'Ten Arguments for Deleting Your Social Media Accounts'</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="jaron-lanier" 
+                                onclick="toggleFollow('jaron-lanier', 'Jaron Lanier')">
+                            Follow
+                        </button>
+                        <a href="/jaron-lanier.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Sherry Turkle</div>
+                    <div class="person-category">Philosopher/Academic</div>
+                    <div class="person-summary">MIT professor, expert on human-computer interaction, author, frequent media appearances</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="sherry-turkle" 
+                                onclick="toggleFollow('sherry-turkle', 'Sherry Turkle')">
+                            Follow
+                        </button>
+                        <a href="/sherry-turkle.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Cynthia Dwork</div>
+                    <div class="person-category">Philosopher/Academic</div>
+                    <div class="person-summary">Harvard professor, pioneer in differential privacy, frequent academic conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="cynthia-dwork" 
+                                onclick="toggleFollow('cynthia-dwork', 'Cynthia Dwork')">
+                            Follow
+                        </button>
+                        <a href="/cynthia-dwork.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Lina Khan</div>
+                    <div class="person-category">Philosopher/Academic</div>
+                    <div class="person-summary">FTC Chair, antitrust expert focused on tech companies</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="lina-khan" 
+                                onclick="toggleFollow('lina-khan', 'Lina Khan')">
+                            Follow
+                        </button>
+                        <a href="/lina-khan.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Zeynep Tufekci</div>
+                    <div class="person-category">Philosopher/Academic</div>
+                    <div class="person-summary">UNC professor, tech critic, frequent media commentator on social media effects</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="zeynep-tufekci" 
+                                onclick="toggleFollow('zeynep-tufekci', 'Zeynep Tufekci')">
+                            Follow
+                        </button>
+                        <a href="/zeynep-tufekci.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Cathy O'Neil</div>
+                    <div class="person-category">Philosopher/Academic</div>
+                    <div class="person-summary">Author of 'Weapons of Math Destruction', algorithmic accountability expert</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="cathy-oneil" 
+                                onclick="toggleFollow('cathy-oneil', 'Cathy O'Neil')">
+                            Follow
+                        </button>
+                        <a href="/cathy-oneil.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Safiya Noble</div>
+                    <div class="person-category">Philosopher/Academic</div>
+                    <div class="person-summary">UCLA professor, author of 'Algorithms of Oppression', frequent AI bias conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="safiya-noble" 
+                                onclick="toggleFollow('safiya-noble', 'Safiya Noble')">
+                            Follow
+                        </button>
+                        <a href="/safiya-noble.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Lex Fridman</div>
+                    <div class="person-category">Podcaster/Media</div>
+                    <div class="person-summary">AI researcher and podcast host, interviews tech leaders and scientists</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="lex-fridman" 
+                                onclick="toggleFollow('lex-fridman', 'Lex Fridman')">
+                            Follow
+                        </button>
+                        <a href="/lex-fridman.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Jason Calacanis</div>
+                    <div class="person-category">Podcaster/Media</div>
+                    <div class="person-summary">Angel investor and podcast host (This Week in Startups), frequent conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="jason-calacanis" 
+                                onclick="toggleFollow('jason-calacanis', 'Jason Calacanis')">
+                            Follow
+                        </button>
+                        <a href="/jason-calacanis.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Tim Ferriss</div>
+                    <div class="person-category">Podcaster/Media</div>
+                    <div class="person-summary">Author and podcast host (The Tim Ferriss Show), frequent productivity conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="tim-ferriss" 
+                                onclick="toggleFollow('tim-ferriss', 'Tim Ferriss')">
+                            Follow
+                        </button>
+                        <a href="/tim-ferriss.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Joe Rogan</div>
+                    <div class="person-category">Podcaster/Media</div>
+                    <div class="person-summary">Podcast host (Joe Rogan Experience), frequent long-form tech leader interviews</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="joe-rogan" 
+                                onclick="toggleFollow('joe-rogan', 'Joe Rogan')">
+                            Follow
+                        </button>
+                        <a href="/joe-rogan.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Patrick O'Shaughnessy</div>
+                    <div class="person-category">Podcaster/Media</div>
+                    <div class="person-summary">Invest Like the Best podcast host, frequent tech investor interviews</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="patrick-oshaughnessy" 
+                                onclick="toggleFollow('patrick-oshaughnessy', 'Patrick O'Shaughnessy')">
+                            Follow
+                        </button>
+                        <a href="/patrick-oshaughnessy.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Shane Parrish</div>
+                    <div class="person-category">Podcaster/Media</div>
+                    <div class="person-summary">The Knowledge Project podcast host, decision-making and mental models expert</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="shane-parrish" 
+                                onclick="toggleFollow('shane-parrish', 'Shane Parrish')">
+                            Follow
+                        </button>
+                        <a href="/shane-parrish.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Cal Newport</div>
+                    <div class="person-category">Podcaster/Media</div>
+                    <div class="person-summary">Computer science professor, author of 'Deep Work', productivity conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="cal-newport" 
+                                onclick="toggleFollow('cal-newport', 'Cal Newport')">
+                            Follow
+                        </button>
+                        <a href="/cal-newport.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Tony Fadell</div>
+                    <div class="person-category">Product Leader</div>
+                    <div class="person-summary">iPod creator, Nest founder, frequent product design and innovation speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="tony-fadell" 
+                                onclick="toggleFollow('tony-fadell', 'Tony Fadell')">
+                            Follow
+                        </button>
+                        <a href="/tony-fadell.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Susan Wojcicki</div>
+                    <div class="person-category">Product Leader</div>
+                    <div class="person-summary">Former YouTube CEO, frequent speaker on digital media and platform governance</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="susan-wojcicki" 
+                                onclick="toggleFollow('susan-wojcicki', 'Susan Wojcicki')">
+                            Follow
+                        </button>
+                        <a href="/susan-wojcicki.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Marissa Mayer</div>
+                    <div class="person-category">Product Leader</div>
+                    <div class="person-summary">Former Yahoo CEO and Google VP, frequent conference speaker on product development</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="marissa-mayer" 
+                                onclick="toggleFollow('marissa-mayer', 'Marissa Mayer')">
+                            Follow
+                        </button>
+                        <a href="/marissa-mayer.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Julie Zhuo</div>
+                    <div class="person-category">Product Leader</div>
+                    <div class="person-summary">Former Facebook VP of Product Design, author of 'The Making of a Manager'</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="julie-zhuo" 
+                                onclick="toggleFollow('julie-zhuo', 'Julie Zhuo')">
+                            Follow
+                        </button>
+                        <a href="/julie-zhuo.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">April Dunford</div>
+                    <div class="person-category">Product Leader</div>
+                    <div class="person-summary">Positioning expert, author of 'Obviously Awesome', frequent product marketing speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="april-dunford" 
+                                onclick="toggleFollow('april-dunford', 'April Dunford')">
+                            Follow
+                        </button>
+                        <a href="/april-dunford.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Des Traynor</div>
+                    <div class="person-category">Product Leader</div>
+                    <div class="person-summary">Intercom co-founder, frequent product management and customer experience speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="des-traynor" 
+                                onclick="toggleFollow('des-traynor', 'Des Traynor')">
+                            Follow
+                        </button>
+                        <a href="/des-traynor.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Jason Fried</div>
+                    <div class="person-category">Product Leader</div>
+                    <div class="person-summary">Basecamp co-founder, author of 'ReWork', frequent remote work conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="jason-fried" 
+                                onclick="toggleFollow('jason-fried', 'Jason Fried')">
+                            Follow
+                        </button>
+                        <a href="/jason-fried.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Bruce Schneier</div>
+                    <div class="person-category">Security Expert</div>
+                    <div class="person-summary">Cryptographer and security technologist, author, frequent media commentator on cybersecurity</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="bruce-schneier" 
+                                onclick="toggleFollow('bruce-schneier', 'Bruce Schneier')">
+                            Follow
+                        </button>
+                        <a href="/bruce-schneier.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Edward Snowden</div>
+                    <div class="person-category">Security Expert</div>
+                    <div class="person-summary">NSA whistleblower, privacy advocate, frequent remote conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="edward-snowden" 
+                                onclick="toggleFollow('edward-snowden', 'Edward Snowden')">
+                            Follow
+                        </button>
+                        <a href="/edward-snowden.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Matthew Green</div>
+                    <div class="person-category">Security Expert</div>
+                    <div class="person-summary">Johns Hopkins cryptographer, frequent security conference speaker and blogger</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="matthew-green" 
+                                onclick="toggleFollow('matthew-green', 'Matthew Green')">
+                            Follow
+                        </button>
+                        <a href="/matthew-green.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Dan Kaminsky</div>
+                    <div class="person-category">Security Expert</div>
+                    <div class="person-summary">Security researcher, DNS vulnerability discoverer, frequent conference speaker (deceased 2021)</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="dan-kaminsky" 
+                                onclick="toggleFollow('dan-kaminsky', 'Dan Kaminsky')">
+                            Follow
+                        </button>
+                        <a href="/dan-kaminsky.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Katie Moussouris</div>
+                    <div class="person-category">Security Expert</div>
+                    <div class="person-summary">Security researcher, bug bounty pioneer, frequent security conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="katie-moussouris" 
+                                onclick="toggleFollow('katie-moussouris', 'Katie Moussouris')">
+                            Follow
+                        </button>
+                        <a href="/katie-moussouris.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Geoffrey Hinton</div>
+                    <div class="person-category">AI Researcher</div>
+                    <div class="person-summary">Deep learning pioneer, former Google researcher, frequent speaker on AI development</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="geoffrey-hinton" 
+                                onclick="toggleFollow('geoffrey-hinton', 'Geoffrey Hinton')">
+                            Follow
+                        </button>
+                        <a href="/geoffrey-hinton.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Yann LeCun</div>
+                    <div class="person-category">AI Researcher</div>
+                    <div class="person-summary">Meta AI Research director, NYU professor, frequent AI conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="yann-lecun" 
+                                onclick="toggleFollow('yann-lecun', 'Yann LeCun')">
+                            Follow
+                        </button>
+                        <a href="/yann-lecun.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Andrew Ng</div>
+                    <div class="person-category">AI Researcher</div>
+                    <div class="person-summary">AI researcher, Coursera co-founder, frequent educator and conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="andrew-ng" 
+                                onclick="toggleFollow('andrew-ng', 'Andrew Ng')">
+                            Follow
+                        </button>
+                        <a href="/andrew-ng.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Demis Hassabis</div>
+                    <div class="person-category">AI Researcher</div>
+                    <div class="person-summary">DeepMind CEO and co-founder, frequent speaker on AI and neuroscience</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="demis-hassabis" 
+                                onclick="toggleFollow('demis-hassabis', 'Demis Hassabis')">
+                            Follow
+                        </button>
+                        <a href="/demis-hassabis.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Fei-Fei Li</div>
+                    <div class="person-category">AI Researcher</div>
+                    <div class="person-summary">Stanford AI professor, former Google Cloud AI chief scientist, frequent speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="fei-fei-li" 
+                                onclick="toggleFollow('fei-fei-li', 'Fei-Fei Li')">
+                            Follow
+                        </button>
+                        <a href="/fei-fei-li.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Yoshua Bengio</div>
+                    <div class="person-category">AI Researcher</div>
+                    <div class="person-summary">Montreal AI researcher, Turing Award winner, frequent academic conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="yoshua-bengio" 
+                                onclick="toggleFollow('yoshua-bengio', 'Yoshua Bengio')">
+                            Follow
+                        </button>
+                        <a href="/yoshua-bengio.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Timnit Gebru</div>
+                    <div class="person-category">AI Researcher</div>
+                    <div class="person-summary">AI ethics researcher, former Google researcher, frequent speaker on AI bias</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="timnit-gebru" 
+                                onclick="toggleFollow('timnit-gebru', 'Timnit Gebru')">
+                            Follow
+                        </button>
+                        <a href="/timnit-gebru.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Ilya Sutskever</div>
+                    <div class="person-category">AI Researcher</div>
+                    <div class="person-summary">OpenAI co-founder and chief scientist, frequent deep learning conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="ilya-sutskever" 
+                                onclick="toggleFollow('ilya-sutskever', 'Ilya Sutskever')">
+                            Follow
+                        </button>
+                        <a href="/ilya-sutskever.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Andrej Karpathy</div>
+                    <div class="person-category">AI Researcher</div>
+                    <div class="person-summary">Former Tesla AI director, OpenAI researcher, frequent AI conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="andrej-karpathy" 
+                                onclick="toggleFollow('andrej-karpathy', 'Andrej Karpathy')">
+                            Follow
+                        </button>
+                        <a href="/andrej-karpathy.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Chris Lattner</div>
+                    <div class="person-category">AI Researcher</div>
+                    <div class="person-summary">Creator of Swift and LLVM, former Apple/Tesla engineer, compiler conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="chris-lattner" 
+                                onclick="toggleFollow('chris-lattner', 'Chris Lattner')">
+                            Follow
+                        </button>
+                        <a href="/chris-lattner.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Ian Goodfellow</div>
+                    <div class="person-category">AI Researcher</div>
+                    <div class="person-summary">GAN inventor, former Google Brain researcher, frequent machine learning speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="ian-goodfellow" 
+                                onclick="toggleFollow('ian-goodfellow', 'Ian Goodfellow')">
+                            Follow
+                        </button>
+                        <a href="/ian-goodfellow.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Oriol Vinyals</div>
+                    <div class="person-category">AI Researcher</div>
+                    <div class="person-summary">DeepMind researcher, AlphaStar lead, frequent reinforcement learning conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="oriol-vinyals" 
+                                onclick="toggleFollow('oriol-vinyals', 'Oriol Vinyals')">
+                            Follow
+                        </button>
+                        <a href="/oriol-vinyals.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Chelsea Finn</div>
+                    <div class="person-category">AI Researcher</div>
+                    <div class="person-summary">Stanford AI professor, robotics and meta-learning researcher, conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="chelsea-finn" 
+                                onclick="toggleFollow('chelsea-finn', 'Chelsea Finn')">
+                            Follow
+                        </button>
+                        <a href="/chelsea-finn.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Masayoshi Son</div>
+                    <div class="person-category">International Tech</div>
+                    <div class="person-summary">SoftBank CEO, Vision Fund creator, frequent AI and investment conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="masayoshi-son" 
+                                onclick="toggleFollow('masayoshi-son', 'Masayoshi Son')">
+                            Follow
+                        </button>
+                        <a href="/masayoshi-son.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Zhang Yiming</div>
+                    <div class="person-category">International Tech</div>
+                    <div class="person-summary">ByteDance founder (TikTok), occasional tech conference appearances</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="zhang-yiming" 
+                                onclick="toggleFollow('zhang-yiming', 'Zhang Yiming')">
+                            Follow
+                        </button>
+                        <a href="/zhang-yiming.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Lei Jun</div>
+                    <div class="person-category">International Tech</div>
+                    <div class="person-summary">Xiaomi founder and CEO, frequent Chinese tech conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="lei-jun" 
+                                onclick="toggleFollow('lei-jun', 'Lei Jun')">
+                            Follow
+                        </button>
+                        <a href="/lei-jun.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Pony Ma (Ma Huateng)</div>
+                    <div class="person-category">International Tech</div>
+                    <div class="person-summary">Tencent founder and CEO, occasional Chinese tech conference appearances</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="pony-ma" 
+                                onclick="toggleFollow('pony-ma', 'Pony Ma (Ma Huateng)')">
+                            Follow
+                        </button>
+                        <a href="/pony-ma.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Robin Li</div>
+                    <div class="person-category">International Tech</div>
+                    <div class="person-summary">Baidu founder and CEO, frequent AI and search conference speaker in China</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="robin-li" 
+                                onclick="toggleFollow('robin-li', 'Robin Li')">
+                            Follow
+                        </button>
+                        <a href="/robin-li.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Niklas Zennström</div>
+                    <div class="person-category">International Tech</div>
+                    <div class="person-summary">Skype co-founder, Atomico founder, European tech conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="niklas-zennstrom" 
+                                onclick="toggleFollow('niklas-zennstrom', 'Niklas Zennström')">
+                            Follow
+                        </button>
+                        <a href="/niklas-zennstrom.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Hiroshi Mikitani</div>
+                    <div class="person-category">International Tech</div>
+                    <div class="person-summary">Rakuten founder and CEO, frequent Japanese e-commerce conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="hiroshi-mikitani" 
+                                onclick="toggleFollow('hiroshi-mikitani', 'Hiroshi Mikitani')">
+                            Follow
+                        </button>
+                        <a href="/hiroshi-mikitani.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Mikko Hypponen</div>
+                    <div class="person-category">International Tech</div>
+                    <div class="person-summary">F-Secure security expert, frequent cybersecurity conference speaker from Finland</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="mikko-hypponen" 
+                                onclick="toggleFollow('mikko-hypponen', 'Mikko Hypponen')">
+                            Follow
+                        </button>
+                        <a href="/mikko-hypponen.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Yann Arthus-Bertrand</div>
+                    <div class="person-category">International Tech</div>
+                    <div class="person-summary">French photographer and environmentalist, occasional tech sustainability speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="yann-arthus-bertrand" 
+                                onclick="toggleFollow('yann-arthus-bertrand', 'Yann Arthus-Bertrand')">
+                            Follow
+                        </button>
+                        <a href="/yann-arthus-bertrand.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Gavin Wood</div>
+                    <div class="person-category">Crypto/Web3</div>
+                    <div class="person-summary">Ethereum co-founder, Polkadot founder, frequent blockchain conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="gavin-wood" 
+                                onclick="toggleFollow('gavin-wood', 'Gavin Wood')">
+                            Follow
+                        </button>
+                        <a href="/gavin-wood.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Changpeng Zhao (CZ)</div>
+                    <div class="person-category">Crypto/Web3</div>
+                    <div class="person-summary">Former Binance CEO, frequent cryptocurrency conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="changpeng-zhao" 
+                                onclick="toggleFollow('changpeng-zhao', 'Changpeng Zhao (CZ)')">
+                            Follow
+                        </button>
+                        <a href="/changpeng-zhao.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Do Kwon</div>
+                    <div class="person-category">Crypto/Web3</div>
+                    <div class="person-summary">Terra founder (controversial), former DeFi conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="do-kwon" 
+                                onclick="toggleFollow('do-kwon', 'Do Kwon')">
+                            Follow
+                        </button>
+                        <a href="/do-kwon.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Sam Bankman-Fried</div>
+                    <div class="person-category">Crypto/Web3</div>
+                    <div class="person-summary">Former FTX CEO (controversial), frequent crypto conference speaker until 2022</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="sam-bankman-fried" 
+                                onclick="toggleFollow('sam-bankman-fried', 'Sam Bankman-Fried')">
+                            Follow
+                        </button>
+                        <a href="/sam-bankman-fried.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Andre Cronje</div>
+                    <div class="person-category">Crypto/Web3</div>
+                    <div class="person-summary">DeFi developer, Yearn Finance creator, occasional conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="andre-cronje" 
+                                onclick="toggleFollow('andre-cronje', 'Andre Cronje')">
+                            Follow
+                        </button>
+                        <a href="/andre-cronje.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Stani Kulechov</div>
+                    <div class="person-category">Crypto/Web3</div>
+                    <div class="person-summary">Aave founder, frequent DeFi conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="stani-kulechov" 
+                                onclick="toggleFollow('stani-kulechov', 'Stani Kulechov')">
+                            Follow
+                        </button>
+                        <a href="/stani-kulechov.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Hayden Adams</div>
+                    <div class="person-category">Crypto/Web3</div>
+                    <div class="person-summary">Uniswap founder, frequent DEX and DeFi conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="hayden-adams" 
+                                onclick="toggleFollow('hayden-adams', 'Hayden Adams')">
+                            Follow
+                        </button>
+                        <a href="/hayden-adams.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Silvio Micali</div>
+                    <div class="person-category">Crypto/Web3</div>
+                    <div class="person-summary">MIT professor, Algorand founder, cryptography conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="silvio-micali" 
+                                onclick="toggleFollow('silvio-micali', 'Silvio Micali')">
+                            Follow
+                        </button>
+                        <a href="/silvio-micali.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Mitchell Hashimoto</div>
+                    <div class="person-category">Developer Tools</div>
+                    <div class="person-summary">HashiCorp co-founder, creator of Vagrant and Terraform, DevOps conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="mitchell-hashimoto" 
+                                onclick="toggleFollow('mitchell-hashimoto', 'Mitchell Hashimoto')">
+                            Follow
+                        </button>
+                        <a href="/mitchell-hashimoto.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Solomon Hykes</div>
+                    <div class="person-category">Developer Tools</div>
+                    <div class="person-summary">Docker founder, frequent containers and cloud-native conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="solomon-hykes" 
+                                onclick="toggleFollow('solomon-hykes', 'Solomon Hykes')">
+                            Follow
+                        </button>
+                        <a href="/solomon-hykes.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Guillermo Rauch</div>
+                    <div class="person-category">Developer Tools</div>
+                    <div class="person-summary">Vercel CEO, Next.js ecosystem, frequent frontend conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="guillermo-rauch" 
+                                onclick="toggleFollow('guillermo-rauch', 'Guillermo Rauch')">
+                            Follow
+                        </button>
+                        <a href="/guillermo-rauch.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Zach Holman</div>
+                    <div class="person-category">Developer Tools</div>
+                    <div class="person-summary">Former GitHub engineer, developer culture and remote work conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="zach-holman" 
+                                onclick="toggleFollow('zach-holman', 'Zach Holman')">
+                            Follow
+                        </button>
+                        <a href="/zach-holman.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Mitchell Baker</div>
+                    <div class="person-category">Developer Tools</div>
+                    <div class="person-summary">Mozilla CEO, open web and browser privacy conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="mitchell-baker" 
+                                onclick="toggleFollow('mitchell-baker', 'Mitchell Baker')">
+                            Follow
+                        </button>
+                        <a href="/mitchell-baker.html" class="btn-view">View</a>
+                    </div>
+                </div>
+
+                <div class="person-card">
+                    <div class="person-name">Armon Dadgar</div>
+                    <div class="person-category">Developer Tools</div>
+                    <div class="person-summary">HashiCorp co-founder and CTO, infrastructure automation conference speaker</div>
+                    <div class="person-actions">
+                        <button class="btn-follow" data-slug="armon-dadgar" 
+                                onclick="toggleFollow('armon-dadgar', 'Armon Dadgar')">
+                            Follow
+                        </button>
+                        <a href="/armon-dadgar.html" class="btn-view">View</a>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
     </section>
-
-
-
-    <style>
-        .enterprise-card {
-            background: linear-gradient(135deg, #1a1a1a 0%, #0f2a1f 100%);
-            border: 1px solid #22c55e40;
-            border-radius: 16px;
-            padding: 40px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .enterprise-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 50% 50%, rgba(34, 197, 94, 0.05) 0%, transparent 70%);
-            pointer-events: none;
-        }
-
-        .enterprise-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .enterprise-card h3 {
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: #ffffff;
-            margin-bottom: 1rem;
-        }
-
-        .enterprise-card p {
-            font-size: 1.1rem;
-            color: #c0c0c0;
-            margin-bottom: 2rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .enterprise-cta {
-            display: inline-block;
-            padding: 14px 28px;
-            background: transparent;
-            color: #22c55e;
-            text-decoration: none;
-            border: 2px solid #22c55e;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .enterprise-cta:hover {
-            background: #22c55e;
-            color: #0a0a0a;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(34, 197, 94, 0.25);
-        }
-
-        @media (max-width: 768px) {
-            .enterprise-card {
-                padding: 30px 20px;
-            }
-
-            .enterprise-card h3 {
-                font-size: 1.4rem;
-            }
-
-            .enterprise-card p {
-                font-size: 1rem;
-            }
-        }
-    </style>
 
     <footer>
         <div class="container">
@@ -485,37 +2528,152 @@
     </footer>
 
     <script>
-        // Sample data for demonstration
-        const samplePeople = [
-            { name: "Elon Musk", category: "CEO/Founder" },
-            { name: "Sam Altman", category: "CEO/Founder" },
-            { name: "Marc Andreessen", category: "Investor/VC" },
-            { name: "Naval Ravikant", category: "Investor/VC" },
-            { name: "John Carmack", category: "Programmer/Engineer" },
-            { name: "Kara Swisher", category: "Writer/Journalist" },
-            { name: "Yuval Harari", category: "Philosopher/Academic" },
-            { name: "Lex Fridman", category: "Podcaster/Media" },
-            { name: "Geoffrey Hinton", category: "AI Researcher" },
-            { name: "Peter Thiel", category: "Investor/VC" },
-            { name: "Jensen Huang", category: "CEO/Founder" },
-            { name: "Vitalik Buterin", category: "Programmer/Engineer" }
-        ];
+        // Load followed people from localStorage
+        let followedPeople = JSON.parse(localStorage.getItem('followedPeople') || '[]');
+        let lastRenderedPeople = [];
+        let isInView = false;
+        let observer;
+        let hasBeenRenderedOnLoad = false;
 
-        function loadPeople() {
-            const grid = document.getElementById('people-grid');
-            samplePeople.forEach(person => {
-                const card = document.createElement('div');
-                card.className = 'person-card';
-                card.innerHTML = `
-                    <div class="person-name">${person.name}</div>
-                    <div class="person-category">${person.category}</div>
-                `;
-                grid.appendChild(card);
+        function toggleFollow(slug, name) {
+            const index = followedPeople.findIndex(p => p.slug === slug);
+            const wasFollowing = index !== -1;
+
+            if (wasFollowing) {
+                // Remove from followed
+                followedPeople.splice(index, 1);
+            } else {
+                // Add to followed
+                followedPeople.push({ slug, name });
+            }
+
+            localStorage.setItem('followedPeople', JSON.stringify(followedPeople));
+            updateFollowButtons();
+
+            // If we're in the your-people section and unfollowing, rerender without animation
+            const yourPeopleSection = document.getElementById('your-people-section');
+            if (yourPeopleSection && isInView && wasFollowing) {
+                updateYourPeopleSection(false); // no animation for unfollowing
+            }
+            // If we're in view and following someone new, it will be handled by the intersection observer
+            else if (isInView && !wasFollowing) {
+                updateYourPeopleSection(true); // animate new follows
+            }
+        }
+
+        function updateFollowButtons() {
+            document.querySelectorAll('.btn-follow').forEach(btn => {
+                const slug = btn.dataset.slug;
+                const isFollowing = followedPeople.some(p => p.slug === slug);
+
+                btn.textContent = isFollowing ? 'Following' : 'Follow';
+                btn.classList.toggle('following', isFollowing);
             });
         }
 
-        // Load people when page loads
-        document.addEventListener('DOMContentLoaded', loadPeople);
+        function peopleChanged() {
+            return JSON.stringify(followedPeople.sort((a, b) => a.slug.localeCompare(b.slug))) !==
+                JSON.stringify(lastRenderedPeople.sort((a, b) => a.slug.localeCompare(b.slug)));
+        }
+
+        function updateYourPeopleSection(animate = true) {
+            const section = document.getElementById('your-people-section');
+            const grid = document.getElementById('your-people-grid');
+
+            if (!section) return;
+
+            // If no people to follow, hide section
+            if (followedPeople.length === 0) {
+                section.classList.remove('visible', 'animate-in', 'no-animation');
+                lastRenderedPeople = [...followedPeople];
+                return;
+            }
+
+            // Show section if not visible
+            if (!section.classList.contains('visible')) {
+                section.classList.add('visible');
+
+                if (animate) {
+                    section.classList.remove('no-animation');
+                    // Trigger animation after a brief delay to ensure display: block is applied
+                    setTimeout(() => {
+                        section.classList.add('animate-in');
+                    }, 10);
+                } else {
+                    section.classList.add('no-animation');
+                }
+            }
+
+            // Clear existing cards
+            grid.innerHTML = '';
+
+            // Add new cards
+            followedPeople.forEach((person, index) => {
+                const card = document.createElement('div');
+                card.className = 'person-card your-people-card';
+
+                if (!animate) {
+                    card.classList.add('no-animation');
+                }
+
+                card.innerHTML = `
+                    <div class="person-name">${person.name}</div>
+                    <div class="person-actions">
+                        <button class="btn-follow following" data-slug="${person.slug}" 
+                                onclick="toggleFollow('${person.slug}', '${person.name}')">
+                            Following
+                        </button>
+                        <a href="/${person.slug}.html" class="btn-view">View</a>
+                    </div>
+                `;
+                grid.appendChild(card);
+
+                if (animate) {
+                    // Animate in with staggered delay
+                    setTimeout(() => {
+                        card.classList.add('animate-in');
+                    }, index * 100 + 50);
+                } else {
+                    card.classList.add('no-animation');
+                }
+            });
+
+            lastRenderedPeople = [...followedPeople];
+        }
+
+        function setupIntersectionObserver() {
+            const wrapper = document.querySelector('.your-people-wrapper');
+            if (!wrapper) return;
+
+            observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const wasInView = isInView;
+                    isInView = entry.isIntersecting && entry.intersectionRatio > 0.1;
+
+                    // If coming into view and data has changed, update with animation
+                    if (isInView && !wasInView && peopleChanged()) {
+                        updateYourPeopleSection(true);
+                    }
+                });
+            }, {
+                threshold: [0, 0.1, 0.5, 1],
+                rootMargin: '50px'
+            });
+
+            observer.observe(wrapper);
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            updateFollowButtons();
+            setupIntersectionObserver();
+
+            // Initial render without animation if there are followed people
+            if (followedPeople.length > 0) {
+                updateYourPeopleSection(false);
+                hasBeenRenderedOnLoad = true;
+            }
+        });
 
         // Add smooth scrolling for CTA buttons
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -524,14 +2682,6 @@
                 document.querySelector(this.getAttribute('href')).scrollIntoView({
                     behavior: 'smooth'
                 });
-            });
-        });
-
-        // Add click handlers for CTA buttons
-        document.querySelectorAll('.cta-button').forEach(button => {
-            button.addEventListener('click', () => {
-                // In a real app, this would handle signup/payment flow
-                alert('Sign up functionality would be implemented here!');
             });
         });
     </script>
