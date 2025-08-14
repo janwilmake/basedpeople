@@ -1,0 +1,991 @@
+[
+  {
+    "name": "Elon Musk",
+    "slug": "elon-musk",
+    "summary": "CEO of Tesla and SpaceX, owner of X (formerly Twitter), frequently appears on podcasts like Joe Rogan and interviews",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Sam Altman",
+    "slug": "sam-altman",
+    "summary": "CEO of OpenAI, frequent podcast guest and conference speaker on AI topics",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Jensen Huang",
+    "slug": "jensen-huang",
+    "summary": "CEO of NVIDIA, frequently speaks at AI conferences and tech events about GPUs and AI",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Satya Nadella",
+    "slug": "satya-nadella",
+    "summary": "CEO of Microsoft, regular conference speaker and media interview participant",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Sundar Pichai",
+    "slug": "sundar-pichai",
+    "summary": "CEO of Alphabet (Google), regular at tech conferences and congressional testimonies",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Tim Cook",
+    "slug": "tim-cook",
+    "summary": "CEO of Apple, frequent keynote speaker and interview guest on major media outlets",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Mark Zuckerberg",
+    "slug": "mark-zuckerberg",
+    "summary": "CEO of Meta (Facebook), often appears in congressional hearings, tech conferences, and interviews",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Andy Jassy",
+    "slug": "andy-jassy",
+    "summary": "Amazon CEO, frequent cloud computing and enterprise conference speaker",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Patrick Collison",
+    "slug": "patrick-collison",
+    "summary": "CEO of Stripe, often appears on tech podcasts and startup conferences",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "John Collison",
+    "slug": "john-collison",
+    "summary": "Stripe co-founder and president, frequent fintech conference speaker",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Brian Chesky",
+    "slug": "brian-chesky",
+    "summary": "CEO of Airbnb, regular conference speaker and interview participant",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Dara Khosrowshahi",
+    "slug": "dara-khosrowshahi",
+    "summary": "Uber CEO, frequent transportation and gig economy conference speaker",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Daniel Ek",
+    "slug": "daniel-ek",
+    "summary": "CEO of Spotify, regularly appears in European tech media and conferences",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Eric Yuan",
+    "slug": "eric-yuan",
+    "summary": "Zoom CEO, frequent video communications and remote work conference speaker",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Tobias Lütke",
+    "slug": "tobias-lutke",
+    "summary": "CEO of Shopify, appears on e-commerce and tech podcasts",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Aaron Levie",
+    "slug": "aaron-levie",
+    "summary": "Box CEO, frequent enterprise cloud storage conference speaker and Twitter commentator",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Marc Benioff",
+    "slug": "marc-benioff",
+    "summary": "Salesforce CEO, frequent business software and philanthropy conference speaker",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Frank Slootman",
+    "slug": "frank-slootman",
+    "summary": "Snowflake CEO, frequent enterprise software and data conference speaker",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Jack Dorsey",
+    "slug": "jack-dorsey",
+    "summary": "Twitter co-founder, Block (Square) founder, frequent fintech and social media speaker",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Brian Armstrong",
+    "slug": "brian-armstrong",
+    "summary": "Coinbase CEO, frequent cryptocurrency and blockchain conference speaker",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Reid Hoffman",
+    "slug": "reid-hoffman",
+    "summary": "Co-founder of LinkedIn, frequent podcast host and guest, venture capitalist",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Kevin Systrom",
+    "slug": "kevin-systrom",
+    "summary": "Instagram co-founder, frequent speaker on social media and photography",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Jan Koum",
+    "slug": "jan-koum",
+    "summary": "WhatsApp co-founder, occasional conference speaker on messaging and privacy",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Drew Houston",
+    "slug": "drew-houston",
+    "summary": "CEO of Dropbox, appears on startup and tech podcasts",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Stewart Butterfield",
+    "slug": "stewart-butterfield",
+    "summary": "Slack co-founder, frequent workplace collaboration conference speaker",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Melanie Perkins",
+    "slug": "melanie-perkins",
+    "summary": "Canva CEO and co-founder, frequent startup and design conference speaker",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Logan Green",
+    "slug": "logan-green",
+    "summary": "Lyft co-founder and former CEO, transportation and mobility conference speaker",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Anthony Levandowski",
+    "slug": "anthony-levandowski",
+    "summary": "Former Google/Uber autonomous vehicle engineer, controversial figure in self-driving space",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Palmer Luckey",
+    "slug": "palmer-luckey",
+    "summary": "Oculus founder, Anduril founder, frequent VR and defense tech conference speaker",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Josh Wolfe",
+    "slug": "josh-wolfe",
+    "summary": "Lux Capital co-founder, frequent deep tech and hard tech conference speaker",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Nat Friedman",
+    "slug": "nat-friedman",
+    "summary": "Former GitHub CEO, AI researcher, frequent developer tools conference speaker",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Thomas Dohmke",
+    "slug": "thomas-dohmke",
+    "summary": "Current GitHub CEO, frequent developer conference and AI coding tools speaker",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Scott Farquhar",
+    "slug": "scott-farquhar",
+    "summary": "Atlassian co-founder, frequent enterprise software and remote work conference speaker",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Mike Cannon-Brookes",
+    "slug": "mike-cannon-brookes",
+    "summary": "Atlassian co-founder, climate tech investor, Australian tech conference speaker",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Vlad Tenev",
+    "slug": "vlad-tenev",
+    "summary": "Robinhood CEO, frequent fintech and democratizing finance conference speaker",
+    "category": "CEO/Founder"
+  },
+  {
+    "name": "Aparna Chennapragada",
+    "slug": "aparna-chennapragada",
+    "summary": "Former Google executive, Robinhood CPO, frequent product management conference speaker",
+    "category": "CEO/Founder"
+  },
+
+  {
+    "name": "John Carmack",
+    "slug": "john-carmack",
+    "summary": "Legendary game programmer (id Software, Oculus), frequent conference keynote speaker",
+    "category": "Programmer/Engineer"
+  },
+  {
+    "name": "Linus Torvalds",
+    "slug": "linus-torvalds",
+    "summary": "Creator of Linux and Git, occasional conference speaker and interview participant",
+    "category": "Programmer/Engineer"
+  },
+  {
+    "name": "Guido van Rossum",
+    "slug": "guido-van-rossum",
+    "summary": "Creator of Python programming language, appears at Python conferences and tech talks",
+    "category": "Programmer/Engineer"
+  },
+  {
+    "name": "Brendan Eich",
+    "slug": "brendan-eich",
+    "summary": "Creator of JavaScript, founder of Brave Browser, tech conference speaker",
+    "category": "Programmer/Engineer"
+  },
+  {
+    "name": "Anders Hejlsberg",
+    "slug": "anders-hejlsberg",
+    "summary": "Creator of TypeScript and C#, Microsoft technical fellow, conference speaker",
+    "category": "Programmer/Engineer"
+  },
+  {
+    "name": "DHH (David Heinemeier Hansson)",
+    "slug": "dhh",
+    "summary": "Creator of Ruby on Rails, CTO of Basecamp, frequent podcast guest and blogger",
+    "category": "Programmer/Engineer"
+  },
+  {
+    "name": "Rich Hickey",
+    "slug": "rich-hickey",
+    "summary": "Creator of Clojure programming language, conference speaker on functional programming",
+    "category": "Programmer/Engineer"
+  },
+  {
+    "name": "Werner Vogels",
+    "slug": "werner-vogels",
+    "summary": "Amazon CTO, frequent AWS and distributed systems conference speaker",
+    "category": "Programmer/Engineer"
+  },
+  {
+    "name": "Vitalik Buterin",
+    "slug": "vitalik-buterin",
+    "summary": "Ethereum co-founder, frequent blockchain and cryptocurrency conference speaker",
+    "category": "Programmer/Engineer"
+  },
+  {
+    "name": "Ryan Dahl",
+    "slug": "ryan-dahl",
+    "summary": "Creator of Node.js and Deno, frequent JavaScript and runtime conference speaker",
+    "category": "Programmer/Engineer"
+  },
+  {
+    "name": "Graydon Hoare",
+    "slug": "graydon-hoare",
+    "summary": "Creator of Rust programming language, systems programming conference speaker",
+    "category": "Programmer/Engineer"
+  },
+  {
+    "name": "Rob Pike",
+    "slug": "rob-pike",
+    "summary": "Go programming language co-creator, former Google engineer, systems programming speaker",
+    "category": "Programmer/Engineer"
+  },
+  {
+    "name": "Ken Thompson",
+    "slug": "ken-thompson",
+    "summary": "Unix co-creator, Go co-creator, legendary systems programmer, occasional speaker",
+    "category": "Programmer/Engineer"
+  },
+  {
+    "name": "Dennis Ritchie",
+    "slug": "dennis-ritchie",
+    "summary": "Creator of C programming language, Unix co-creator (historical figure)",
+    "category": "Programmer/Engineer"
+  },
+  {
+    "name": "Bjarne Stroustrup",
+    "slug": "bjarne-stroustrup",
+    "summary": "Creator of C++ programming language, frequent programming language conference speaker",
+    "category": "Programmer/Engineer"
+  },
+  {
+    "name": "James Gosling",
+    "slug": "james-gosling",
+    "summary": "Creator of Java programming language, frequent programming conference speaker",
+    "category": "Programmer/Engineer"
+  },
+  {
+    "name": "Larry Wall",
+    "slug": "larry-wall",
+    "summary": "Creator of Perl programming language, occasional programming conference speaker",
+    "category": "Programmer/Engineer"
+  },
+  {
+    "name": "Yukihiro Matsumoto (Matz)",
+    "slug": "yukihiro-matsumoto",
+    "summary": "Creator of Ruby programming language, frequent Ruby conference keynote speaker",
+    "category": "Programmer/Engineer"
+  },
+  {
+    "name": "Brad Fitzpatrick",
+    "slug": "brad-fitzpatrick",
+    "summary": "Creator of LiveJournal, memcached, Go contributor, systems programming speaker",
+    "category": "Programmer/Engineer"
+  },
+  {
+    "name": "Evan You",
+    "slug": "evan-you",
+    "summary": "Creator of Vue.js, frequent frontend development conference speaker",
+    "category": "Programmer/Engineer"
+  },
+  {
+    "name": "Dan Abramov",
+    "slug": "dan-abramov",
+    "summary": "React core team member, Redux creator, frequent React conference speaker",
+    "category": "Programmer/Engineer"
+  },
+  {
+    "name": "Sebastian McKenzie",
+    "slug": "sebastian-mckenzie",
+    "summary": "Creator of Babel and Yarn, Rome tools founder, JavaScript tooling conference speaker",
+    "category": "Programmer/Engineer"
+  },
+  {
+    "name": "TJ Holowaychuk",
+    "slug": "tj-holowaychuk",
+    "summary": "Creator of Express.js and many Node.js libraries, occasional conference speaker",
+    "category": "Programmer/Engineer"
+  },
+  {
+    "name": "Fabrice Bellard",
+    "slug": "fabrice-bellard",
+    "summary": "Creator of QEMU, FFmpeg, and QuickJS, legendary systems programmer, rare speaker",
+    "category": "Programmer/Engineer"
+  },
+  {
+    "name": "Daniel Stenberg",
+    "slug": "daniel-stenberg",
+    "summary": "Creator of curl, frequent open source and HTTP conference speaker",
+    "category": "Programmer/Engineer"
+  },
+  {
+    "name": "Havoc Pennington",
+    "slug": "havoc-pennington",
+    "summary": "GNOME contributor, former Red Hat engineer, Linux desktop conference speaker",
+    "category": "Programmer/Engineer"
+  },
+  {
+    "name": "Miguel de Icaza",
+    "slug": "miguel-de-icaza",
+    "summary": "GNOME co-founder, Mono creator, Xamarin founder, .NET and open source speaker",
+    "category": "Programmer/Engineer"
+  },
+  {
+    "name": "Matthias Ettrich",
+    "slug": "matthias-ettrich",
+    "summary": "KDE founder, Qt contributor, Linux desktop conference speaker",
+    "category": "Programmer/Engineer"
+  },
+  {
+    "name": "Jordan Walke",
+    "slug": "jordan-walke",
+    "summary": "Creator of React at Facebook, frontend development conference speaker",
+    "category": "Programmer/Engineer"
+  },
+  {
+    "name": "Sophie Alpert",
+    "slug": "sophie-alpert",
+    "summary": "Former React team lead, frequent React and frontend conference speaker",
+    "category": "Programmer/Engineer"
+  },
+
+  {
+    "name": "Marc Andreessen",
+    "slug": "marc-andreessen",
+    "summary": "Co-founder of Andreessen Horowitz, frequent Twitter commentator and podcast guest",
+    "category": "Investor/VC"
+  },
+  {
+    "name": "Ben Horowitz",
+    "slug": "ben-horowitz",
+    "summary": "Co-founder of Andreessen Horowitz, author, podcast guest on business topics",
+    "category": "Investor/VC"
+  },
+  {
+    "name": "Peter Thiel",
+    "slug": "peter-thiel",
+    "summary": "Co-founder of PayPal and Palantir, investor, author, frequent interview participant",
+    "category": "Investor/VC"
+  },
+  {
+    "name": "Naval Ravikant",
+    "slug": "naval-ravikant",
+    "summary": "AngelList founder, philosopher-investor, popular podcast guest",
+    "category": "Investor/VC"
+  },
+  {
+    "name": "Chamath Palihapitiya",
+    "slug": "chamath-palihapitiya",
+    "summary": "Former Facebook executive, SPAC investor, frequent podcast guest",
+    "category": "Investor/VC"
+  },
+  {
+    "name": "Keith Rabois",
+    "slug": "keith-rabois",
+    "summary": "PayPal Mafia member, Founders Fund partner, active on Twitter and podcasts",
+    "category": "Investor/VC"
+  },
+  {
+    "name": "Chris Dixon",
+    "slug": "chris-dixon",
+    "summary": "a16z crypto partner, frequent Web3 and blockchain conference speaker",
+    "category": "Investor/VC"
+  },
+  {
+    "name": "Mary Meeker",
+    "slug": "mary-meeker",
+    "summary": "Venture capitalist, famous for annual Internet Trends report, conference speaker",
+    "category": "Investor/VC"
+  },
+  {
+    "name": "Max Levchin",
+    "slug": "max-levchin",
+    "summary": "PayPal co-founder, Affirm CEO, frequent fintech conference speaker",
+    "category": "Investor/VC"
+  },
+  {
+    "name": "Paul Graham",
+    "slug": "paul-graham",
+    "summary": "Y Combinator co-founder, essayist, occasional conference speaker and interview participant",
+    "category": "Investor/VC"
+  },
+  {
+    "name": "Jessica Livingston",
+    "slug": "jessica-livingston",
+    "summary": "Y Combinator co-founder, author of 'Founders at Work', startup conference speaker",
+    "category": "Investor/VC"
+  },
+  {
+    "name": "Sam Altman",
+    "slug": "sam-altman-investor",
+    "summary": "Former Y Combinator president, frequent startup and investment conference speaker",
+    "category": "Investor/VC"
+  },
+  {
+    "name": "Garry Tan",
+    "slug": "garry-tan",
+    "summary": "Y Combinator president, former Posterous founder, frequent startup conference speaker",
+    "category": "Investor/VC"
+  },
+  {
+    "name": "Elad Gil",
+    "slug": "elad-gil",
+    "summary": "Serial entrepreneur and investor, author of 'High Growth Handbook', podcast guest",
+    "category": "Investor/VC"
+  },
+  {
+    "name": "Balaji Srinivasan",
+    "slug": "balaji-srinivasan",
+    "summary": "Former a16z partner, crypto advocate, frequent podcast guest and conference speaker",
+    "category": "Investor/VC"
+  },
+  {
+    "name": "Cathie Wood",
+    "slug": "cathie-wood",
+    "summary": "ARK Invest CEO, disruptive innovation investor, frequent financial media guest",
+    "category": "Investor/VC"
+  },
+  {
+    "name": "Bill Gurley",
+    "slug": "bill-gurley",
+    "summary": "Benchmark partner, former Uber board member, frequent conference speaker",
+    "category": "Investor/VC"
+  },
+  {
+    "name": "Fred Wilson",
+    "slug": "fred-wilson",
+    "summary": "Union Square Ventures partner, prolific blogger (AVC), frequent conference speaker",
+    "category": "Investor/VC"
+  },
+  {
+    "name": "Brad Feld",
+    "slug": "brad-feld",
+    "summary": "Foundry Group partner, author, frequent entrepreneurship conference speaker",
+    "category": "Investor/VC"
+  },
+  {
+    "name": "David Sacks",
+    "slug": "david-sacks",
+    "summary": "Craft Ventures founder, former PayPal COO, frequent podcast guest",
+    "category": "Investor/VC"
+  },
+  {
+    "name": "Jason Lemkin",
+    "slug": "jason-lemkin",
+    "summary": "SaaStr founder, SaaS investor, frequent SaaS conference speaker",
+    "category": "Investor/VC"
+  },
+
+  {
+    "name": "Kara Swisher",
+    "slug": "kara-swisher",
+    "summary": "Tech journalist, podcast host (Pivot, Sway), frequent interview show guest",
+    "category": "Writer/Journalist"
+  },
+  {
+    "name": "Ben Thompson",
+    "slug": "ben-thompson",
+    "summary": "Stratechery newsletter author, Sharp Tech podcast, business strategy analyst",
+    "category": "Writer/Journalist"
+  },
+  {
+    "name": "Casey Newton",
+    "slug": "casey-newton",
+    "summary": "Tech journalist, Platformer newsletter, frequent podcast guest",
+    "category": "Writer/Journalist"
+  },
+  {
+    "name": "Steven Levy",
+    "slug": "steven-levy",
+    "summary": "Senior writer at Wired, author of multiple tech books, frequent interview participant",
+    "category": "Writer/Journalist"
+  },
+  {
+    "name": "Walt Mossberg",
+    "slug": "walt-mossberg",
+    "summary": "Veteran tech journalist, co-founder of Recode, frequent media appearances",
+    "category": "Writer/Journalist"
+  },
+  {
+    "name": "Benedict Evans",
+    "slug": "benedict-evans",
+    "summary": "Independent tech analyst, newsletter author, frequent conference speaker",
+    "category": "Writer/Journalist"
+  },
+  {
+    "name": "John Gruber",
+    "slug": "john-gruber",
+    "summary": "Daring Fireball author, The Talk Show podcast host, Apple industry commentator",
+    "category": "Writer/Journalist"
+  },
+  {
+    "name": "Om Malik",
+    "slug": "om-malik",
+    "summary": "Tech journalist, former GigaOm founder, frequent conference speaker",
+    "category": "Writer/Journalist"
+  },
+  {
+    "name": "Dan Luu",
+    "slug": "dan-luu",
+    "summary": "Systems engineer, technical blogger, occasional conference speaker on performance",
+    "category": "Writer/Journalist"
+  },
+  {
+    "name": "Julia Evans",
+    "slug": "julia-evans",
+    "summary": "Technical blogger (Julia Evans), frequent systems programming conference speaker",
+    "category": "Writer/Journalist"
+  },
+  {
+    "name": "Jessie Frazelle",
+    "slug": "jessie-frazelle",
+    "summary": "Former Docker/Google engineer, technical blogger, containers conference speaker",
+    "category": "Writer/Journalist"
+  },
+
+  {
+    "name": "Yuval Noah Harari",
+    "slug": "yuval-harari",
+    "summary": "Historian and philosopher, author of 'Sapiens', frequent speaker on AI and humanity",
+    "category": "Philosopher/Academic"
+  },
+  {
+    "name": "Nick Bostrom",
+    "slug": "nick-bostrom",
+    "summary": "Oxford philosopher, expert on existential risks and AI safety, author of 'Superintelligence'",
+    "category": "Philosopher/Academic"
+  },
+  {
+    "name": "Stuart Russell",
+    "slug": "stuart-russell",
+    "summary": "UC Berkeley AI professor, author of 'Human Compatible', expert on AI safety",
+    "category": "Philosopher/Academic"
+  },
+  {
+    "name": "Jaron Lanier",
+    "slug": "jaron-lanier",
+    "summary": "Computer scientist, author of 'Ten Arguments for Deleting Your Social Media Accounts'",
+    "category": "Philosopher/Academic"
+  },
+  {
+    "name": "Sherry Turkle",
+    "slug": "sherry-turkle",
+    "summary": "MIT professor, expert on human-computer interaction, author, frequent media appearances",
+    "category": "Philosopher/Academic"
+  },
+  {
+    "name": "Cynthia Dwork",
+    "slug": "cynthia-dwork",
+    "summary": "Harvard professor, pioneer in differential privacy, frequent academic conference speaker",
+    "category": "Philosopher/Academic"
+  },
+  {
+    "name": "Lina Khan",
+    "slug": "lina-khan",
+    "summary": "FTC Chair, antitrust expert focused on tech companies",
+    "category": "Philosopher/Academic"
+  },
+  {
+    "name": "Zeynep Tufekci",
+    "slug": "zeynep-tufekci",
+    "summary": "UNC professor, tech critic, frequent media commentator on social media effects",
+    "category": "Philosopher/Academic"
+  },
+  {
+    "name": "Cathy O'Neil",
+    "slug": "cathy-oneil",
+    "summary": "Author of 'Weapons of Math Destruction', algorithmic accountability expert",
+    "category": "Philosopher/Academic"
+  },
+  {
+    "name": "Safiya Noble",
+    "slug": "safiya-noble",
+    "summary": "UCLA professor, author of 'Algorithms of Oppression', frequent AI bias conference speaker",
+    "category": "Philosopher/Academic"
+  },
+
+  {
+    "name": "Lex Fridman",
+    "slug": "lex-fridman",
+    "summary": "AI researcher and podcast host, interviews tech leaders and scientists",
+    "category": "Podcaster/Media"
+  },
+  {
+    "name": "Jason Calacanis",
+    "slug": "jason-calacanis",
+    "summary": "Angel investor and podcast host (This Week in Startups), frequent conference speaker",
+    "category": "Podcaster/Media"
+  },
+  {
+    "name": "Tim Ferriss",
+    "slug": "tim-ferriss",
+    "summary": "Author and podcast host (The Tim Ferriss Show), frequent productivity conference speaker",
+    "category": "Podcaster/Media"
+  },
+  {
+    "name": "Joe Rogan",
+    "slug": "joe-rogan",
+    "summary": "Podcast host (Joe Rogan Experience), frequent long-form tech leader interviews",
+    "category": "Podcaster/Media"
+  },
+  {
+    "name": "Patrick O'Shaughnessy",
+    "slug": "patrick-oshaughnessy",
+    "summary": "Invest Like the Best podcast host, frequent tech investor interviews",
+    "category": "Podcaster/Media"
+  },
+  {
+    "name": "Shane Parrish",
+    "slug": "shane-parrish",
+    "summary": "The Knowledge Project podcast host, decision-making and mental models expert",
+    "category": "Podcaster/Media"
+  },
+  {
+    "name": "Cal Newport",
+    "slug": "cal-newport",
+    "summary": "Computer science professor, author of 'Deep Work', productivity conference speaker",
+    "category": "Podcaster/Media"
+  },
+
+  {
+    "name": "Tony Fadell",
+    "slug": "tony-fadell",
+    "summary": "iPod creator, Nest founder, frequent product design and innovation speaker",
+    "category": "Product Leader"
+  },
+  {
+    "name": "Susan Wojcicki",
+    "slug": "susan-wojcicki",
+    "summary": "Former YouTube CEO, frequent speaker on digital media and platform governance",
+    "category": "Product Leader"
+  },
+  {
+    "name": "Marissa Mayer",
+    "slug": "marissa-mayer",
+    "summary": "Former Yahoo CEO and Google VP, frequent conference speaker on product development",
+    "category": "Product Leader"
+  },
+  {
+    "name": "Julie Zhuo",
+    "slug": "julie-zhuo",
+    "summary": "Former Facebook VP of Product Design, author of 'The Making of a Manager'",
+    "category": "Product Leader"
+  },
+  {
+    "name": "April Dunford",
+    "slug": "april-dunford",
+    "summary": "Positioning expert, author of 'Obviously Awesome', frequent product marketing speaker",
+    "category": "Product Leader"
+  },
+  {
+    "name": "Des Traynor",
+    "slug": "des-traynor",
+    "summary": "Intercom co-founder, frequent product management and customer experience speaker",
+    "category": "Product Leader"
+  },
+  {
+    "name": "Jason Fried",
+    "slug": "jason-fried",
+    "summary": "Basecamp co-founder, author of 'ReWork', frequent remote work conference speaker",
+    "category": "Product Leader"
+  },
+
+  {
+    "name": "Bruce Schneier",
+    "slug": "bruce-schneier",
+    "summary": "Cryptographer and security technologist, author, frequent media commentator on cybersecurity",
+    "category": "Security Expert"
+  },
+  {
+    "name": "Edward Snowden",
+    "slug": "edward-snowden",
+    "summary": "NSA whistleblower, privacy advocate, frequent remote conference speaker",
+    "category": "Security Expert"
+  },
+  {
+    "name": "Matthew Green",
+    "slug": "matthew-green",
+    "summary": "Johns Hopkins cryptographer, frequent security conference speaker and blogger",
+    "category": "Security Expert"
+  },
+  {
+    "name": "Dan Kaminsky",
+    "slug": "dan-kaminsky",
+    "summary": "Security researcher, DNS vulnerability discoverer, frequent conference speaker (deceased 2021)",
+    "category": "Security Expert"
+  },
+  {
+    "name": "Katie Moussouris",
+    "slug": "katie-moussouris",
+    "summary": "Security researcher, bug bounty pioneer, frequent security conference speaker",
+    "category": "Security Expert"
+  },
+
+  {
+    "name": "Geoffrey Hinton",
+    "slug": "geoffrey-hinton",
+    "summary": "Deep learning pioneer, former Google researcher, frequent speaker on AI development",
+    "category": "AI Researcher"
+  },
+  {
+    "name": "Yann LeCun",
+    "slug": "yann-lecun",
+    "summary": "Meta AI Research director, NYU professor, frequent AI conference speaker",
+    "category": "AI Researcher"
+  },
+  {
+    "name": "Andrew Ng",
+    "slug": "andrew-ng",
+    "summary": "AI researcher, Coursera co-founder, frequent educator and conference speaker",
+    "category": "AI Researcher"
+  },
+  {
+    "name": "Demis Hassabis",
+    "slug": "demis-hassabis",
+    "summary": "DeepMind CEO and co-founder, frequent speaker on AI and neuroscience",
+    "category": "AI Researcher"
+  },
+  {
+    "name": "Fei-Fei Li",
+    "slug": "fei-fei-li",
+    "summary": "Stanford AI professor, former Google Cloud AI chief scientist, frequent speaker",
+    "category": "AI Researcher"
+  },
+  {
+    "name": "Yoshua Bengio",
+    "slug": "yoshua-bengio",
+    "summary": "Montreal AI researcher, Turing Award winner, frequent academic conference speaker",
+    "category": "AI Researcher"
+  },
+  {
+    "name": "Timnit Gebru",
+    "slug": "timnit-gebru",
+    "summary": "AI ethics researcher, former Google researcher, frequent speaker on AI bias",
+    "category": "AI Researcher"
+  },
+  {
+    "name": "Ilya Sutskever",
+    "slug": "ilya-sutskever",
+    "summary": "OpenAI co-founder and chief scientist, frequent deep learning conference speaker",
+    "category": "AI Researcher"
+  },
+  {
+    "name": "Andrej Karpathy",
+    "slug": "andrej-karpathy",
+    "summary": "Former Tesla AI director, OpenAI researcher, frequent AI conference speaker",
+    "category": "AI Researcher"
+  },
+  {
+    "name": "Chris Lattner",
+    "slug": "chris-lattner",
+    "summary": "Creator of Swift and LLVM, former Apple/Tesla engineer, compiler conference speaker",
+    "category": "AI Researcher"
+  },
+  {
+    "name": "Ian Goodfellow",
+    "slug": "ian-goodfellow",
+    "summary": "GAN inventor, former Google Brain researcher, frequent machine learning speaker",
+    "category": "AI Researcher"
+  },
+  {
+    "name": "Oriol Vinyals",
+    "slug": "oriol-vinyals",
+    "summary": "DeepMind researcher, AlphaStar lead, frequent reinforcement learning conference speaker",
+    "category": "AI Researcher"
+  },
+  {
+    "name": "Chelsea Finn",
+    "slug": "chelsea-finn",
+    "summary": "Stanford AI professor, robotics and meta-learning researcher, conference speaker",
+    "category": "AI Researcher"
+  },
+
+  {
+    "name": "Masayoshi Son",
+    "slug": "masayoshi-son",
+    "summary": "SoftBank CEO, Vision Fund creator, frequent AI and investment conference speaker",
+    "category": "International Tech"
+  },
+  {
+    "name": "Zhang Yiming",
+    "slug": "zhang-yiming",
+    "summary": "ByteDance founder (TikTok), occasional tech conference appearances",
+    "category": "International Tech"
+  },
+  {
+    "name": "Lei Jun",
+    "slug": "lei-jun",
+    "summary": "Xiaomi founder and CEO, frequent Chinese tech conference speaker",
+    "category": "International Tech"
+  },
+  {
+    "name": "Pony Ma (Ma Huateng)",
+    "slug": "pony-ma",
+    "summary": "Tencent founder and CEO, occasional Chinese tech conference appearances",
+    "category": "International Tech"
+  },
+  {
+    "name": "Robin Li",
+    "slug": "robin-li",
+    "summary": "Baidu founder and CEO, frequent AI and search conference speaker in China",
+    "category": "International Tech"
+  },
+  {
+    "name": "Niklas Zennström",
+    "slug": "niklas-zennstrom",
+    "summary": "Skype co-founder, Atomico founder, European tech conference speaker",
+    "category": "International Tech"
+  },
+  {
+    "name": "Hiroshi Mikitani",
+    "slug": "hiroshi-mikitani",
+    "summary": "Rakuten founder and CEO, frequent Japanese e-commerce conference speaker",
+    "category": "International Tech"
+  },
+  {
+    "name": "Mikko Hypponen",
+    "slug": "mikko-hypponen",
+    "summary": "F-Secure security expert, frequent cybersecurity conference speaker from Finland",
+    "category": "International Tech"
+  },
+  {
+    "name": "Yann Arthus-Bertrand",
+    "slug": "yann-arthus-bertrand",
+    "summary": "French photographer and environmentalist, occasional tech sustainability speaker",
+    "category": "International Tech"
+  },
+
+  {
+    "name": "Gavin Wood",
+    "slug": "gavin-wood",
+    "summary": "Ethereum co-founder, Polkadot founder, frequent blockchain conference speaker",
+    "category": "Crypto/Web3"
+  },
+  {
+    "name": "Changpeng Zhao (CZ)",
+    "slug": "changpeng-zhao",
+    "summary": "Former Binance CEO, frequent cryptocurrency conference speaker",
+    "category": "Crypto/Web3"
+  },
+  {
+    "name": "Do Kwon",
+    "slug": "do-kwon",
+    "summary": "Terra founder (controversial), former DeFi conference speaker",
+    "category": "Crypto/Web3"
+  },
+  {
+    "name": "Sam Bankman-Fried",
+    "slug": "sam-bankman-fried",
+    "summary": "Former FTX CEO (controversial), frequent crypto conference speaker until 2022",
+    "category": "Crypto/Web3"
+  },
+  {
+    "name": "Andre Cronje",
+    "slug": "andre-cronje",
+    "summary": "DeFi developer, Yearn Finance creator, occasional conference speaker",
+    "category": "Crypto/Web3"
+  },
+  {
+    "name": "Stani Kulechov",
+    "slug": "stani-kulechov",
+    "summary": "Aave founder, frequent DeFi conference speaker",
+    "category": "Crypto/Web3"
+  },
+  {
+    "name": "Hayden Adams",
+    "slug": "hayden-adams",
+    "summary": "Uniswap founder, frequent DEX and DeFi conference speaker",
+    "category": "Crypto/Web3"
+  },
+  {
+    "name": "Silvio Micali",
+    "slug": "silvio-micali",
+    "summary": "MIT professor, Algorand founder, cryptography conference speaker",
+    "category": "Crypto/Web3"
+  },
+
+  {
+    "name": "Mitchell Hashimoto",
+    "slug": "mitchell-hashimoto",
+    "summary": "HashiCorp co-founder, creator of Vagrant and Terraform, DevOps conference speaker",
+    "category": "Developer Tools"
+  },
+  {
+    "name": "Solomon Hykes",
+    "slug": "solomon-hykes",
+    "summary": "Docker founder, frequent containers and cloud-native conference speaker",
+    "category": "Developer Tools"
+  },
+  {
+    "name": "Guillermo Rauch",
+    "slug": "guillermo-rauch",
+    "summary": "Vercel CEO, Next.js ecosystem, frequent frontend conference speaker",
+    "category": "Developer Tools"
+  },
+  {
+    "name": "Zach Holman",
+    "slug": "zach-holman",
+    "summary": "Former GitHub engineer, developer culture and remote work conference speaker",
+    "category": "Developer Tools"
+  },
+  {
+    "name": "Mitchell Baker",
+    "slug": "mitchell-baker",
+    "summary": "Mozilla CEO, open web and browser privacy conference speaker",
+    "category": "Developer Tools"
+  },
+  {
+    "name": "Armon Dadgar",
+    "slug": "armon-dadgar",
+    "summary": "HashiCorp co-founder and CTO, infrastructure automation conference speaker",
+    "category": "Developer Tools"
+  }
+]

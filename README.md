@@ -22,10 +22,10 @@ SPEC:
 - `/sql/{query}` - perform read-only query against DB
 - `/mcp` - use `/sql` and `/feed` over mcp
 - Login with X
-- Purchase $20/month
 
 Out of scope:
 
+- Purchase $20/month
 - Email Digests
 - Instant Emails
 - Transcripts or full statement database
@@ -45,7 +45,6 @@ Context:
 - Separate X OAuth with MCP-compliant Authorization Provider https://github.com/janwilmake/x-oauth-client-provider
 - Authed Query API (with readonly validation for non-janwilmake users) https://uithub.com/janwilmake/queryable-object
 - Authed MCP (fully spec-compliant)
-- Stripe Subscription synced to users table
 
 Target Technical Advances:
 
@@ -54,7 +53,9 @@ Target Technical Advances:
 Todo:
 
 - Step 1: Improve tasks with small dataset (±5 people) - (very famous and less famous person): historical and weekly. Vibe-test for errors and cost.
+- Build dataset of hitoric appearances of 100 individuals
 - **Validate Assumption: the data is high-quality enough, the cost per month is under $500 for the POC**
+- Preliminary: Stripeflare now uses card-fingerprint as user-id; allow passing userID if we use another type of login. This will make stripeflare usable for this usecase.
 - _Talk to people about the problem of noise and how they get to high-signal information. Pay to subscribe to set of people?_
 - Step 2: If I'm happy with the data, put it on cronjob for whole list of people, create list and index html and md results.
 - Personalization/Monetization: Add login and subscription element and ability to follow

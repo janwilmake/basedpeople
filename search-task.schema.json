@@ -1,0 +1,65 @@
+{
+  "type": "object",
+  "properties": {
+    "name": { "type": "string" },
+    "periods": {
+      "description": "Periods of the life of this person",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "slug": { "type": "string" },
+          "title": { "type": "string" },
+          "estimatedAppearanceCount": { "type": "string" },
+          "why": { "type": "string" }
+        }
+      }
+    },
+
+    "searchStrategy": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "objective": { "type": "string" },
+          "keywords": { "type": "array", "items": { "type": "string" } },
+          "strategy": { "type": "string" }
+        }
+      }
+    },
+
+    "appearances": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["url", "type", "date", "title"],
+        "properties": {
+          "url": {
+            "description": "Most authoritative URL where more information about the appearance can be found",
+            "type": "string"
+          },
+          "period": {
+            "type": "string",
+            "description": "Period slug indicating the period this appearance is a part of"
+          },
+          "type": {
+            "description": "Type of appearance (e.g., podcast, tv-show, interview, etc.)",
+            "type": "string"
+          },
+          "keywords": { "type": "array", "items": { "type": "string" } },
+          "date": {
+            "description": "Date of the appearance in YYYY-MM-DD format.",
+            "type": "string"
+          },
+          "title": {
+            "description": "Concise title of the appearance, max 12 words",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

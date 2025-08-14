@@ -1,0 +1,23 @@
+{
+  "type": "object",
+  "properties": {
+    "appearances": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["url"],
+        "properties": {
+          "url": {
+            "description": "Most authoritative URL where more information about the appearance can be found",
+            "type": "string"
+          },
+          "summary": {
+            "description": "Date, type of appearance, and summary of appearance that uniquely identifies it",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,52 @@
+Ok so recently I discovered Parallel and I have had this idea for a long time... What if you could follow people across the entire internet? Famous people usually have lots of different places in the world where they appear and the online documentation of that is usually scattered across many places. But I want a way to follow specific people in a single place. Following them on their respective social media platforms isn't enough, it's too scatered and incomplete because they don't post about everything.
+
+Parallel seems like a great way to try and gather this type of data!
+
+First step: determine a task output format that allows gathering complete results.
+
+Learnings:
+
+- The task interface from paralel itself gave me just a single appearance even though I specified i wanted an array.
+- [the docs on processors](https://docs.parallel.ai/task-api/core-concepts/choose-a-processor) state you can just get up to 25 datapoints, so we need to be creative if we want complete results
+- I built this [little tool](https://tasks.gptideas.com) to test with more freedom in the output schema than the interface has. This allows me to get arrays back!
+- I decided to specify a task output schema myself and came up with [output1.json](output1.json). The problem is that this is already 7 datapoints. I will never be able to get all appearances in one task! Output Examples: [Geoffrey Hinton](https://tasks.gptideas.com/task/04ccdc68-8ba9-4934-897d-dc2569c18fd0), [Elon Musk](https://tasks.gptideas.com/task/4a309d5d-019c-4933-ac87-e0aba4364b29). This looks promising though.
+- [output2.json](output2.json) has just 2 datapoints per appearance! So we can easily do up 10 appearances with the pro processor. Let's try it with [Elon in 2021](). Is this better?
+- Some people have many more appearances than others, and this is hard to determine upfront for a given person. For example, Claude estimates Elon has up to [300 public appearances over his career](https://letmeprompt.com/rules-httpsuithu-s2wmeg0), while someone less famous (but still famous) like Pavel Durov likely has way less due to his preference of privacy.
+
+Ultimately, I want this dataset to be fully complete:
+
+```ts
+type People = {
+  name: string;
+  appearances: {
+    url: string;
+    title: string;
+    summary: string;
+    date: string;
+    type: string;
+  }[];
+};
+```
+
+Parallels deep research interface does a great job for Pavel Durov estimating the total amount of public appearances.
+
+Main question: Is a single deep research enough to get a historical overview of public appearances of an individual?
+
+```
+How many public appearances do you think Elon Musk has that are documented on the internet?
+What counts:
+- Formal events
+- Podcasts, interviews
+- Livestreams
+- Blogposts
+What does not count:
+- Photos/videos from fans,paparazzi,events
+- Social media posts (tweets, Facebook posts, etc)
+- News written about this person by third parties
+
+For each year in his lifetime, give me a summary of all appearances
+```
+
+After playing around with it a bit more, I found that it's very good with deep research. It seems crucial though to first get a high level grasp of the periods the person was active and what to search for, just like a normal human would do it. It's not always evident from the title that the person was in it, so we need to first do a high level overview of periods and potential searches that may yield results. With that, we get a better shot of getting an as complete historical list of appearances as possible.
+
+What about [this](search-task.md) with [this output schema](search-task.schema.json)?

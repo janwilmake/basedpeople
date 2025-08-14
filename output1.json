@@ -1,0 +1,51 @@
+{
+  "type": "object",
+  "properties": {
+    "appearances": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "url",
+          "type",
+          "date",
+          "organizer_name",
+          "other_participated_people_mentioned",
+          "title",
+          "summary"
+        ],
+        "properties": {
+          "url": {
+            "description": "Most authoritative URL where more information about the appearance can be found",
+            "type": "string"
+          },
+          "type": {
+            "description": "Type of appearance (e.g., podcast, tv-show, interview, etc.)",
+            "type": "string"
+          },
+          "date": {
+            "description": "Date of the appearance in YYYY-MM-DD format.",
+            "type": "string"
+          },
+          "organizer_name": {
+            "description": "Name of the organizer or host. If unknown, return '''Organizer unknown.'''",
+            "type": "string"
+          },
+          "other_participated_people_mentioned": {
+            "description": "Comma-separated list of other people mentioned as participants.",
+            "type": "string"
+          },
+          "summary": {
+            "description": "Up to 1 paragraph explaining the appearance.",
+            "type": "string"
+          },
+          "title": {
+            "description": "Concise title of the appearance, max 12 words",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
