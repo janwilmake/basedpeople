@@ -10,10 +10,8 @@
     { "custom_domain": true, "pattern": "basedpeople.com" },
     { "custom_domain": true, "pattern": "www.basedpeople.com" }
   ],
-  "kv_namespaces": [
-    {
-      "binding": "KV",
-      "id": "71b5da74fe0b45eaab4da4d636b9d36a"
-    }
-  ]
+  "durable_objects": {
+    "bindings": [{ "name": "APPEARANCES", "class_name": "AppearancesDB" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["AppearancesDB"] }]
 }

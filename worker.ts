@@ -1,11 +1,14 @@
 /// <reference types="@cloudflare/workers-types" />
 /// <reference lib="esnext" />
 
+import { DurableObject } from "cloudflare:workers";
 import { personHtmlHandler } from "./personHandler";
+
 // replace with prod version (people.json) after task seems good
 const PEOPLE_FILE = "people.json";
+
 export interface Env {
-  KV: KVNamespace;
+  APPEARANCES: DurableObjectNamespace<AppearancesDB>;
   ASSETS: Fetcher;
   PARALLEL_API_KEY: string;
   CRON_SECRET: string;
@@ -33,6 +36,20 @@ interface WebhookPayload {
     metadata?: Record<string, string>;
     [key: string]: any;
   };
+}
+
+interface Appearance {
+  url: string;
+  period?: string;
+  type: string;
+  keywords: string[];
+  date: string;
+  title: string;
+}
+
+interface PersonData {
+  name: string;
+  appearances: Appearance[];
 }
 
 export default {
@@ -81,6 +98,204 @@ export default {
     }
   },
 } satisfies ExportedHandler<Env>;
+
+// Durable Object for managing appearances data
+export class AppearancesDB extends DurableObject<Env> {
+  private sql: SqlStorage;
+
+  constructor(state: DurableObjectState, env: Env) {
+    super(state, env);
+    this.sql = state.storage.sql;
+    this.initializeDatabase();
+  }
+
+  private initializeDatabase() {
+    // Create appearances table if it doesn't exist
+    this.sql.exec(`
+      CREATE TABLE IF NOT EXISTS appearances (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        slug TEXT NOT NULL,
+        name TEXT NOT NULL,
+        url TEXT NOT NULL,
+        title TEXT NOT NULL,
+        type TEXT NOT NULL,
+        date TEXT NOT NULL,
+        period TEXT,
+        keywords TEXT NOT NULL,
+        status TEXT NOT NULL DEFAULT 'completed',
+        run_id TEXT,
+        last_updated TEXT NOT NULL,
+        error TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        INDEX idx_slug (slug),
+        INDEX idx_type (type),
+        INDEX idx_date (date),
+        INDEX idx_status (status)
+      )
+    `);
+  }
+
+  async storePersonResult(
+    slug: string,
+    name: string,
+    result: any,
+    runId: string,
+    status: string = "completed",
+    error?: string
+  ) {
+    if (status === "completed" && result.appearances) {
+      // Clear existing appearances for this person
+      this.sql.exec("DELETE FROM appearances WHERE slug = ?", slug);
+
+      // Insert new appearances
+      const stmt = this.sql.exec(`
+        INSERT INTO appearances (slug, name, url, title, type, date, period, keywords, status, run_id, last_updated)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `);
+
+      for (const appearance of result.appearances) {
+        this.sql.exec(
+          `
+          INSERT INTO appearances (slug, name, url, title, type, date, period, keywords, status, run_id, last_updated)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `,
+          slug,
+          name,
+          appearance.url,
+          appearance.title,
+          appearance.type,
+          appearance.date,
+          appearance.period || null,
+          JSON.stringify(appearance.keywords),
+          status,
+          runId,
+          new Date().toISOString()
+        );
+      }
+    } else {
+      // Store error or failed status
+      this.sql.exec(
+        `
+        INSERT OR REPLACE INTO appearances (slug, name, url, title, type, date, keywords, status, run_id, last_updated, error)
+        VALUES (?, ?, '', '', 'error', ?, '[]', ?, ?, ?, ?)
+      `,
+        slug,
+        name,
+        new Date().toISOString(),
+        status,
+        runId,
+        new Date().toISOString(),
+        error || null
+      );
+    }
+
+    return { success: true };
+  }
+
+  async getPersonData(slug: string): Promise<PersonData | null> {
+    const results = this.sql
+      .exec(
+        "SELECT * FROM appearances WHERE slug = ? AND status = 'completed' ORDER BY date DESC",
+        slug
+      )
+      .toArray();
+
+    if (results.length === 0) {
+      return null;
+    }
+
+    const appearances = results.map((row) => ({
+      url: row.url as string,
+      title: row.title as string,
+      type: row.type as string,
+      date: row.date as string,
+      period: row.period as string | undefined,
+      keywords: JSON.parse(row.keywords as string) as string[],
+    }));
+
+    return {
+      name: results[0].name as string,
+      appearances,
+    };
+  }
+
+  async getPersonStatus(slug: string) {
+    const result = this.sql
+      .exec(
+        "SELECT status, run_id, last_updated, error FROM appearances WHERE slug = ? ORDER BY last_updated DESC LIMIT 1",
+        slug
+      )
+      .toArray();
+
+    if (result.length === 0) {
+      return null;
+    }
+
+    return {
+      status: result[0].status,
+      run_id: result[0].run_id,
+      lastUpdated: result[0].last_updated,
+      error: result[0].error,
+    };
+  }
+
+  async getAllAppearances(limit = 1000, offset = 0) {
+    return this.sql
+      .exec(
+        "SELECT * FROM appearances WHERE status = 'completed' ORDER BY date DESC LIMIT ? OFFSET ?",
+        limit,
+        offset
+      )
+      .toArray();
+  }
+
+  async searchAppearances(
+    query: {
+      slug?: string;
+      type?: string;
+      keywords?: string[];
+      dateFrom?: string;
+      dateTo?: string;
+    },
+    limit = 100
+  ) {
+    let sql = "SELECT * FROM appearances WHERE status = 'completed'";
+    const params: any[] = [];
+
+    if (query.slug) {
+      sql += " AND slug = ?";
+      params.push(query.slug);
+    }
+
+    if (query.type) {
+      sql += " AND type = ?";
+      params.push(query.type);
+    }
+
+    if (query.keywords && query.keywords.length > 0) {
+      const keywordConditions = query.keywords
+        .map(() => "keywords LIKE ?")
+        .join(" AND ");
+      sql += ` AND (${keywordConditions})`;
+      query.keywords.forEach((keyword) => params.push(`%"${keyword}"%`));
+    }
+
+    if (query.dateFrom) {
+      sql += " AND date >= ?";
+      params.push(query.dateFrom);
+    }
+
+    if (query.dateTo) {
+      sql += " AND date <= ?";
+      params.push(query.dateTo);
+    }
+
+    sql += " ORDER BY date DESC LIMIT ?";
+    params.push(limit);
+
+    return this.sql.exec(sql, ...params).toArray();
+  }
+}
 
 async function handleSeed(request: Request, env: Env): Promise<Response> {
   const url = new URL(request.url);
@@ -135,7 +350,7 @@ async function handleSeed(request: Request, env: Env): Promise<Response> {
           },
           input: taskInput,
           processor: "ultra",
-          metadata: { slug: person.slug },
+          metadata: { slug: person.slug, name: person.name },
           webhook: {
             url: "https://basedpeople.com/webhook",
             event_types: ["task_run.status"],
@@ -210,6 +425,7 @@ async function handleSeed(request: Request, env: Env): Promise<Response> {
     );
   }
 }
+
 async function handleWebhook(request: Request, env: Env): Promise<Response> {
   try {
     // Get webhook headers for signature verification
@@ -245,11 +461,16 @@ async function handleWebhook(request: Request, env: Env): Promise<Response> {
 
     const { data } = payload;
     const slug = data.metadata?.slug;
+    const name = data.metadata?.name;
 
-    if (!slug) {
-      console.error("No slug found in task metadata");
-      return new Response("No slug in metadata", { status: 400 });
+    if (!slug || !name) {
+      console.error("No slug or name found in task metadata");
+      return new Response("No slug or name in metadata", { status: 400 });
     }
+
+    // Get the Durable Object instance
+    const dbId = env.APPEARANCES.idFromName("main");
+    const db = env.APPEARANCES.get(dbId);
 
     if (data.status === "completed") {
       // Get the full result from the API
@@ -265,17 +486,16 @@ async function handleWebhook(request: Request, env: Env): Promise<Response> {
 
         if (resultResponse.ok) {
           const resultData = await resultResponse.json();
+          const result = resultData.output?.content || resultData;
 
-          // Store the result data in KV
-          const personResult = {
-            status: "completed",
-            result: resultData.output?.content || resultData,
-            lastUpdated: new Date().toISOString(),
-            run_id: data.run_id,
-            metadata: data.metadata,
-          };
-
-          await env.KV.put(`person:${slug}`, JSON.stringify(personResult));
+          // Store the result in Durable Object
+          await db.storePersonResult(
+            slug,
+            name,
+            result,
+            data.run_id,
+            "completed"
+          );
           console.log(`Successfully stored result for person: ${slug}`);
         } else {
           console.error(
@@ -284,41 +504,38 @@ async function handleWebhook(request: Request, env: Env): Promise<Response> {
           );
 
           // Store failed fetch info
-          const personResult = {
-            status: "fetch_failed",
-            error: `Failed to fetch result: HTTP ${resultResponse.status}`,
-            lastUpdated: new Date().toISOString(),
-            run_id: data.run_id,
-            metadata: data.metadata,
-          };
-
-          await env.KV.put(`person:${slug}`, JSON.stringify(personResult));
+          await db.storePersonResult(
+            slug,
+            name,
+            null,
+            data.run_id,
+            "fetch_failed",
+            `Failed to fetch result: HTTP ${resultResponse.status}`
+          );
         }
       } catch (error) {
         console.error(`Error fetching result for run ${data.run_id}:`, error);
 
         // Store error info
-        const personResult = {
-          status: "fetch_error",
-          error: error instanceof Error ? error.message : "Unknown error",
-          lastUpdated: new Date().toISOString(),
-          run_id: data.run_id,
-          metadata: data.metadata,
-        };
-
-        await env.KV.put(`person:${slug}`, JSON.stringify(personResult));
+        await db.storePersonResult(
+          slug,
+          name,
+          null,
+          data.run_id,
+          "fetch_error",
+          error instanceof Error ? error.message : "Unknown error"
+        );
       }
     } else if (data.status === "failed") {
       // Store failed task result
-      const personResult = {
-        status: "failed",
-        error: data.error?.message || "Task execution failed",
-        lastUpdated: new Date().toISOString(),
-        run_id: data.run_id,
-        metadata: data.metadata,
-      };
-
-      await env.KV.put(`person:${slug}`, JSON.stringify(personResult));
+      await db.storePersonResult(
+        slug,
+        name,
+        null,
+        data.run_id,
+        "failed",
+        data.error?.message || "Task execution failed"
+      );
       console.log(`Stored failed result for person: ${slug}`);
     }
 
@@ -331,13 +548,23 @@ async function handleWebhook(request: Request, env: Env): Promise<Response> {
 
 async function handleSlugRequest(slug: string, env: Env): Promise<Response> {
   try {
-    const result = await env.KV.get(`person:${slug}`);
+    // Get the Durable Object instance
+    const dbId = env.APPEARANCES.idFromName("main");
+    const db = env.APPEARANCES.get(dbId);
 
-    if (!result) {
+    const personData = await db.getPersonData(slug);
+
+    if (!personData) {
       return new Response("Person not found", { status: 404 });
     }
 
-    return new Response(result, {
+    const result = {
+      status: "completed",
+      result: personData,
+      lastUpdated: new Date().toISOString(),
+    };
+
+    return new Response(JSON.stringify(result), {
       headers: {
         "Content-Type": "application/json",
         "Cache-Control": "public, max-age=3600",

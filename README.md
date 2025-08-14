@@ -44,10 +44,9 @@ Target Technical Advances:
 
 Todo:
 
-- 🟠 Step 1: Improve tasks with small dataset (±5 people) - (very famous and less famous person): historical and weekly. Vibe-test for errors and cost.
-- Build dataset of hitoric appearances of 100 individuals
-- **Validate Assumption: the data is high-quality enough, the cost per month is under $500 for the POC**
-- Preliminary: Stripeflare now uses card-fingerprint as user-id; allow passing userID if we use another type of login. This will make stripeflare usable for this usecase.
+- ✅ Step 1: Improve tasks with small dataset (±5 people) - (very famous and less famous person): historical and weekly. Vibe-test for errors and cost.
+- ✅ Build dataset of hitoric appearances of 100 individuals
+- ✅ **Validate Assumption: the data is high-quality enough, the cost per month is under $500 for the POC**
 - _Talk to people about the problem of noise and how they get to high-signal information. Pay to subscribe to set of people?_
 - Step 2: If I'm happy with the data, put it on cronjob for whole list of people, create list and index html and md results.
 - Personalization/Monetization: Add login and subscription element and ability to follow

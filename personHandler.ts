@@ -21,9 +21,14 @@ interface PersonData {
   appearances: Appearance[];
 }
 
+interface Env {
+  APPEARANCES: DurableObjectNamespace;
+  ASSETS: Fetcher;
+}
+
 export async function personHtmlHandler(
   request: Request,
-  env: any
+  env: Env
 ): Promise<Response> {
   const url = new URL(request.url);
   const slug = url.pathname.replace(".html", "").replace("/", "");
@@ -40,14 +45,17 @@ export async function personHtmlHandler(
       return new Response("Person not found", { status: 404 });
     }
 
-    // Try to get person data from KV
+    // Try to get person data from Durable Object
     let personData: PersonData;
     try {
-      const kvData = await env.KV.get(`person:${slug}`, { type: "json" });
-      if (kvData && kvData.output && kvData.output.content) {
-        personData = kvData.output.content;
-      } else {
-        throw new Error("No KV data");
+      // Get the Durable Object instance
+      const dbId = env.APPEARANCES.idFromName("main");
+      const db = env.APPEARANCES.get(dbId);
+
+      personData = await db.getPersonData(slug);
+
+      if (!personData) {
+        throw new Error("No data in database");
       }
     } catch {
       // Fallback to dummy data
@@ -55,7 +63,7 @@ export async function personHtmlHandler(
         new Request("http://localhost/dummy.json")
       );
       const dummyData = await dummyResponse.json();
-      personData = dummyData.output?.content || dummyData;
+      personData = dummyData.result;
     }
 
     // Sort appearances by date (reverse chronological)

@@ -1,4 +1,4 @@
-Which public appearances of {{name}} can you find between 2024-01-01 and 2025-08-14?
+Which public appearances of {{name}} can you find between 2024-01-01 and today
 
 What counts:
 
