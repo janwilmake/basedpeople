@@ -234,6 +234,11 @@
             color: #ffffff;
         }
 
+        .btn-follow:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
         .btn-view {
             padding: 8px 16px;
             background: #333;
@@ -2538,29 +2543,69 @@
         let observer;
         let hasBeenRenderedOnLoad = false;
 
-        function toggleFollow(slug, name) {
-            const index = followedPeople.findIndex(p => p.slug === slug);
-            const wasFollowing = index !== -1;
-
-            if (wasFollowing) {
-                // Remove from followed
-                followedPeople.splice(index, 1);
-            } else {
-                // Add to followed
-                followedPeople.push({ slug, name });
+        async function toggleFollow(slug, name) {
+            // Find the button for this slug
+            const button = document.querySelector(`button[data-slug="${slug}"]`);
+            if (button) {
+                button.disabled = true;
             }
 
-            localStorage.setItem('followedPeople', JSON.stringify(followedPeople));
-            updateFollowButtons();
+            try {
+                const response = await fetch(`/toggle/${slug}`, {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
 
-            // If we're in the your-people section and unfollowing, rerender without animation
-            const yourPeopleSection = document.getElementById('your-people-section');
-            if (yourPeopleSection && isInView && wasFollowing) {
-                updateYourPeopleSection(false); // no animation for unfollowing
-            }
-            // If we're in view and following someone new, it will be handled by the intersection observer
-            else if (isInView && !wasFollowing) {
-                updateYourPeopleSection(true); // animate new follows
+                // Handle redirect to login
+                if (response.status === 302 || response.redirected) {
+                    window.location.href = response.headers.get('Location') || response.url;
+                    return;
+                }
+
+                if (response.status === 401) {
+                    const result = await response.json();
+                    if (result.redirect) {
+                        window.location.href = result.redirect;
+                        return;
+                    }
+                }
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const result = await response.json();
+
+                // Update local storage for client-side state
+                const index = followedPeople.findIndex(p => p.slug === slug);
+                const wasFollowing = index !== -1;
+
+                if (result.following && !wasFollowing) {
+                    // Add to followed
+                    followedPeople.push({ slug, name });
+                } else if (!result.following && wasFollowing) {
+                    // Remove from followed
+                    followedPeople.splice(index, 1);
+                }
+
+                localStorage.setItem('followedPeople', JSON.stringify(followedPeople));
+                updateFollowButtons();
+
+                // Update your people section if in view
+                if (isInView) {
+                    updateYourPeopleSection(true);
+                }
+
+            } catch (error) {
+                console.error('Error toggling follow:', error);
+                // You might want to show an error message to the user here
+            } finally {
+                if (button) {
+                    button.disabled = false;
+                }
             }
         }
 

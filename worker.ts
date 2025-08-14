@@ -98,7 +98,7 @@ export default {
 
       // Handle POST /toggle/{slug}
       const toggleMatch = url.pathname.match(/^\/toggle\/([^\/]+)$/);
-      if (toggleMatch && request.method === "POST") {
+      if (toggleMatch) {
         return handleToggleFollow(toggleMatch[1], request, env);
       }
 
@@ -158,11 +158,7 @@ export class AppearancesDB extends DurableObject<Env> {
         run_id TEXT,
         last_updated TEXT NOT NULL,
         error TEXT,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        INDEX idx_slug (slug),
-        INDEX idx_type (type),
-        INDEX idx_date (date),
-        INDEX idx_status (status)
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
       )
     `);
 
@@ -173,9 +169,7 @@ export class AppearancesDB extends DurableObject<Env> {
         user_id TEXT NOT NULL,
         slug TEXT NOT NULL,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        UNIQUE(user_id, slug),
-        INDEX idx_user_id (user_id),
-        INDEX idx_slug (slug)
+        UNIQUE(user_id, slug)
       )
     `);
   }
@@ -191,12 +185,6 @@ export class AppearancesDB extends DurableObject<Env> {
     if (status === "completed" && result.appearances) {
       // Clear existing appearances for this person
       this.sql.exec("DELETE FROM appearances WHERE slug = ?", slug);
-
-      // Insert new appearances
-      const stmt = this.sql.exec(`
-        INSERT INTO appearances (slug, name, url, title, type, date, period, keywords, status, run_id, last_updated)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `);
 
       for (const appearance of result.appearances) {
         this.sql.exec(
@@ -472,6 +460,15 @@ async function handleToggleFollow(
     const db = env.APPEARANCES.get(dbId);
 
     const result = await db.toggleFollow(userId, slug);
+
+    if (request.method === "GET") {
+      return new Response(null, {
+        status: 302,
+        headers: {
+          Location: `/`,
+        },
+      });
+    }
 
     return new Response(JSON.stringify(result), {
       headers: { "Content-Type": "application/json" },
