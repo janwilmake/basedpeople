@@ -58,3 +58,7 @@ Since deep research with large processors take quite some time and have a chance
 As a last resort, I am considering to perform an extra step to convert to my desired structured JSON based off the parallel markdown report (or based off the auto JSON); this seems to work really well! https://letmeprompt.com/httpspastebincon-ydkngl0. I saw there's a lot of URLs that weren't correct in this result, so decided to add one line to link to google if the URL is not there or low confidence: https://letmeprompt.com/rules-httpsuithu-qf1xsx0
 
 After seeing that even a simplified search-task schema didn't work, I am now trying to simplify the task.
+
+After seeing that even a much simpler search task didn't work, and also finding that the URLs aren't reliable, especially for older appearances, I'm now considering to just go with appearances between a date range (after 2024-01-01) because this will be a much smaller dataset and hopefully, the agent won't time out.
+
+I found that ultra8x tasks generally take longer to complete than ultra tasks, even though this isn't mentioned in the docs. While my ultra8x tasks almost always time out for my particular usecase, ultra will work more often; ultra2x also works sometimes but is really close to the upper bound of 3600 seconds (>50 minutes)

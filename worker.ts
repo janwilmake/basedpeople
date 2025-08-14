@@ -134,7 +134,7 @@ async function handleSeed(request: Request, env: Env): Promise<Response> {
             },
           },
           input: taskInput,
-          processor: "ultra8x",
+          processor: "ultra",
           metadata: { slug: person.slug },
           webhook: {
             url: "https://basedpeople.com/webhook",

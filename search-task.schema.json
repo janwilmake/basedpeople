@@ -15,7 +15,7 @@
           },
           "period": {
             "type": "string",
-            "description": "Period slug indicating the period this appearance is a part of"
+            "description": "Period slug indicating the period this appearance is a part of, e.g. early-life, 1990s, or 1996-2003"
           },
           "type": {
             "description": "Type of appearance (e.g., podcast, tv-show, interview, etc.)",

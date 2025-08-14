@@ -1,4 +1,4 @@
-Which public appearances of {{name}} can you find?
+Which public appearances of {{name}} can you find between 2024-01-01 and 2025-08-14?
 
 What counts:
 
@@ -13,4 +13,4 @@ What does not count:
 - Social media posts (Tweets, Facebook posts, etc)
 - News written about this person by third parties
 
-Provide a full list of appearances. Start with the more recent ones and work your way down to the earlier periods.
+Provide a full list of appearances.
