@@ -1,0 +1,75 @@
+{
+  "type": "object",
+  "definitions": {
+    "Appearances": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "date", "title"],
+        "properties": {
+          "url": {
+            "description": "Most authoritative URL where more information about the appearance can be found",
+            "type": "string"
+          },
+          "period": {
+            "type": "string",
+            "description": "Period slug indicating the period this appearance is a part of, e.g. early-life, 1990s, or 1996-2003"
+          },
+          "type": {
+            "description": "Type of appearance (e.g., podcast, tv-show, interview, etc.)",
+            "type": "string"
+          },
+          "keywords": { "type": "array", "items": { "type": "string" } },
+          "date": {
+            "description": "Date of the appearance in YYYY-MM-DD format.",
+            "type": "string"
+          },
+          "title": {
+            "description": "Concise title of the appearance, max 12 words",
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "properties": {
+    "name": { "type": "string" },
+    "appearances-january": {
+      "$ref": "#/definitions/Appearances"
+    },
+    "appearances-february": {
+      "$ref": "#/definitions/Appearances"
+    },
+    "appearances-march": {
+      "$ref": "#/definitions/Appearances"
+    },
+    "appearances-april": {
+      "$ref": "#/definitions/Appearances"
+    },
+    "appearances-may": {
+      "$ref": "#/definitions/Appearances"
+    },
+    "appearances-june": {
+      "$ref": "#/definitions/Appearances"
+    },
+    "appearances-july": {
+      "$ref": "#/definitions/Appearances"
+    },
+    "appearances-august": {
+      "$ref": "#/definitions/Appearances"
+    },
+    "appearances-september": {
+      "$ref": "#/definitions/Appearances"
+    },
+    "appearances-october": {
+      "$ref": "#/definitions/Appearances"
+    },
+    "appearances-november": {
+      "$ref": "#/definitions/Appearances"
+    },
+    "appearances-december": {
+      "$ref": "#/definitions/Appearances"
+    }
+  }
+}

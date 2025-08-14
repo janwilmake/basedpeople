@@ -24,7 +24,7 @@ interface PersonData {
 }
 
 interface Env {
-  APPEARANCES: DurableObjectNamespace;
+  APPEARANCES: DurableObjectNamespace<any>;
   UserDO: DurableObjectNamespace;
   ASSETS: Fetcher;
 }

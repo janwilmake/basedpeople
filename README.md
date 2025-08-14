@@ -48,7 +48,7 @@ First step: determine a task output format that allows gathering complete result
 
 Disclaimer: i'm collaborating with Parallel to explore the potential and share!
 
-This morning i got to work! Learnings:
+This morning I got to work! Learnings:
 
 - The task interface from paralel itself gave me just a single appearance even though I specified i wanted an array.
 - [the docs on processors](https://docs.parallel.ai/task-api/core-concepts/choose-a-processor) state you can just get up to 25 datapoints, so we need to be creative if we want complete results
