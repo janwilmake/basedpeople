@@ -156,3 +156,4 @@ PS. I vibe-coded the entire following system, user login, and the entire fronten
 - ✅ **Validate Assumption: the data is high-quality enough, the cost per month is under $500 for the POC**
 - _Talk to people about the problem of noise and how they get to high-signal information. Pay to subscribe to set of people?_
 - Maybe share on hackernews
+- [Next iteration](TODO.md)
