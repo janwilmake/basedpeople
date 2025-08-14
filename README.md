@@ -140,12 +140,14 @@ Ultimately, I think it's a very powerful and simple API that can basically extra
 
 For now, I just did a sinlge scraping run which I can manually redo to only scrape appearances between 2024-01-01 and now. Rerunning takes up to 1 hour and I can just do it with my secret at `GET /seed`
 
-However, when I iterate on this, the next step will be
+However, when I iterate on this, the next steps will be
 
 - verifying even better that the scraped data is of high confidence and all urls are the best possible ones, valid and working
 - doing a frequent scheduled task for each person (e.g. daily) to get all NEW things, without having to re-scrape all older material that I already have
 - Personalization/Monetization: Add login and subscription element and ability to follow
 - Analytics: Simple Analytics
+
+PS. I vibe-coded the entire following system, user login, and the entire frontend, btw. [I have a great system prompt and use vanilla HTML on Cloudflare workers](https://flaredream.com/system-ts.md)
 
 # Todo:
 
