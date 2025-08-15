@@ -18,16 +18,15 @@ The next steps will be:
 - Doing the initial seed in multiple steps to get full history, but optimize for cost (as few and as light tasks as possible)
 - Verify with some degree of confidence that no items are missing
 - Doing a frequent scheduled task for each person (e.g. daily) to get all NEW things, without having to re-scrape all older material that I already have. Optimize for cost here too.
-- Personalization/Monetization: Add login and subscription element and ability to follow
 - Analytics: Simple Analytics
 - Make it part of Cookbook
-- Highlight strength Task API
-- Write about BasedPeople in this slightly longer form format https://cookbook.openai.com/examples/partners/temporal_agents_with_knowledge_graphs/temporal_agents_with_knowledge_graphs
+- Monetization: add ability to pay
+- Write about BasedPeople in this slightly longer form format in this way - https://cookbook.openai.com/examples/partners/temporal_agents_with_knowledge_graphs/temporal_agents_with_knowledge_graphs
 
 # BACKLOG
 
 - Low-hanging fruit: Add readonly query and expose over MCP
 - Write about balancing cost with effort
-- Use login.wilmake.com
+- Use login.wilmake.com to simplify stack
 - Experiment with different API configurations
 - Experiment with a more agentic and efficient task schedule per person over MCP
