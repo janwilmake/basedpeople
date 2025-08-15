@@ -74,7 +74,7 @@ export async function personHtmlHandler(
     }
 
     // Try to get person data from Durable Object
-    let personData: PersonData;
+    let personData: PersonData = { appearances: [], name: slug };
     try {
       // Get the Durable Object instance
       const dbId = env.APPEARANCES.idFromName("main");
@@ -87,11 +87,11 @@ export async function personHtmlHandler(
       }
     } catch {
       // Fallback to dummy data
-      const dummyResponse = await env.ASSETS.fetch(
-        new Request("http://localhost/dummy.json")
-      );
-      const dummyData = await dummyResponse.json();
-      personData = dummyData.result;
+      //   const dummyResponse = await env.ASSETS.fetch(
+      //     new Request("http://localhost/dummy.json")
+      //   );
+      //   const dummyData = await dummyResponse.json();
+      //   personData = dummyData.result;
     }
 
     // Sort appearances by date (reverse chronological)

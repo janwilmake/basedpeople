@@ -172,11 +172,13 @@
             border: 1px solid #333;
             transition: all 0.3s ease;
             position: relative;
+            cursor: pointer;
         }
 
         .person-card:hover {
             border-color: #22c55e;
             background: #1f1f1f;
+            transform: translateY(-2px);
         }
 
         .person-name {
@@ -237,23 +239,6 @@
         .btn-follow:disabled {
             opacity: 0.5;
             cursor: not-allowed;
-        }
-
-        .btn-view {
-            padding: 8px 16px;
-            background: #333;
-            color: #ffffff;
-            border: none;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .btn-view:hover {
-            background: #444;
         }
 
         .your-people-section {
@@ -397,7 +382,7 @@
     <div class="top-banner">
         <div class="container">
             <div class="banner-content">
-                <a href="https://x.com/janwilmake/status/1956053155994820922" class="hn-link">X Thread</a>
+                <a href="https://x.com/janwilmake/status/1956061673833300443" class="hn-link">X Thread</a>
                 <a href="https://github.com/janwilmake/basedpeople" target="_blank" class="github-link">
                     <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
                         <path
@@ -468,7 +453,7 @@
         <div class="container">
             <div class="footer-links">
                 <a href="https://github.com/janwilmake/basedpeople" target="_blank">GitHub</a>
-                <a href="https://x.com/janwilmake/status/1956053155994820922" target="_blank">X Thread</a>
+                <a href="https://x.com/janwilmake/status/1956061673833300443" target="_blank">X Thread</a>
                 <a href="https://news.ycombinator.com/submit" target="_blank">Submit to HN</a>
             </div>
             <p>&copy; 2025 Based People. Built for people who build the future.</p>
@@ -476,18 +461,52 @@
     </footer>
 
     <script>
-        // Load followed people from localStorage
-        let followedPeople = JSON.parse(localStorage.getItem('followedPeople') || '[]');
+        // State management
+        let followedPeople = [];
         let lastRenderedPeople = [];
         let isInView = false;
         let observer;
-        let hasBeenRenderedOnLoad = false;
+
+        async function loadFollows() {
+            try {
+                const response = await fetch('/follows', {
+                    credentials: 'same-origin'
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    followedPeople = data.follows || [];
+                } else {
+                    // User not logged in or error
+                    followedPeople = [];
+                }
+            } catch (error) {
+                console.error('Error loading follows:', error);
+                followedPeople = [];
+            }
+
+            updateFollowButtons();
+            updateYourPeopleSection(false);
+        }
 
         async function toggleFollow(slug, name) {
             // Find the button for this slug
             const button = document.querySelector(`button[data-slug="${slug}"]`);
             if (button) {
                 button.disabled = true;
+            }
+
+            // Proactively update the UI
+            const wasFollowing = followedPeople.some(p => p.slug === slug);
+            if (wasFollowing) {
+                followedPeople = followedPeople.filter(p => p.slug !== slug);
+            } else {
+                followedPeople.push({ slug, name });
+            }
+
+            updateFollowButtons();
+            if (isInView) {
+                updateYourPeopleSection(true);
             }
 
             try {
@@ -517,31 +536,18 @@
                     throw new Error('Network response was not ok');
                 }
 
-                const result = await response.json();
-
-                // Update local storage for client-side state
-                const index = followedPeople.findIndex(p => p.slug === slug);
-                const wasFollowing = index !== -1;
-
-                if (result.following && !wasFollowing) {
-                    // Add to followed
+            } catch (error) {
+                console.error('Error toggling follow:', error);
+                // Revert the optimistic update
+                if (wasFollowing) {
                     followedPeople.push({ slug, name });
-                } else if (!result.following && wasFollowing) {
-                    // Remove from followed
-                    followedPeople.splice(index, 1);
+                } else {
+                    followedPeople = followedPeople.filter(p => p.slug !== slug);
                 }
-
-                localStorage.setItem('followedPeople', JSON.stringify(followedPeople));
                 updateFollowButtons();
-
-                // Update your people section if in view
                 if (isInView) {
                     updateYourPeopleSection(true);
                 }
-
-            } catch (error) {
-                console.error('Error toggling follow:', error);
-                // You might want to show an error message to the user here
             } finally {
                 if (button) {
                     button.disabled = false;
@@ -599,6 +605,8 @@
             followedPeople.forEach((person, index) => {
                 const card = document.createElement('div');
                 card.className = 'person-card your-people-card';
+                card.style.cursor = 'pointer';
+                card.onclick = () => window.location.href = `/${person.slug}.html`;
 
                 if (!animate) {
                     card.classList.add('no-animation');
@@ -608,10 +616,9 @@
                     <div class="person-name">${person.name}</div>
                     <div class="person-actions">
                         <button class="btn-follow following" data-slug="${person.slug}" 
-                                onclick="toggleFollow('${person.slug}', '${person.name}')">
+                                onclick="event.stopPropagation(); toggleFollow('${person.slug}', '${person.name}')">
                             Following
                         </button>
-                        <a href="/${person.slug}.html" class="btn-view">View</a>
                     </div>
                 `;
                 grid.appendChild(card);
@@ -652,15 +659,9 @@
         }
 
         // Initialize on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            updateFollowButtons();
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadFollows();
             setupIntersectionObserver();
-
-            // Initial render without animation if there are followed people
-            if (followedPeople.length > 0) {
-                updateYourPeopleSection(false);
-                hasBeenRenderedOnLoad = true;
-            }
         });
 
         // Add smooth scrolling for CTA buttons

@@ -10,16 +10,15 @@ function createIndex() {
     const peopleCardsHtml = peopleData
       .map(
         (person) => `
-                <div class="person-card">
+                <div class="person-card" onclick="window.location.href='/${person.slug}.html'">
                     <div class="person-name">${person.name}</div>
                     <div class="person-category">${person.category}</div>
                     <div class="person-summary">${person.summary}</div>
                     <div class="person-actions">
                         <button class="btn-follow" data-slug="${person.slug}" 
-                                onclick="toggleFollow('${person.slug}', '${person.name}')">
+                                onclick="event.stopPropagation(); toggleFollow('${person.slug}', '${person.name}')">
                             Follow
                         </button>
-                        <a href="/${person.slug}.html" class="btn-view">View</a>
                     </div>
                 </div>`
       )
@@ -40,10 +39,9 @@ function createIndex() {
     </section>`;
 
     // Replace placeholders in template
-    let html = template.replace(
-      "<!-- PEOPLE_CARDS_PLACEHOLDER -->",
-      peopleCardsHtml
-    );
+    let html =
+      "<!-- GENERATED FILE! RUN template.js TO REGENERATE -->" +
+      template.replace("<!-- PEOPLE_CARDS_PLACEHOLDER -->", peopleCardsHtml);
     html = html.replace(
       "<!-- YOUR_PEOPLE_SECTION_PLACEHOLDER -->",
       yourPeopleSectionHtml

@@ -4,5 +4,9 @@
   },
   "dependencies": {
     "x-oauth-client-provider": "^0.0.12"
+  },
+  "scripts": {
+    "predeploy": "node template.js",
+    "deploy": "wrangler deploy"
   }
 }

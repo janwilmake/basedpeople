@@ -101,6 +101,9 @@ export default {
       if (toggleMatch) {
         return handleToggleFollow(toggleMatch[1], request, env);
       }
+      if (url.pathname === "/follows" && request.method === "GET") {
+        return handleGetFollows(request, env);
+      }
 
       // Handle /feed
       if (url.pathname === "/feed" && request.method === "GET") {
@@ -130,6 +133,69 @@ export default {
     }
   },
 } satisfies ExportedHandler<Env>;
+
+async function handleGetFollows(request: Request, env: Env): Promise<Response> {
+  // Get user from access token
+  const accessToken = getAccessToken(request);
+  if (!accessToken) {
+    return new Response(JSON.stringify({ follows: [] }), {
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
+  try {
+    // Get user data from UserDO
+    const userDOId = env.UserDO.idFromName(`user:${accessToken}`);
+    const userDO = env.UserDO.get(userDOId);
+    const userData = await userDO.getUser();
+
+    if (!userData) {
+      return new Response(JSON.stringify({ follows: [] }), {
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    // Use the user's X ID as user_id
+    const userId = userData.user.id;
+
+    // Get the Durable Object instance
+    const dbId = env.APPEARANCES.idFromName("main");
+    const db = env.APPEARANCES.get(dbId);
+
+    const followedSlugs = await db.getFollowedSlugs(userId);
+
+    // Convert to the format expected by frontend (with name)
+    // We need to get people.json to map slugs to names
+    const peopleResponse = await env.ASSETS.fetch(
+      new Request("https://placeholder/" + PEOPLE_FILE)
+    );
+
+    let peopleMap = new Map();
+    if (peopleResponse.ok) {
+      const people = await peopleResponse.json<Person[]>();
+      people.forEach((person) => {
+        peopleMap.set(person.slug, person.name);
+      });
+    }
+
+    const follows = followedSlugs.map((slug) => ({
+      slug,
+      name: peopleMap.get(slug) || slug, // fallback to slug if name not found
+    }));
+
+    return new Response(JSON.stringify({ follows }), {
+      headers: {
+        "Content-Type": "application/json",
+        "Cache-Control": "private, max-age=60", // Cache for 1 minute
+      },
+    });
+  } catch (error) {
+    console.error("Error in handleGetFollows:", error);
+    return new Response(JSON.stringify({ follows: [] }), {
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+}
 
 // Durable Object for managing appearances data
 export class AppearancesDB extends DurableObject<Env> {
