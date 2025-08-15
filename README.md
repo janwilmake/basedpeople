@@ -1,6 +1,6 @@
 # Based People
 
-[X Thread](https://x.com/janwilmake/status/1956061673833300443)
+[X Thread](https://x.com/janwilmake/status/1956061673833300443) | [HN Thread](https://news.ycombinator.com/item?id=44914035)
 
 Based People is a proof of concept of a website that scrapes and neatly organizes a complete overview of all public appearances of highly influential people in the tech scene. To get and maintain this dataset, the [Parallel Task API](https://docs.parallel.ai/task-api/task-quickstart) is used which is an agentic deep research API.
 
