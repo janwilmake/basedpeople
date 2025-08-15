@@ -1,7 +1,8 @@
 # August 14 2025 - first implementation
 
 - ✅ Step 1: Improve tasks with small dataset (±5 people) - (very famous and less famous person): historical and weekly. Vibe-test for errors and cost.
-- ✅ Build dataset of hitoric appearances of 100 individuals
+- ✅ Build dataset of hitoric appearances of 164 individuals
+- ✅ Personalization: Add login and ability to follow
 - ✅ **Validate Assumption: the data is high-quality enough, the cost per month is under $500 for the POC**
 - ✅ Share on X (https://x.com/janwilmake/status/1956061673833300443)
 - ✅ Make the whole card clickable rather than just the view button
