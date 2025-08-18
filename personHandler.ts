@@ -1,7 +1,6 @@
 /// <reference types="@cloudflare/workers-types" />
 
 import { UserContext } from "simplerauth-client";
-import { getAccessToken, XUser } from "x-oauth-client-provider";
 
 interface Person {
   name: string;
@@ -450,9 +449,9 @@ export async function personHtmlHandler(
     <div class="container">
         <div class="nav-links">
             <a href="/" class="nav-link">← Back to Home</a>
-            ${user ? `<a href="/feed" class="nav-link">Your Feed</a>` : ""}
+            ${ctx.user ? `<a href="/feed" class="nav-link">Your Feed</a>` : ""}
             ${
-              user
+              ctx.user
                 ? `<a href="/logout" class="nav-link">Logout</a>`
                 : `<a href="/authorize?redirect_to=${encodeURIComponent(
                     request.url

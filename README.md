@@ -15,6 +15,7 @@ For the origin story and further changes made, see [the changelog](CHANGELOG.md)
 
 The next steps will be:
 
+- ✅ Simplify the code using https://github.com/janwilmake/simplerauth-provider and with that, fixing localhost development
 - Doing the initial seed in multiple steps to get full history, but optimize for cost (as few and as light tasks as possible)
 - Verify with some degree of confidence that no items are missing
 - Doing a frequent scheduled task for each person (e.g. daily) to get all NEW things, without having to re-scrape all older material that I already have. Optimize for cost here too.
