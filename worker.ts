@@ -2,23 +2,14 @@
 /// <reference lib="esnext" />
 
 import { DurableObject } from "cloudflare:workers";
+import { UserContext, withSimplerAuth } from "simplerauth-client";
 import { personHtmlHandler } from "./personHandler";
-import {
-  UserDO,
-  handleOAuth,
-  getAccessToken,
-  XUser,
-} from "x-oauth-client-provider";
-
-// Export the UserDO for OAuth
-export { UserDO };
 
 // replace with prod version (people.json) after task seems good
 const PEOPLE_FILE = "people.json";
 
 export interface Env {
   APPEARANCES: DurableObjectNamespace<AppearancesDB>;
-  UserDO: DurableObjectNamespace<UserDO>;
   ASSETS: Fetcher;
   PARALLEL_API_KEY: string;
   CRON_SECRET: string;
@@ -65,104 +56,89 @@ interface PersonData {
 }
 
 export default {
-  async fetch(
-    request: Request,
-    env: Env,
-    ctx: ExecutionContext
-  ): Promise<Response> {
-    const url = new URL(request.url);
+  fetch: withSimplerAuth(
+    async (request: Request, env: Env, ctx: UserContext): Promise<Response> => {
+      const url = new URL(request.url);
 
-    // Handle OAuth routes first
-    const oauthResponse = await handleOAuth(request, env);
-    if (oauthResponse) return oauthResponse;
+      // Ensure required environment variables are present
+      if (!env.PARALLEL_API_KEY) {
+        return new Response("Missing PARALLEL_API_KEY", { status: 500 });
+      }
+      if (!env.CRON_SECRET) {
+        return new Response("Missing CRON_SECRET", { status: 500 });
+      }
+      if (!env.WEBHOOK_SECRET) {
+        return new Response("Missing WEBHOOK_SECRET", { status: 500 });
+      }
 
-    // Ensure required environment variables are present
-    if (!env.PARALLEL_API_KEY) {
-      return new Response("Missing PARALLEL_API_KEY", { status: 500 });
+      try {
+        if (url.pathname === "/seed" && request.method === "GET") {
+          return handleSeed(request, env);
+        }
+
+        if (url.pathname === "/webhook" && request.method === "POST") {
+          return handleWebhook(request, env);
+        }
+
+        // Handle POST /toggle/{slug}
+        const toggleMatch = url.pathname.match(/^\/toggle\/([^\/]+)$/);
+        if (toggleMatch) {
+          return handleToggleFollow(toggleMatch[1], request, env, ctx);
+        }
+        if (url.pathname === "/follows" && request.method === "GET") {
+          return handleGetFollows(request, env, ctx);
+        }
+
+        // Handle /feed
+        if (url.pathname === "/feed" && request.method === "GET") {
+          return handleFeed(request, env, ctx);
+        }
+
+        // Handle /{slug}.json requests
+        const slugMatch = url.pathname.match(/^\/([^\/]+)\.json$/);
+        if (slugMatch && request.method === "GET") {
+          return handleSlugRequest(slugMatch[1], env);
+        }
+
+        const slugMatchHtml = url.pathname.match(/^\/([^\/]+)\.html$/);
+        if (slugMatchHtml && request.method === "GET") {
+          return personHtmlHandler(request, env);
+        }
+
+        // Handle root route
+        if (url.pathname === "/" && request.method === "GET") {
+          return handleIndexPage(request, env, ctx);
+        }
+
+        return new Response("Not found", { status: 404 });
+      } catch (error) {
+        console.error("Worker error:", error);
+        return new Response("Internal server error", { status: 500 });
+      }
     }
-    if (!env.CRON_SECRET) {
-      return new Response("Missing CRON_SECRET", { status: 500 });
-    }
-    if (!env.WEBHOOK_SECRET) {
-      return new Response("Missing WEBHOOK_SECRET", { status: 500 });
-    }
-
-    try {
-      if (url.pathname === "/seed" && request.method === "GET") {
-        return handleSeed(request, env);
-      }
-
-      if (url.pathname === "/webhook" && request.method === "POST") {
-        return handleWebhook(request, env);
-      }
-
-      // Handle POST /toggle/{slug}
-      const toggleMatch = url.pathname.match(/^\/toggle\/([^\/]+)$/);
-      if (toggleMatch) {
-        return handleToggleFollow(toggleMatch[1], request, env);
-      }
-      if (url.pathname === "/follows" && request.method === "GET") {
-        return handleGetFollows(request, env);
-      }
-
-      // Handle /feed
-      if (url.pathname === "/feed" && request.method === "GET") {
-        return handleFeed(request, env);
-      }
-
-      // Handle /{slug}.json requests
-      const slugMatch = url.pathname.match(/^\/([^\/]+)\.json$/);
-      if (slugMatch && request.method === "GET") {
-        return handleSlugRequest(slugMatch[1], env);
-      }
-
-      const slugMatchHtml = url.pathname.match(/^\/([^\/]+)\.html$/);
-      if (slugMatchHtml && request.method === "GET") {
-        return personHtmlHandler(request, env);
-      }
-
-      // Handle root route
-      if (url.pathname === "/" && request.method === "GET") {
-        return handleIndexPage(request, env);
-      }
-
-      return new Response("Not found", { status: 404 });
-    } catch (error) {
-      console.error("Worker error:", error);
-      return new Response("Internal server error", { status: 500 });
-    }
-  },
+  ),
 } satisfies ExportedHandler<Env>;
 
-async function handleGetFollows(request: Request, env: Env): Promise<Response> {
+async function handleGetFollows(
+  request: Request,
+  env: Env,
+  ctx: UserContext
+): Promise<Response> {
   // Get user from access token
-  const accessToken = getAccessToken(request);
-  if (!accessToken) {
-    return new Response(JSON.stringify({ follows: [] }), {
-      headers: { "Content-Type": "application/json" },
-    });
-  }
 
   try {
     // Get user data from UserDO
-    const userDOId = env.UserDO.idFromName(`user:${accessToken}`);
-    const userDO = env.UserDO.get(userDOId);
-    const userData = await userDO.getUser();
 
-    if (!userData) {
+    if (!ctx.user.id) {
       return new Response(JSON.stringify({ follows: [] }), {
         headers: { "Content-Type": "application/json" },
       });
     }
 
-    // Use the user's X ID as user_id
-    const userId = userData.user.id;
-
     // Get the Durable Object instance
     const dbId = env.APPEARANCES.idFromName("main");
     const db = env.APPEARANCES.get(dbId);
-
-    const followedSlugs = await db.getFollowedSlugs(userId);
+    const followedSlugs = await db.getFollowedSlugs(ctx.user.id);
 
     // Convert to the format expected by frontend (with name)
     // We need to get people.json to map slugs to names
@@ -473,11 +449,11 @@ export class AppearancesDB extends DurableObject<Env> {
 async function handleToggleFollow(
   slug: string,
   request: Request,
-  env: Env
+  env: Env,
+  ctx: UserContext
 ): Promise<Response> {
   // Get user from access token
-  const accessToken = getAccessToken(request);
-  if (!accessToken) {
+  if (!ctx.user?.id) {
     // Check if this is a browser request vs API request
     const acceptHeader = request.headers.get("accept") || "";
     const isBrowser = !acceptHeader.includes("application/json");
@@ -506,20 +482,7 @@ async function handleToggleFollow(
   }
 
   try {
-    // Get user data from UserDO
-    const userDOId = env.UserDO.idFromName(`user:${accessToken}`);
-    const userDO = env.UserDO.get(userDOId);
-    const userData = await userDO.getUser();
-
-    if (!userData) {
-      return new Response(JSON.stringify({ error: "Invalid token" }), {
-        status: 401,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
-
-    // Use the user's X ID as user_id
-    const userId = userData.user.id;
+    const userId = ctx.user.id;
 
     // Get the Durable Object instance
     const dbId = env.APPEARANCES.idFromName("main");
@@ -548,7 +511,11 @@ async function handleToggleFollow(
   }
 }
 
-async function handleIndexPage(request: Request, env: Env): Promise<Response> {
+async function handleIndexPage(
+  request: Request,
+  env: Env,
+  ctx: UserContext
+): Promise<Response> {
   try {
     // Serve the index.html file
     const indexResponse = await env.ASSETS.fetch(
@@ -560,27 +527,17 @@ async function handleIndexPage(request: Request, env: Env): Promise<Response> {
     }
 
     // Get user info if logged in
-    let user: XUser | null = null;
+    let user: UserContext["user"] | null = null;
     let followedSlugs: string[] = [];
-
-    const accessToken = getAccessToken(request);
-    if (accessToken) {
-      try {
-        const userDOId = env.UserDO.idFromName(`user:${accessToken}`);
-        const userDO = env.UserDO.get(userDOId);
-        const userData = await userDO.getUser();
-
-        if (userData) {
-          user = userData.user;
-
-          // Get followed slugs
-          const dbId = env.APPEARANCES.idFromName("main");
-          const db = env.APPEARANCES.get(dbId);
-          followedSlugs = await db.getFollowedSlugs(user.id);
-        }
-      } catch (error) {
-        console.error("Error getting user data:", error);
+    try {
+      if (ctx.user?.id) {
+        // Get followed slugs
+        const dbId = env.APPEARANCES.idFromName("main");
+        const db = env.APPEARANCES.get(dbId);
+        followedSlugs = await db.getFollowedSlugs(ctx.user.id);
       }
+    } catch (error) {
+      console.error("Error getting user data:", error);
     }
 
     let html = await indexResponse.text();
@@ -617,10 +574,13 @@ async function handleIndexPage(request: Request, env: Env): Promise<Response> {
   }
 }
 
-async function handleFeed(request: Request, env: Env): Promise<Response> {
+async function handleFeed(
+  request: Request,
+  env: Env,
+  ctx: UserContext
+): Promise<Response> {
   // Get user from access token
-  const accessToken = getAccessToken(request);
-  if (!accessToken) {
+  if (!ctx.user?.id) {
     // Redirect to login if browser, otherwise return 401
     const isBrowser = request.headers.get("accept")?.includes("text/html");
     if (isBrowser) {
@@ -636,17 +596,7 @@ async function handleFeed(request: Request, env: Env): Promise<Response> {
 
   try {
     // Get user data from UserDO
-    const userDOId = env.UserDO.idFromName(`user:${accessToken}`);
-    const userDO = env.UserDO.get(userDOId);
-    const userData = await userDO.getUser();
-
-    if (!userData) {
-      return new Response("Invalid token", { status: 401 });
-    }
-
-    const user = userData.user;
-    const userId = user.id;
-
+    const userId = ctx.user.id;
     // Get the Durable Object instance
     const dbId = env.APPEARANCES.idFromName("main");
     const db = env.APPEARANCES.get(dbId);
@@ -936,13 +886,13 @@ async function handleFeed(request: Request, env: Env): Promise<Response> {
                 
                 <div class="user-info">
                     <img src="${
-                      user.profile_image_url || "/default-avatar.png"
+                      ctx.user.profile_image_url || "/default-avatar.png"
                     }" alt="Avatar" class="user-avatar">
                     <div>
                         <div class="user-name">${
-                          user.name || user.username
+                          ctx.user.name || ctx.user.username
                         }</div>
-                        <div style="color: #a0a0a0;">@${user.username}</div>
+                        <div style="color: #a0a0a0;">@${ctx.user.username}</div>
                     </div>
                 </div>
                 

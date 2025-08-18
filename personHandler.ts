@@ -1,5 +1,6 @@
 /// <reference types="@cloudflare/workers-types" />
 
+import { UserContext } from "simplerauth-client";
 import { getAccessToken, XUser } from "x-oauth-client-provider";
 
 interface Person {
@@ -25,13 +26,13 @@ interface PersonData {
 
 interface Env {
   APPEARANCES: DurableObjectNamespace<any>;
-  UserDO: DurableObjectNamespace;
   ASSETS: Fetcher;
 }
 
 export async function personHtmlHandler(
   request: Request,
-  env: Env
+  env: Env,
+  ctx: UserContext
 ): Promise<Response> {
   const url = new URL(request.url);
   const slug = url.pathname.replace(".html", "").replace("/", "");
@@ -49,49 +50,30 @@ export async function personHtmlHandler(
     }
 
     // Check if user is logged in and get follow status
-    let user: XUser | null = null;
     let isFollowing = false;
 
-    const accessToken = getAccessToken(request);
-    if (accessToken) {
-      try {
-        const userDOId = env.UserDO.idFromName(`user:${accessToken}`);
-        const userDO = env.UserDO.get(userDOId);
-        const userData = await userDO.getUser();
-
-        if (userData) {
-          user = userData.user;
-
-          // Check if following this person
-          const dbId = env.APPEARANCES.idFromName("main");
-          const db = env.APPEARANCES.get(dbId);
-          const followedSlugs = await db.getFollowedSlugs(user.id);
-          isFollowing = followedSlugs.includes(slug);
-        }
-      } catch (error) {
-        console.error("Error getting user data:", error);
+    try {
+      if (ctx.user?.id) {
+        // Check if following this person
+        const dbId = env.APPEARANCES.idFromName("main");
+        const db = env.APPEARANCES.get(dbId);
+        const followedSlugs = await db.getFollowedSlugs(ctx.user.id);
+        isFollowing = followedSlugs.includes(slug);
       }
+    } catch (error) {
+      console.error("Error getting user data:", error);
     }
 
     // Try to get person data from Durable Object
     let personData: PersonData = { appearances: [], name: slug };
-    try {
-      // Get the Durable Object instance
-      const dbId = env.APPEARANCES.idFromName("main");
-      const db = env.APPEARANCES.get(dbId);
+    // Get the Durable Object instance
+    const dbId = env.APPEARANCES.idFromName("main");
+    const db = env.APPEARANCES.get(dbId);
 
-      personData = await db.getPersonData(slug);
+    personData = await db.getPersonData(slug);
 
-      if (!personData) {
-        throw new Error("No data in database");
-      }
-    } catch {
-      // Fallback to dummy data
-      //   const dummyResponse = await env.ASSETS.fetch(
-      //     new Request("http://localhost/dummy.json")
-      //   );
-      //   const dummyData = await dummyResponse.json();
-      //   personData = dummyData.result;
+    if (!personData) {
+      throw new Error("No data in database");
     }
 
     // Sort appearances by date (reverse chronological)
@@ -485,7 +467,7 @@ export async function personHtmlHandler(
                 <p class="person-summary">${person.summary}</p>
                 
                 ${
-                  user
+                  ctx.user
                     ? `
                     <div class="person-actions">
                         <button class="follow-btn ${
@@ -770,6 +752,8 @@ export async function personHtmlHandler(
     });
   } catch (error) {
     console.error("Error in personHtmlHandler:", error);
-    return new Response("Internal Server Error", { status: 500 });
+    return new Response("Internal Server Error: " + error.message, {
+      status: 500,
+    });
   }
 }

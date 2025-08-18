@@ -3,7 +3,8 @@
     "@cloudflare/workers-types": "^4.20250813.0"
   },
   "dependencies": {
-    "x-oauth-client-provider": "^0.0.12"
+    "simplerauth-client": "^0.0.6",
+    "x-oauth-client-provider": "^0.0.13"
   },
   "scripts": {
     "predeploy": "node template.js",

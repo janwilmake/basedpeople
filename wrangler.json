@@ -11,13 +11,11 @@
     { "custom_domain": true, "pattern": "www.basedpeople.com" }
   ],
   "durable_objects": {
-    "bindings": [
-      { "name": "APPEARANCES", "class_name": "AppearancesDB" },
-      { "name": "UserDO", "class_name": "UserDO" }
-    ]
+    "bindings": [{ "name": "APPEARANCES", "class_name": "AppearancesDB" }]
   },
   "migrations": [
     { "tag": "v1", "new_sqlite_classes": ["AppearancesDB"] },
-    { "tag": "v2", "new_sqlite_classes": ["UserDO"] }
+    { "tag": "v2", "new_sqlite_classes": ["UserDO"] },
+    { "tag": "v3", "deleted_classes": ["UserDO"] }
   ]
 }
