@@ -1,4 +1,5 @@
 /// <reference types="@cloudflare/workers-types" />
+/// <reference lib="esnext" />
 
 import { UserContext } from "simplerauth-client";
 

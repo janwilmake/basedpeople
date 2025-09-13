@@ -2,7 +2,7 @@
 /// <reference lib="esnext" />
 
 import { DurableObject } from "cloudflare:workers";
-import { UserContext, withSimplerAuth } from "simplerauth-client";
+import { withSimplerAuth, UserContext } from "simplerauth-client";
 import { personHtmlHandler } from "./personHandler";
 
 // replace with prod version (people.json) after task seems good
@@ -102,7 +102,7 @@ export default {
 
         const slugMatchHtml = url.pathname.match(/^\/([^\/]+)\.html$/);
         if (slugMatchHtml && request.method === "GET") {
-          return personHtmlHandler(request, env);
+          return personHtmlHandler(request, env, ctx);
         }
 
         // Handle root route
@@ -180,6 +180,7 @@ export class AppearancesDB extends DurableObject<Env> {
   constructor(state: DurableObjectState, env: Env) {
     super(state, env);
     this.sql = state.storage.sql;
+
     this.initializeDatabase();
   }
 
@@ -534,6 +535,7 @@ async function handleIndexPage(
         // Get followed slugs
         const dbId = env.APPEARANCES.idFromName("main");
         const db = env.APPEARANCES.get(dbId);
+        user = ctx.user;
         followedSlugs = await db.getFollowedSlugs(ctx.user.id);
       }
     } catch (error) {
@@ -595,8 +597,7 @@ async function handleFeed(
   }
 
   try {
-    // Get user data from UserDO
-    const userId = ctx.user.id;
+    const userId = ctx.user?.id;
     // Get the Durable Object instance
     const dbId = env.APPEARANCES.idFromName("main");
     const db = env.APPEARANCES.get(dbId);

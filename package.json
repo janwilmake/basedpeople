@@ -3,7 +3,7 @@
     "@cloudflare/workers-types": "^4.20250813.0"
   },
   "dependencies": {
-    "simplerauth-client": "^0.0.6",
+    "simplerauth-client": "^0.0.9",
     "x-oauth-client-provider": "^0.0.13"
   },
   "scripts": {
